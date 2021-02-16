@@ -33,6 +33,7 @@
 
 # Others
 *.sln
-*.vcxproj.*
+*.vcxproj*
+.vs/
 Debug/
 
