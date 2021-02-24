@@ -27,6 +27,16 @@ public:
 	void moveDownPiece();
 	void movePiece();
 	void restart();
+	bool verifLigne();
+	void enleverLigne();
+	void tournerPiece();
+
+	//Menu Score
+	void menuScore();
+	void augmenterScore();
+	void prochainePiece();
+	void augmenterLevel();
+
 
 private: 
 	int cases[LIGNES+1][COLONNES];
@@ -34,4 +44,5 @@ private:
 	int score;
 	int level;
 	Piece piece;
+	Piece pieceApres;
 };
