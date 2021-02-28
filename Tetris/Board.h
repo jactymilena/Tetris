@@ -39,7 +39,7 @@ public:
 
 
 private:
-	int cases[LIGNES + 1][COLONNES];
+	int cases[LIGNES][COLONNES];
 	bool game_over;
 	int score;
 	int level;

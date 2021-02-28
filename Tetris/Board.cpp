@@ -26,7 +26,7 @@ bool Board::loadPiece(int num_piece) {
 	piece.loadPiece(num_piece);
 
 	for (int i = 0; i < 4; i++) { // verif si possible de placer pieces a pos initiale 
-		if (cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == 1) {
+		if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne] == 1) {
 			game_over = true; // jeu termine
 			return false; // pas possible de loader la piece 
 		}
@@ -72,7 +72,7 @@ void Board::moveDownPiece() {
 		print(REMOVE);
 		for (int i = 0; i < 4; i++) { // verifie si possible pour chaque carre de la piece
 			if (cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == 1 ||
-				cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == -1) {
+				piece.getCarre(i).ligne + 1 == LIGNES) {
 				possible = false;
 			}
 		}
@@ -88,10 +88,6 @@ void Board::resetBoard() {
 		for (int j = 0; j < COLONNES; j++) {
 			cases[i][j] = 0;
 		}
-	}
-
-	for (int i = 0; i < COLONNES; i++) {
-		cases[LIGNES][i] = -1;
 	}
 }
 
