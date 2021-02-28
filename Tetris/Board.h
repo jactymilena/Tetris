@@ -17,7 +17,7 @@
 #define REMOVE 0
 
 class Board {
-public: 
+public:
 	Board();
 	void startGame();
 	void resetBoard();
@@ -38,8 +38,8 @@ public:
 	void augmenterLevel();
 
 
-private: 
-	int cases[LIGNES+1][COLONNES];
+private:
+	int cases[LIGNES + 1][COLONNES];
 	bool game_over;
 	int score;
 	int level;

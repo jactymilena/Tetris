@@ -1,15 +1,15 @@
-#include "Board.h"
+ï»¿#include "Board.h"
 
 Board::Board() {
 	resetBoard();
 	score = 0;
 	game_over = false;
-	level = 0;	
+	level = 0;
 }
 
 void Board::startGame() {
 	int cpt = 0;
-	while(game_over == false) { // Pour tester les pièces une après l'autre
+	while (game_over == false) { // Pour tester les piï¿½ces une aprï¿½s l'autre
 		loadPiece(cpt);
 		printPiece(ADD);
 		moveDownPiece();
@@ -23,7 +23,7 @@ void Board::startGame() {
 void Board::loadPiece(int num_piece) {
 	piece.loadPiece(num_piece);
 
-	for (int i = 0; i < 4; i++) { // vérif si pièces à pos initiale des pièces
+	for (int i = 0; i < 4; i++) { // vï¿½rif si piï¿½ces ï¿½ pos initiale des piï¿½ces
 		if (cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == 1) {
 			game_over = true;
 		}
@@ -33,7 +33,7 @@ void Board::loadPiece(int num_piece) {
 void Board::movePiece() { // bouger gauche/droite
 
 	/*
-	test flèches 
+	test flï¿½ches
 
 	int charac = 0;
 
@@ -62,13 +62,13 @@ void Board::movePiece() { // bouger gauche/droite
 	*/
 }
 
-void Board::moveDownPiece() { 
+void Board::moveDownPiece() {
 	bool possible = true;
 	if (game_over == false) {
 		do {
 			printPiece(REMOVE);
 			// verifier si possible
-			for (int i = 0; i < 4; i++) { // vérif si possible pour chaque carré de la pièce
+			for (int i = 0; i < 4; i++) { // vï¿½rif si possible pour chaque carrï¿½ de la piï¿½ce
 				if (cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == 1 ||
 					cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == -1) {
 					possible = false;

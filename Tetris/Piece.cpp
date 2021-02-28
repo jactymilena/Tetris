@@ -1,4 +1,4 @@
-#include "Piece.h"
+ï»¿#include "Piece.h"
 
 
 Piece::Piece() {
@@ -6,11 +6,11 @@ Piece::Piece() {
 }
 
 void Piece::loadPiece(int num_piece) {
-	// idée : avoir un fichier pour chaque piece avec la position de depart (matrice) 
+	// idï¿½e : avoir un fichier pour chaque piece avec la position de depart (matrice) 
 	//        ou seulement les mettre dans fonction sans fichier
-	// 7 types de pièces
+	// 7 types de piï¿½ces
 
-	switch (num_piece) { // position initial des carrés de la pièce  (code à rendre moins laid)
+	switch (num_piece) { // position initial des carrï¿½s de la piï¿½ce  (code ï¿½ rendre moins laid)
 	case 0:
 		carres[0].ligne = 0;
 		carres[0].colonne = 2;
@@ -124,7 +124,7 @@ void Piece::move(int direction) { // gauche -1, droite 1
 	}
 }
 
-Carre Piece::getCarre(int index) const{
+Carre Piece::getCarre(int index) const {
 	return carres[index];
 }
 
