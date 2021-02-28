@@ -21,9 +21,9 @@ public:
 	Board();
 	void startGame();
 	void resetBoard();
-	void print();
-	void loadPiece(int num_piece);
-	void printPiece(int state);
+	void printBoard();
+	bool loadPiece(int num_piece);
+	void print(int state);
 	void moveDownPiece();
 	void movePiece();
 	void restart();
