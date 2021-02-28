@@ -38,17 +38,13 @@ void Board::movePiece() { // bouger gauche/droite
 	
 	switch (_getch()) { // manque des conditions pour les limites du board
 	case KEY_DOWN:
-		std::cout << "key down\n";
 		break;
 	case KEY_UP:
-		std::cout << "key up\n";
 		break;
 	case KEY_RIGHT:
-		std::cout << "key right\n";
 		piece.move(RIGHT);
 		break;
 	case KEY_LEFT:
-		std::cout << "key left\n";
 		piece.move(LEFT);
 		break;
 	}
@@ -67,7 +63,7 @@ void Board::moveDownPiece() {
 		
 		if (possible) {
 			piece.goDown();
-			//movePiece();
+			if(_kbhit()) movePiece(); // si une touche a ete pressee
 		}
 			
 		print(ADD);
