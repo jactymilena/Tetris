@@ -23,9 +23,10 @@ public:
 	void resetBoard();
 	void printBoard();
 	bool loadPiece(int num_piece);
-	void print(int state);
+	void print();
 	void moveDownPiece();
 	void movePiece();
+	void pieceState(int state);
 	void restart();
 	bool verifLigne();
 	void enleverLigne();
