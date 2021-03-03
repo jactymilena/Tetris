@@ -46,3 +46,4 @@ private:
 	Piece piece;
 	Piece pieceApres;
 };
+//asdfaasdfasd
