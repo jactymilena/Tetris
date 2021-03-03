@@ -27,16 +27,15 @@ public:
 	void moveDownPiece();
 	void movePiece();
 	void pieceState(int state);
-	void restart();
-	bool verifLigne();
-	void enleverLigne();
-	void tournerPiece();
+	bool verifLigne(); // Aris
+	void enleverLigne(); // Aris
+	void tournerPiece(); // Simon
+	void prochainePiece(); // Simon
 
 	//Menu Score
-	void menuScore();
-	void augmenterScore();
-	void prochainePiece();
-	void augmenterLevel();
+	void menuScore(); // Aris
+	void augmenterScore(); // Aris
+	void augmenterLevel(); // Aris
 
 
 private:
