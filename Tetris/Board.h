@@ -28,7 +28,7 @@ public:
 	void movePiece();
 	void pieceState(int state);
 	bool verifLigne(); // Aris
-	void enleverLigne(); // Aris
+	void enleverLigne(); // Aris VVVVV
 	void tournerPiece(); // Simon
 	void prochainePiece(); // Simon
 
