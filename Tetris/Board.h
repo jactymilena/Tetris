@@ -11,8 +11,8 @@
 #define COLONNES 8
 #define KEY_UP 72
 #define KEY_DOWN 80
-#define KEY_LEFT 75
-#define KEY_RIGHT 77
+#define KEY_LEFT 37
+#define KEY_RIGHT 39
 #define ADD 1
 #define REMOVE 0
 
@@ -25,7 +25,7 @@ public:
 	bool loadPiece(int num_piece);
 	void print();
 	void moveDownPiece();
-	void movePiece();
+	void movePiece(bool possibleBas, bool possibleDroite, bool possibleGauche);
 	void pieceState(int state);
 	bool verifLigne(); // Aris
 	void enleverLigne(); // Aris VVVVV
@@ -38,6 +38,9 @@ public:
 	void augmenterLevel(); // Aris
 
 
+
+
+
 private:
 	int cases[LIGNES][COLONNES];
 	bool game_over;
@@ -45,5 +48,7 @@ private:
 	int level;
 	Piece piece;
 	Piece pieceApres;
+	int compteur = 0;
+	int difficulte = 30;
 };
 //asdfaasdfasd
