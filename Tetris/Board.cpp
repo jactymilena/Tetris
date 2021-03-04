@@ -49,28 +49,16 @@ void Board::movePiece(bool possibleBas, bool possibleDroite, bool possibleGauche
 	{
 		piece.move(LEFT);
 	}
-	if (GetAsyncKeyState(40) && possibleBas == true)
+	if (GetAsyncKeyState(KEY_DOWN) && possibleBas == true)
 	{
 		piece.goDown();
 	}
-	if (GetAsyncKeyState(40) && possibleBas == true)
-	{
-		//
-
-	}
 	/*
-	switch (_getch()) { // manque des conditions pour les limites du board
-	case KEY_DOWN:
-		break;
-	case KEY_UP:
-		break;
-	case KEY_RIGHT:
-		piece.move(RIGHT);
-		break;
-	case KEY_LEFT:
-		piece.move(LEFT);
-		break;
-	}*/
+	if (GetAsyncKeyState(SPACE_BAR) )
+	{
+		//Code à Simon pour tourner
+	}
+	*/
 }
 
 void Board::moveDownPiece() {

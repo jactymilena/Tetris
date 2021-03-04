@@ -10,7 +10,8 @@
 #define LIGNES 18
 #define COLONNES 8
 #define KEY_UP 72
-#define KEY_DOWN 80
+#define SPACE_BAR 32
+#define KEY_DOWN 40
 #define KEY_LEFT 37
 #define KEY_RIGHT 39
 #define ADD 1
