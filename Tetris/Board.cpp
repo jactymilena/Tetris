@@ -1,4 +1,8 @@
 ﻿#include "Board.h"
+#include <chrono>
+#include <thread>
+
+using namespace std::chrono_literals;
 
 Board::Board() {
 	resetBoard();
@@ -34,8 +38,27 @@ bool Board::loadPiece(int num_piece) {
 	return true;
 }
 
-void Board::movePiece() { // bouger gauche/droite
+void Board::movePiece(bool possibleBas, bool possibleDroite, bool possibleGauche) { // bouger gauche/droite
 	
+	if (GetAsyncKeyState(KEY_RIGHT) && possibleDroite == true)
+	{
+		piece.move(RIGHT);
+	}
+
+	if (GetAsyncKeyState(KEY_LEFT) && possibleGauche == true)
+	{
+		piece.move(LEFT);
+	}
+	if (GetAsyncKeyState(40) && possibleBas == true) 
+	{
+		piece.goDown();
+	}
+	if (GetAsyncKeyState(40) && possibleBas == true) 
+	{
+		//
+	
+	}
+	/*
 	switch (_getch()) { // manque des conditions pour les limites du board
 	case KEY_DOWN:
 		break;
@@ -47,27 +70,43 @@ void Board::movePiece() { // bouger gauche/droite
 	case KEY_LEFT:
 		piece.move(LEFT);
 		break;
-	}
+	}*/
 }
 
 void Board::moveDownPiece() {
-	bool possible = true;
+	bool possibleBas = true;
+	bool possibleDroite = true;
+	bool possibleGauche = true;
+
 	do {
 		pieceState(REMOVE);
 		for (int i = 0; i < 4; i++) { // verifie si possible pour chaque carre de la piece
 			if (cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == 1 ||
 				piece.getCarre(i).ligne + 1 == LIGNES) {
-				possible = false;
+				possibleBas = false;
+			}
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne + 1] == 1 ||
+				piece.getCarre(i).colonne + 1 == COLONNES) {
+				possibleDroite = false;
+			}
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne - 1] == 1 ||
+				piece.getCarre(i).colonne - 1 < 0) {
+				possibleGauche = false;
 			}
 		}
-		
-		if (possible) {
+
+		if(_kbhit()) movePiece(possibleBas, possibleDroite, possibleGauche);
+
+		if (possibleBas && (compteur == difficulte)) {
 			piece.goDown();
-			if(_kbhit()) movePiece(); // si une touche a ete pressee
+			 // si une touche a ete pressee
+			compteur = 0;
 		}
 			
 		print();
-	} while (possible == true);
+		possibleGauche = true;
+		possibleDroite = true;
+	} while (possibleBas == true);
 }
 
 void Board::resetBoard() {
@@ -114,7 +153,8 @@ void Board::print() {
 	pieceState(ADD);
 	clear();//system("CLS");
 	printBoard();
-	Sleep(250);
+	std::this_thread::sleep_for(50ms);
+	compteur++;
 }
 
 void Board::printBoard() {
