@@ -8,7 +8,7 @@ Board::Board() {
 	score = 0;
 	game_over = false;
 	level = 0;
-	difficulte = 10;
+	difficulte = 1;
 	compteur = 0;
 }
 
@@ -23,7 +23,6 @@ void Board::startGame() {
 			if (cpt == 7) cpt = 0;
 		}
 	}
-
 	std::cout << "********* GAME OVER ******** \n";
 }
 
@@ -39,18 +38,18 @@ bool Board::loadPiece(int num_piece) {
 	return true;
 }
 
-void Board::movePiece(bool possibleBas, bool possibleDroite, bool possibleGauche) { // bouger gauche/droite
+void Board::movePiece() { // bouger gauche, droite, bas, tourner
 
-	if (GetAsyncKeyState(KEY_RIGHT) && possibleDroite == true)
+	if (GetAsyncKeyState(KEY_RIGHT) && verifMove(RIGHT))
 	{
 		piece.move(RIGHT);
 	}
 
-	if (GetAsyncKeyState(KEY_LEFT) && possibleGauche == true)
+	if (GetAsyncKeyState(KEY_LEFT) && verifMove(LEFT))
 	{
 		piece.move(LEFT);
 	}
-	if (GetAsyncKeyState(KEY_DOWN) && possibleBas == true)
+	if (GetAsyncKeyState(KEY_DOWN) && verifMove(DOWN))
 	{
 		piece.goDown();
 	}
@@ -62,6 +61,41 @@ void Board::movePiece(bool possibleBas, bool possibleDroite, bool possibleGauche
 	*/
 }
 
+bool Board::verifMove(int direction) {
+	switch (direction) {
+	case RIGHT:
+		for (int i = 0; i < 4; i++) {
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne + 1] == 1 ||
+				piece.getCarre(i).colonne + 1 == COLONNES) {
+				return false;
+			}
+		}
+		break;
+	case LEFT:
+		for (int i = 0; i < 4; i++) {
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne - 1] == 1 ||
+				piece.getCarre(i).colonne - 1 < 0) {
+				return false;
+			}
+		}
+		break;
+
+	case DOWN:
+		for (int i = 0; i < 4; i++) {
+			if (piece.getCarre(i).ligne + 1 != LIGNES) {
+				if (cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == 1) { // la piece ne peut plus descendre 
+					return false;
+				}
+			}
+			else { // la piece est rendu a la derniere ligne 
+				return false;
+			}
+		}
+		break;
+	}
+	return true;
+}
+
 void Board::moveDownPiece() {
 	bool possibleBas = true;
 	bool possibleDroite = true;
@@ -69,33 +103,18 @@ void Board::moveDownPiece() {
 
 	do {
 		pieceState(REMOVE);
-		for (int i = 0; i < 4; i++) { // verifie si possible pour chaque carre de la piece
-			if (cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == 1 ||
-				piece.getCarre(i).ligne + 1 == LIGNES) {
-				possibleBas = false;
-			}
-			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne + 1] == 1 ||
-				piece.getCarre(i).colonne + 1 == COLONNES) {
-				possibleDroite = false;
-			}
-			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne - 1] == 1 ||
-				piece.getCarre(i).colonne - 1 < 0) {
-				possibleGauche = false;
-			}
-		}
 
-		if (_kbhit()) movePiece(possibleBas, possibleDroite, possibleGauche);
-
-		if (possibleBas && (compteur == difficulte)) {
+		if (_kbhit()) movePiece();
+		
+		if (possibleBas = verifMove(DOWN) && (compteur == difficulte)) {
 			piece.goDown();
 			// si une touche a ete pressee
 			compteur = 0;
 		}
 
 		print();
-		possibleGauche = true;
-		possibleDroite = true;
 	} while (possibleBas == true);
+	compteur = 0;
 }
 
 void Board::resetBoard() {

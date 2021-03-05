@@ -16,6 +16,7 @@
 #define KEY_RIGHT 39
 #define ADD 1
 #define REMOVE 0
+#define DOWN 0
 
 class Board {
 public:
@@ -26,8 +27,9 @@ public:
 	bool loadPiece(int num_piece);
 	void print();
 	void moveDownPiece();
-	void movePiece(bool possibleBas, bool possibleDroite, bool possibleGauche);
+	void movePiece();
 	void pieceState(int state);
+	bool verifMove(int direction);
 	bool verifLigne(); // Aris
 	void enleverLigne(); // Aris 
 	void tournerPiece(); // Simon
