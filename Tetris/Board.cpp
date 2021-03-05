@@ -1,13 +1,14 @@
 ﻿#include "Board.h"
 #include <chrono>
 #include <thread>
+using namespace std::chrono_literals;
 
 Board::Board() {
 	resetBoard();
 	score = 0;
 	game_over = false;
 	level = 0;
-	difficulte = 1;
+	difficulte = 10;
 	compteur = 0;
 }
 
@@ -141,7 +142,7 @@ void Board::print() {
 	pieceState(ADD);
 	clear();//system("CLS");
 	printBoard();
-	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	std::this_thread::sleep_for(50ms);
 	compteur++;
 }
 
