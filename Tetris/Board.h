@@ -31,7 +31,7 @@ public:
 	void pieceState(int state);
 	bool verifMove(int direction);
 	bool verifLigne(); // Aris
-	void enleverLigne(); // Aris 
+	void enleverLigne(int i); // Aris 
 	void tournerPiece(); // Simon
 	void prochainePiece(); // Simon
 

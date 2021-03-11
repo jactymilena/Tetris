@@ -214,7 +214,7 @@ bool Board::verifLigne() {
 	}
 	min = minLigne;
 	max = maxLigne;
-	/*for (int z = minLigne; z < maxLigne; z++)// Erreur à réglé 
+	for (int z = minLigne; z < maxLigne; z++)// Erreur à réglé 
 	{
 		for (int j = 0; j < COLONNES; j++)
 		{
@@ -226,8 +226,20 @@ bool Board::verifLigne() {
 		score = compteur;
 		if (compteur == COLONNES)
 		{
-			enleverLigne();
+			enleverLigne(z);
 		}
-	}*/
+	}
 	return true;
+}
+
+void Board::enleverLigne(int i)
+{
+
+	for (int w = i; w < LIGNES; i++)
+	{
+		for (int j = 0; j < COLONNES; j++)
+		{
+			cases[w][j] = cases[w - 1][j];
+		}
+	}
 }
