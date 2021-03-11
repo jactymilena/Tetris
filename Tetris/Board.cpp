@@ -193,3 +193,41 @@ void Board::menuScore() {
 
 
 }
+
+bool Board::verifLigne() {
+	int minLigne = piece.getCarre(0).ligne;
+	int maxLigne = piece.getCarre(0).ligne;
+	int compteur = 0;
+	for (int i = 1; i < 4; i++) {//Vérifier les quatres carrees pour avoir la ligne minimale et maximale
+		if (piece.getCarre(i).ligne < minLigne)
+		{
+			minLigne = piece.getCarre(i).ligne;
+
+		}
+
+		if (piece.getCarre(i).ligne > maxLigne)
+		{
+			maxLigne = piece.getCarre(i).ligne;
+
+		}
+
+	}
+	min = minLigne;
+	max = maxLigne;
+	/*for (int z = minLigne; z < maxLigne; z++)// Erreur à réglé 
+	{
+		for (int j = 0; j < COLONNES; j++)
+		{
+			if (cases[z][j] == 1) {
+				compteur++;
+			}
+
+		}
+		score = compteur;
+		if (compteur == COLONNES)
+		{
+			enleverLigne();
+		}
+	}*/
+	return true;
+}
