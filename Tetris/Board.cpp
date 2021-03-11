@@ -8,7 +8,7 @@ Board::Board() {
 	score = 0;
 	game_over = false;
 	level = 0;
-	difficulte = 1;
+	difficulte = 4;
 	compteur = 0;
 }
 
@@ -91,6 +91,7 @@ bool Board::verifMove(int direction) {
 				return false;
 			}
 		}
+		
 		break;
 	}
 	return true;
@@ -106,7 +107,7 @@ void Board::moveDownPiece() {
 
 		if (_kbhit()) movePiece();
 		
-		if (possibleBas = verifMove(DOWN) && (compteur == difficulte)) {
+		if ((possibleBas = verifMove(DOWN)) && (compteur == difficulte)) {
 			piece.goDown();
 			// si une touche a ete pressee
 			compteur = 0;
