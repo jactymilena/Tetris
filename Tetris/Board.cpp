@@ -175,6 +175,21 @@ void Board::printBoard() {
 			else
 				std::cout << "   ";
 		}
+
 		std::cout << "|\n";
 	}
+	menuScore();
+}
+
+
+void Board::menuScore() {
+
+
+
+	std::cout << "Score = " << score;
+	std::cout << " Min = " << min;
+	std::cout << " Max = " << max;
+
+
+
 }
