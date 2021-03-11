@@ -49,4 +49,6 @@ private:
 	Piece pieceApres;
 	int compteur;
 	int difficulte;
+	int min = 0;
+	int max = 0;
 };
