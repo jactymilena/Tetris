@@ -10,11 +10,17 @@
 #define LIGNES 18
 #define COLONNES 8
 #define KEY_UP 72
-#define KEY_DOWN 80
-#define KEY_LEFT 75
-#define KEY_RIGHT 77
+#define SPACE_BAR 32
+#define KEY_DOWN 40
+#define KEY_LEFT 37
+#define KEY_RIGHT 39
 #define ADD 1
 #define REMOVE 0
+#define DOWN 0
+#define KEY_Q 113// Pour tourner a gauche
+#define KEY_E 113//Pour tourner a droite
+
+
 
 class Board {
 public:
@@ -27,8 +33,9 @@ public:
 	void moveDownPiece();
 	void movePiece();
 	void pieceState(int state);
+	bool verifMove(int direction);
 	bool verifLigne(); // Aris
-	void enleverLigne(); // Aris
+	void enleverLigne(); // Aris 
 	void tournerPiece(); // Simon
 	void prochainePiece(); // Simon
 
@@ -37,7 +44,6 @@ public:
 	void augmenterScore(); // Aris
 	void augmenterLevel(); // Aris
 
-
 private:
 	int cases[LIGNES][COLONNES];
 	bool game_over;
@@ -45,4 +51,6 @@ private:
 	int level;
 	Piece piece;
 	Piece pieceApres;
+	int compteur;
+	int difficulte;
 };

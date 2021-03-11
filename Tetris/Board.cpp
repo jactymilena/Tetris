@@ -1,15 +1,20 @@
 ﻿#include "Board.h"
+#include <chrono>
+#include <thread>
+using namespace std::chrono_literals;
 
 Board::Board() {
 	resetBoard();
 	score = 0;
 	game_over = false;
 	level = 0;
+	difficulte = 1;
+	compteur = 0;
 }
 
 void Board::startGame() {
 	int cpt = 0;
-	
+
 	while (game_over == false) { // Pour tester les pieces une apres l'autre
 		if (loadPiece(cpt)) {
 			print();
@@ -18,7 +23,6 @@ void Board::startGame() {
 			if (cpt == 7) cpt = 0;
 		}
 	}
-
 	std::cout << "********* GAME OVER ******** \n";
 }
 
@@ -34,40 +38,88 @@ bool Board::loadPiece(int num_piece) {
 	return true;
 }
 
-void Board::movePiece() { // bouger gauche/droite
-	
-	switch (_getch()) { // manque des conditions pour les limites du board
-	case KEY_DOWN:
-		break;
-	case KEY_UP:
-		break;
-	case KEY_RIGHT:
+void Board::movePiece() { // bouger gauche, droite, bas, tourner
+
+	if (GetAsyncKeyState(KEY_RIGHT) && verifMove(RIGHT))
+	{
 		piece.move(RIGHT);
-		break;
-	case KEY_LEFT:
+	}
+
+	if (GetAsyncKeyState(KEY_LEFT) && verifMove(LEFT))
+	{
 		piece.move(LEFT);
+	}
+	if (GetAsyncKeyState(KEY_DOWN) && verifMove(DOWN))
+	{
+		piece.goDown();
+	}
+
+	/*if (GetAsyncKeyState(KEY_Q))
+	{
+		piece.turn(LEFT);
+	}*/
+
+	//if (GetAsyncKeyState(KEY_E))
+	//{
+	//	piece.turn(RIGHT);
+	//}
+
+}
+
+bool Board::verifMove(int direction) {
+	switch (direction) {
+	case RIGHT:
+		for (int i = 0; i < 4; i++) {
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne + 1] == 1 ||
+				piece.getCarre(i).colonne + 1 == COLONNES) {
+				return false;
+			}
+		}
+		break;
+	case LEFT:
+		for (int i = 0; i < 4; i++) {
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne - 1] == 1 ||
+				piece.getCarre(i).colonne - 1 < 0) {
+				return false;
+			}
+		}
+		break;
+
+	case DOWN:
+		for (int i = 0; i < 4; i++) {
+			if (piece.getCarre(i).ligne + 1 != LIGNES) {
+				if (cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == 1) { // la piece ne peut plus descendre 
+					return false;
+				}
+			}
+			else { // la piece est rendu a la derniere ligne 
+				return false;
+			}
+		}
 		break;
 	}
+	return true;
 }
 
 void Board::moveDownPiece() {
-	bool possible = true;
+	bool possibleBas = true;
+	bool possibleDroite = true;
+	bool possibleGauche = true;
+
 	do {
 		pieceState(REMOVE);
-		for (int i = 0; i < 4; i++) { // verifie si possible pour chaque carre de la piece
-			if (cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == 1 ||
-				piece.getCarre(i).ligne + 1 == LIGNES) {
-				possible = false;
-			}
-		}
-		
-		if (possible) {
+
+		if (_kbhit()) movePiece();
+
+		if ((possibleBas = verifMove(DOWN)) && (compteur == difficulte)) {
 			piece.goDown();
-			if(_kbhit()) movePiece(); // si une touche a ete pressee
+			// si une touche a ete pressee
+			compteur = 0;
 		}
-			
+
 		print();
-	} while (possible == true);
+	} while (possibleBas == true);
+	compteur = 0;
 }
 
 void Board::resetBoard() {
@@ -89,8 +141,8 @@ author: Ryan Pickelsimer
 source: https://github.com/rpickelsimer/Tetris/blob/master/Tetris.cpp
 Date: 2021-03-02
 Description: Utilisation de sa fonction clear() servant à effacer l'écran.
-			 Cela offre une alternative à la fonction system("cls") montrant 
-			 certaines lacunes au niveau de l'efficacité tant qu'au fait d'effacer 
+			 Cela offre une alternative à la fonction system("cls") montrant
+			 certaines lacunes au niveau de l'efficacité tant qu'au fait d'effacer
 			 plusieurs lignes.
 */
 void clear() {
@@ -114,7 +166,8 @@ void Board::print() {
 	pieceState(ADD);
 	clear();//system("CLS");
 	printBoard();
-	Sleep(250);
+	std::this_thread::sleep_for(50ms);
+	compteur++;
 }
 
 void Board::printBoard() {

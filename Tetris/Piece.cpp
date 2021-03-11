@@ -9,39 +9,39 @@ void Piece::loadPiece(int num_piece) {
 	// id�e : avoir un fichier pour chaque piece avec la position de depart (matrice) 
 	//        ou seulement les mettre dans fonction sans fichier
 	// 7 types de pi�ces
-
+	int index_pivot = 0;
 	switch (num_piece) { // position initial des carr�s de la pi�ce  (code � rendre moins laid)
-	case 0:
+	case I:
 		carres[0].ligne = 0;
-		carres[0].colonne = 2;
+		carres[0].colonne = 4;
 
 		carres[1].ligne = 0;
 		carres[1].colonne = 3;
 
 		carres[2].ligne = 0;
-		carres[2].colonne = 4;
+		carres[2].colonne = 2;
 
 		carres[3].ligne = 0;
 		carres[3].colonne = 5;
 
 		break;
-	case 1:
-		carres[0].ligne = 0;
+	case O:
+		carres[0].ligne = 1;
 		carres[0].colonne = 3;
 
 		carres[1].ligne = 0;
 		carres[1].colonne = 4;
-
-		carres[2].ligne = 1;
-		carres[2].colonne = 3;
+		
+		carres[2].ligne = 0;//
+		carres[2].colonne = 3;//
 
 		carres[3].ligne = 1;
 		carres[3].colonne = 4;
 
 		break;
-	case 2:
-		carres[0].ligne = 0;
-		carres[0].colonne = 2;
+	case J:
+		carres[0].ligne = 0;//
+		carres[0].colonne = 2; //
 
 		carres[1].ligne = 1;
 		carres[1].colonne = 2;
@@ -53,21 +53,21 @@ void Piece::loadPiece(int num_piece) {
 		carres[3].colonne = 4;
 
 		break;
-	case 3:
+	case Z:
 		carres[0].ligne = 0;
 		carres[0].colonne = 2;
 
 		carres[1].ligne = 0;
 		carres[1].colonne = 3;
 
-		carres[2].ligne = 1;
-		carres[2].colonne = 3;
+		carres[2].ligne = 1;//
+		carres[2].colonne = 3;//
 
 		carres[3].ligne = 1;
 		carres[3].colonne = 4;
 
 		break;
-	case 4:
+	case T:
 		carres[0].ligne = 0;
 		carres[0].colonne = 3;
 
@@ -81,7 +81,7 @@ void Piece::loadPiece(int num_piece) {
 		carres[3].colonne = 4;
 
 		break;
-	case 5:
+	case L:
 		carres[0].ligne = 0;
 		carres[0].colonne = 4;
 
@@ -95,7 +95,7 @@ void Piece::loadPiece(int num_piece) {
 		carres[3].colonne = 4;
 
 		break;
-	case 6:
+	case S:
 		carres[0].ligne = 0;
 		carres[0].colonne = 3;
 
@@ -132,4 +132,31 @@ void Piece::print() {
 	for (int i = 0; i < 4; i++) {
 		std::cout << "( " << carres[i].ligne << ", " << carres[i].colonne << " )\n";
 	}
+}
+
+void Piece::turn(int direction) { //https://www.youtube.com/watch?v=Atlr5vvdchY&ab_channel=GoranMilovanovic essentiel pour faire la rotation
+	int vecteurT[2];
+	if (direction == LEFT) {//Tourner a gauche
+		//pivot[0] = carres[1].ligne;
+		//pivot[1] = carres[1].colonne;
+		
+		//Recherche du vecteur relatif
+		carres[0].ligne = carres[0].ligne - carres[1].ligne;
+		carres[0].colonne = carres[0].colonne - carres[1].colonne;
+
+		//Matrice de rotation de 2/pi c'est   0 -1
+        //                                    1  0
+
+		//Recherche du Vecteur transposé
+		carres[0].ligne = (0 * carres[0].ligne) + (-1 * carres[0].colonne);
+		carres[0].colonne = (1 * carres[0].ligne) + (0 * carres[0].colonne);
+
+		carres[0].ligne = carres[1].ligne + carres[0].ligne;
+		carres[0].colonne = carres[1].colonne + carres[0].colonne;
+	}
+
+	else {
+
+	}
+
 }
