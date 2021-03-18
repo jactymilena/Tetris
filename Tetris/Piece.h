@@ -30,6 +30,11 @@ struct VecteurT {
 	int colonne;
 };
 
+struct MemoirV {
+	int ligne;
+	int colonne;
+};
+
 class Piece {
 public:
 	Piece();
@@ -45,5 +50,6 @@ private:
 	Carre carres[4];
 	VecteurR vecteurRelatif[4];
 	VecteurT vecteurTranspose[4];
+	MemoirV memoirVecteur[4];
 	//int pivot[2];//Permet de faire tourner la píece autour d'une case
 };

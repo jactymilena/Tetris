@@ -61,8 +61,12 @@ void Board::movePiece() { // bouger gauche, droite, bas, tourner
 
 	if (GetAsyncKeyState(KEY_E))
 	{
-		
+		// Garder en mémoire les coords
 		piece.turn(RIGHT);
+		// Véeifier pour chaque carré, s'il y a déjà un 1 dans le board à sa position
+		// Si oui, reattribuer les coords gardées en mémoire
+		// Sinon, rien faire
+
 	}
 
 }
@@ -98,15 +102,21 @@ bool Board::verifMove(int direction) {
 			}
 		}
 		break;
-/*
+
 	case TURN_RIGHT:
 		for (int i = 0; i < 4; i++) {
-			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne + 1] == 1 ||
-				piece.getCarre(i).colonne + 1 == COLONNES) {
+			if (piece.getCarre(i).ligne != LIGNES) {
+				if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne] == 1 ||
+					piece.getCarre(i).colonne == COLONNES || piece.getCarre(i).ligne == LIGNES) {
+					return false;
+				}
+			}
+			else { // la piece est rendu a la derniere ligne 
 				return false;
 			}
 		}
 		break;
+	/*
 	case TURN_LEFT:
 		for (int i = 0; i < 4; i++) {
 			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne - 1] == 1 ||
@@ -115,7 +125,7 @@ bool Board::verifMove(int direction) {
 			}
 		}
 		break;
-		*/
+	*/
 	}
 	return true;
 }
