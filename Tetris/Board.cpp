@@ -66,6 +66,11 @@ void Board::movePiece() { // bouger gauche, droite, bas, tourner
 		// Véeifier pour chaque carré, s'il y a déjà un 1 dans le board à sa position
 		// Si oui, reattribuer les coords gardées en mémoire
 		// Sinon, rien faire
+		if (!verifMove(TURN_RIGHT)) { // si différent de vrai, alors le move n'est pas faisable
+			// ne pas appliquer le calcul
+			// revenir aux coords sauvegardées
+		}
+		
 
 	}
 
@@ -105,9 +110,9 @@ bool Board::verifMove(int direction) {
 
 	case TURN_RIGHT:
 		for (int i = 0; i < 4; i++) {
-			if (piece.getCarre(i).ligne != LIGNES) {
+			if (piece.getCarre(i).ligne <= LIGNES) {
 				if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne] == 1 ||
-					piece.getCarre(i).colonne == COLONNES || piece.getCarre(i).ligne == LIGNES) {
+					piece.getCarre(i).colonne <= COLONNES || piece.getCarre(i).colonne > 0) {
 					return false;
 				}
 			}

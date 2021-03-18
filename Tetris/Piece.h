@@ -4,6 +4,7 @@
 
 #define LEFT -1
 #define RIGHT 1
+#define TURN_RIGHT 2
 //Nom des Tetrominos
 #define I 0 
 #define O 1 
