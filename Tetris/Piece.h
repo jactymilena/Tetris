@@ -12,9 +12,20 @@
 #define T 4 
 #define L 5
 #define S 6
+#define index_pivot 1
 
 
 struct Carre {
+	int ligne;
+	int colonne;
+};
+
+struct VecteurR {
+	int ligne;
+	int colonne;
+};
+
+struct VecteurT {
 	int ligne;
 	int colonne;
 };
@@ -32,5 +43,7 @@ public:
 
 private:
 	Carre carres[4];
-	int pivot[2];//Permet de faire tourner la píece autour d'une case
+	VecteurR vecteurRelatif[4];
+	VecteurT vecteurTranspose[4];
+	//int pivot[2];//Permet de faire tourner la píece autour d'une case
 };

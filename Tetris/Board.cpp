@@ -39,7 +39,7 @@ bool Board::loadPiece(int num_piece) {
 }
 
 void Board::movePiece() { // bouger gauche, droite, bas, tourner
-
+	//std::cout << "Helloooo\n";
 	if (GetAsyncKeyState(KEY_RIGHT) && verifMove(RIGHT))
 	{
 		piece.move(RIGHT);
@@ -53,11 +53,11 @@ void Board::movePiece() { // bouger gauche, droite, bas, tourner
 	{
 		piece.goDown();
 	}
-
-	/*if (GetAsyncKeyState(KEY_Q))
+	if (GetAsyncKeyState(KEY_Q))
 	{
+		std::cout << "Allo\n";
 		piece.turn(LEFT);
-	}*/
+	}
 
 	//if (GetAsyncKeyState(KEY_E))
 	//{
@@ -97,6 +97,24 @@ bool Board::verifMove(int direction) {
 			}
 		}
 		break;
+/*
+	case TURN_RIGHT:
+		for (int i = 0; i < 4; i++) {
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne + 1] == 1 ||
+				piece.getCarre(i).colonne + 1 == COLONNES) {
+				return false;
+			}
+		}
+		break;
+	case TURN_LEFT:
+		for (int i = 0; i < 4; i++) {
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne - 1] == 1 ||
+				piece.getCarre(i).colonne - 1 < 0) {
+				return false;
+			}
+		}
+		break;
+		*/
 	}
 	return true;
 }
