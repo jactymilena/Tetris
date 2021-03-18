@@ -1,6 +1,8 @@
 ﻿#include "Board.h"
 #include <chrono>
 #include <thread>
+#include <cmath>
+
 using namespace std::chrono_literals;
 
 Board::Board() {
@@ -8,7 +10,7 @@ Board::Board() {
 	score = 0;
 	game_over = false;
 	level = 0;
-	difficulte = 4;
+	difficulte = 5;
 	compteur = 0;
 }
 
@@ -116,6 +118,7 @@ void Board::moveDownPiece() {
 		print();
 	} while (possibleBas == true);
 	compteur = 0;
+	verifLigne();
 }
 
 void Board::resetBoard() {
@@ -183,59 +186,89 @@ void Board::printBoard() {
 
 
 void Board::menuScore() {
-
-
-
 	std::cout << "Score = " << score;
-	std::cout << " Min = " << min;
-	std::cout << " Max = " << max;
+	//std::cout << " Min = " << min;
+	//std::cout << " Max = " << max;
+	std::cout << " Level = " << level;
+}
 
+void Board::augmenterScore(int nbLigne){
+	
+	score += 50*nbLigne;
+	augmenterLevel();
+	return;
+}
 
+void Board::augmenterLevel() {
+	if (score != 0)
+	{
+		if (score % SCORE == 0) 
+		{
+			difficulte -= 1;
+			level++;
 
+			if (difficulte < 0)
+			{
+				difficulte = 1;
+				level++;
+			}
+			
+		}
+		
+	}
+	
 }
 
 bool Board::verifLigne() {
 	int minLigne = piece.getCarre(0).ligne;
 	int maxLigne = piece.getCarre(0).ligne;
-	int compteur = 0;
-	for (int i = 1; i < 4; i++) {//Vérifier les quatres carrees pour avoir la ligne minimale et maximale
+	//std::cout << "Min =" << minLigne;
+	//std::cout << "Max =" << maxLigne;
+	int compteurX = 0;
+	int compteurLigne = 0;
+	for (int i = 1; i < 4; i++){//Vérifier les quatres carrees pour avoir la ligne minimale et maximale
 		if (piece.getCarre(i).ligne < minLigne)
 		{
 			minLigne = piece.getCarre(i).ligne;
-
 		}
-
 		if (piece.getCarre(i).ligne > maxLigne)
 		{
 			maxLigne = piece.getCarre(i).ligne;
-
 		}
-
 	}
 	min = minLigne;
 	max = maxLigne;
-	for (int z = minLigne; z < maxLigne; z++)// Erreur à réglé 
+	for (int z = minLigne; z <= maxLigne; z++)// Erreur à réglé 
 	{
+		
+		compteurX = 0;
 		for (int j = 0; j < COLONNES; j++)
 		{
 			if (cases[z][j] == 1) {
-				compteur++;
+				compteurX++;
 			}
-
 		}
-		score = compteur;
-		if (compteur == COLONNES)
+		//score = compteur;//Score pour l'affichage et débogage enlever après  
+		if (compteurX == COLONNES)//Yes sir il fallait faire compteur == colonnes et non compteur == colonnes-1
 		{
 			enleverLigne(z);
+			compteurLigne++;
 		}
+		
 	}
+	if (compteurLigne > 0)
+	{
+		augmenterScore(compteurLigne);
+	}
+	
+	
 	return true;
 }
 
 void Board::enleverLigne(int i)
 {
-
-	for (int w = i; w < LIGNES; i++)
+	
+	for (int w = i; w > 0; w--)//w=17 
 	{
 		for (int j = 0; j < COLONNES; j++)
 		{

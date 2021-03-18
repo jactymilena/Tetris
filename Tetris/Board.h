@@ -17,6 +17,7 @@
 #define ADD 1
 #define REMOVE 0
 #define DOWN 0
+#define SCORE 100
 
 class Board {
 public:
@@ -37,7 +38,7 @@ public:
 
 	//Menu Score
 	void menuScore(); // Aris
-	void augmenterScore(); // Aris
+	void augmenterScore(int nbLigne); // Aris
 	void augmenterLevel(); // Aris
 
 private:
