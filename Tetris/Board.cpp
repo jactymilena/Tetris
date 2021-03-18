@@ -55,14 +55,15 @@ void Board::movePiece() { // bouger gauche, droite, bas, tourner
 	}
 	if (GetAsyncKeyState(KEY_Q))
 	{
-		std::cout << "Allo\n";
+		
 		piece.turn(LEFT);
 	}
 
-	//if (GetAsyncKeyState(KEY_E))
-	//{
-	//	piece.turn(RIGHT);
-	//}
+	if (GetAsyncKeyState(KEY_E))
+	{
+		
+		piece.turn(RIGHT);
+	}
 
 }
 

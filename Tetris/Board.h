@@ -17,9 +17,8 @@
 #define ADD 1
 #define REMOVE 0
 #define DOWN 0
-#define KEY_Q 81
-//#define KEY_Q 113// Pour tourner a gauche
-#define KEY_E 113//Pour tourner a droite
+#define KEY_Q 81//Pour tourner a gauche
+#define KEY_E 69//Pour tourner a droite
 
 
 
