@@ -127,6 +127,18 @@ Carre Piece::getCarre(int index) const {
 	return carres[index];
 }
 
+Carre Piece::getMemoire(int index) const {
+	return memoireVecteur[index];
+}
+
+void Piece::unturned() {
+	for (int i = 0; i < 4; i++) {
+		carres[i].ligne = memoireVecteur[i].ligne;
+		carres[i].colonne = memoireVecteur[i].colonne;
+	}
+
+}
+
 void Piece::print() {
 	for (int i = 0; i < 4; i++) {
 		std::cout << "( " << carres[i].ligne << ", " << carres[i].colonne << " )\n";
@@ -134,11 +146,14 @@ void Piece::print() {
 }
 
 void Piece::turn(int direction) { //https://www.youtube.com/watch?v=Atlr5vvdchY&ab_channel=GoranMilovanovic essentiel pour faire la rotation
+
 	for(int i = 0; i < 4; i++){
+		//Enregistre la premiere position
+		memoireVecteur[i].ligne = carres[i].ligne;
+		memoireVecteur[i].colonne = carres[i].colonne;
 		//Recherche du vecteur relatif
 		vecteurRelatif[i].ligne = carres[i].ligne - carres[index_pivot].ligne;
 		vecteurRelatif[i].colonne = carres[i].colonne - carres[index_pivot].colonne;
-
 
 
 		//Recherche du Vecteur transposé
@@ -159,9 +174,6 @@ void Piece::turn(int direction) { //https://www.youtube.com/watch?v=Atlr5vvdchY&
 
 		carres[i].ligne = carres[index_pivot].ligne + vecteurTranspose[i].ligne;
 		carres[i].colonne = carres[index_pivot].colonne + vecteurTranspose[i].colonne;
-
-		memoirVecteur[i].ligne = carres[i].ligne;
-		memoirVecteur[i].colonne = carres[i].colonne;
 
 	}
 		

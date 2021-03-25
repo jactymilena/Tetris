@@ -5,6 +5,7 @@
 #define LEFT -1
 #define RIGHT 1
 #define TURN_RIGHT 2
+#define TURN_LEFT 3
 //Nom des Tetrominos
 #define I 0 
 #define O 1 
@@ -21,21 +22,6 @@ struct Carre {
 	int colonne;
 };
 
-struct VecteurR {
-	int ligne;
-	int colonne;
-};
-
-struct VecteurT {
-	int ligne;
-	int colonne;
-};
-
-struct MemoirV {
-	int ligne;
-	int colonne;
-};
-
 class Piece {
 public:
 	Piece();
@@ -46,11 +32,14 @@ public:
 	void print();
 
 	Carre getCarre(int index) const;
+	Carre getMemoire(int index) const;
+	void unturned();
+
 
 private:
 	Carre carres[4];
-	VecteurR vecteurRelatif[4];
-	VecteurT vecteurTranspose[4];
-	MemoirV memoirVecteur[4];
+	Carre vecteurRelatif[4];
+	Carre vecteurTranspose[4];
+	Carre memoireVecteur[4];
 	//int pivot[2];//Permet de faire tourner la píece autour d'une case
 };
