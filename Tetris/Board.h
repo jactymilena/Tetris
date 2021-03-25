@@ -17,8 +17,11 @@
 #define ADD 1
 #define REMOVE 0
 #define DOWN 0
+#define KEY_Q 81//Pour tourner a gauche
+#define KEY_E 69//Pour tourner a droite
 #define SCORE 100
 #define wKey 87
+
 
 class Board {
 public:

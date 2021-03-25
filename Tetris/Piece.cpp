@@ -18,37 +18,37 @@ void Piece::loadPiece(int num_piece) {
 	}
 	
 	switch (num_piece) { // position initial des carr�s de la pi�ce  (code � rendre moins laid)
-	case 0:
+	case I:
 		carres[0].ligne = 0;
-		carres[0].colonne = 2;
+		carres[0].colonne = 4;
 
 		carres[1].ligne = 0;
 		carres[1].colonne = 3;
 
 		carres[2].ligne = 0;
-		carres[2].colonne = 4;
+		carres[2].colonne = 2;
 
 		carres[3].ligne = 0;
 		carres[3].colonne = 5;
 
 		break;
-	case 1:
-		carres[0].ligne = 0;
+	case O:
+		carres[0].ligne = 1;
 		carres[0].colonne = 3;
 
 		carres[1].ligne = 0;
 		carres[1].colonne = 4;
-
-		carres[2].ligne = 1;
-		carres[2].colonne = 3;
+		
+		carres[2].ligne = 0;//
+		carres[2].colonne = 3;//
 
 		carres[3].ligne = 1;
 		carres[3].colonne = 4;
 
 		break;
-	case 2:
-		carres[0].ligne = 0;
-		carres[0].colonne = 2;
+	case J:
+		carres[0].ligne = 0;//
+		carres[0].colonne = 2; //
 
 		carres[1].ligne = 1;
 		carres[1].colonne = 2;
@@ -60,21 +60,21 @@ void Piece::loadPiece(int num_piece) {
 		carres[3].colonne = 4;
 
 		break;
-	case 3:
+	case Z:
 		carres[0].ligne = 0;
 		carres[0].colonne = 2;
 
 		carres[1].ligne = 0;
 		carres[1].colonne = 3;
 
-		carres[2].ligne = 1;
-		carres[2].colonne = 3;
+		carres[2].ligne = 1;//
+		carres[2].colonne = 3;//
 
 		carres[3].ligne = 1;
 		carres[3].colonne = 4;
 
 		break;
-	case 4:
+	case T:
 		carres[0].ligne = 0;
 		carres[0].colonne = 3;
 
@@ -88,7 +88,7 @@ void Piece::loadPiece(int num_piece) {
 		carres[3].colonne = 4;
 
 		break;
-	case 5:
+	case L:
 		carres[0].ligne = 0;
 		carres[0].colonne = 4;
 
@@ -102,7 +102,7 @@ void Piece::loadPiece(int num_piece) {
 		carres[3].colonne = 4;
 
 		break;
-	case 6:
+	case S:
 		carres[0].ligne = 0;
 		carres[0].colonne = 3;
 
@@ -149,10 +149,57 @@ Carre Piece::getCarre(int index) const {
 	return carres[index];
 }
 
+Carre Piece::getMemoire(int index) const {
+	return memoireVecteur[index];
+}
+
+void Piece::unturned() {
+	for (int i = 0; i < 4; i++) {
+		carres[i].ligne = memoireVecteur[i].ligne;
+		carres[i].colonne = memoireVecteur[i].colonne;
+	}
+
+}
+
 void Piece::print() {
 	for (int i = 0; i < 4; i++) {
 		std::cout << "( " << carres[i].ligne << ", " << carres[i].colonne << " )\n";
 	}
+}
+
+void Piece::turn(int direction) { //https://www.youtube.com/watch?v=Atlr5vvdchY&ab_channel=GoranMilovanovic essentiel pour faire la rotation
+
+	for(int i = 0; i < 4; i++){
+		//Enregistre la premiere position
+		memoireVecteur[i].ligne = carres[i].ligne;
+		memoireVecteur[i].colonne = carres[i].colonne;
+		//Recherche du vecteur relatif
+		vecteurRelatif[i].ligne = carres[i].ligne - carres[index_pivot].ligne;
+		vecteurRelatif[i].colonne = carres[i].colonne - carres[index_pivot].colonne;
+
+
+		//Recherche du Vecteur transposé
+		//Matrice de rotation de 2/pi c'est   0 -1
+		//                                    1  0
+		if (direction == LEFT) {//Tourner a gauche
+			vecteurTranspose[i].ligne = (0 * vecteurRelatif[i].ligne) + (-1 * vecteurRelatif[i].colonne);
+			vecteurTranspose[i].colonne = (1 * vecteurRelatif[i].ligne) + (0 * vecteurRelatif[i].colonne);
+		}
+
+		//Matrice de rotation de 2/pi c'est   0  1
+		//                                   -1  0
+		else if(direction == RIGHT){//Tourner a droite
+			//Recherche du Vecteur transposé
+			vecteurTranspose[i].ligne = (0 * vecteurRelatif[i].ligne) + (1 * vecteurRelatif[i].colonne);
+			vecteurTranspose[i].colonne = (-1 * vecteurRelatif[i].ligne) + (0 * vecteurRelatif[i].colonne);
+		}
+
+		carres[i].ligne = carres[index_pivot].ligne + vecteurTranspose[i].ligne;
+		carres[i].colonne = carres[index_pivot].colonne + vecteurTranspose[i].colonne;
+
+	}
+		
+
 }
 
 int Piece::getNumPiece() const

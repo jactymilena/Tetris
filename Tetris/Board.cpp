@@ -2,6 +2,7 @@
 #include <chrono>
 #include <thread>
 #include <cmath>
+using namespace std::chrono_literals;
 
 using namespace std::chrono_literals;
 
@@ -10,15 +11,13 @@ Board::Board() {
 	score = 0;
 	game_over = false;
 	level = 0;
-	difficulte = 5;
+	difficulte = 1;
 	compteur = 0;
 }
 
 void Board::startGame() {
 	srand((int)time(0));
 	int cpt = 0;
-	pieceHold.loadPiece(7);
-	pieceApres.loadPiece(rand() % 6);
 
 	while (game_over == false) { // Pour tester les pieces une apres l'autre
 		if (loadPiece(pieceApres.getNumPiece())) {
@@ -42,8 +41,8 @@ bool Board::loadPiece(int num_piece) {
 	return true;
 }
 
-void Board::movePiece(bool &nouvellePiece) { // bouger gauche, droite, bas, tourner
-
+void Board::movePiece(bool& nouvellePiece) { // bouger gauche, droite, bas, tourner
+	//std::cout << "Helloooo\n";
 	if (GetAsyncKeyState(KEY_RIGHT) && verifMove(RIGHT))
 	{
 		piece.move(RIGHT);
@@ -57,17 +56,37 @@ void Board::movePiece(bool &nouvellePiece) { // bouger gauche, droite, bas, tour
 	{
 		piece.goDown();
 	}
-	/*
-	if (GetAsyncKeyState(SPACE_BAR) )
-	{
-		//Code à Simon pour tourner
-	}
-	*/
-	if(GetAsyncKeyState(wKey)&& nouvellePiece == true)
+	if (GetAsyncKeyState(wKey) && nouvellePiece == true)
 	{
 		nouvellePiece = false;
 		changerPiece();
 	}
+	if (GetAsyncKeyState(KEY_Q))
+	{
+		piece.turn(LEFT);
+		if (!verifMove(TURN_LEFT)) {
+			piece.unturned();
+		}
+
+	}
+
+	if (GetAsyncKeyState(KEY_E))
+	{
+		// Garder en mémoire les coords
+		piece.turn(RIGHT);
+		// Véeifier pour chaque carré, s'il y a déjà un 1 dans le board à sa position
+		// Si oui, reattribuer les coords gardées en mémoire
+		// Sinon, rien faire
+		if (!verifMove(TURN_RIGHT)) {
+			piece.unturned();
+			// si différent de vrai, alors le move n'est pas faisable
+			// ne pas appliquer le calcul
+			// revenir aux coords sauvegardées
+		}
+		
+
+	}
+
 }
 
 bool Board::verifMove(int direction) {
@@ -100,7 +119,26 @@ bool Board::verifMove(int direction) {
 				return false;
 			}
 		}
-		
+		break;
+
+	case TURN_RIGHT:
+		for (int i = 0; i < 4; i++) {
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne] == 1 ||
+				piece.getCarre(i).colonne >= COLONNES ||
+				piece.getCarre(i).colonne <= 0 || piece.getCarre(i).ligne > LIGNES) {
+				return false;
+			}
+		}
+		break;
+
+	case TURN_LEFT:
+		for (int i = 0; i < 4; i++) {
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne] == 1 ||
+				piece.getCarre(i).colonne >= COLONNES ||
+				piece.getCarre(i).colonne <= 0 || piece.getCarre(i).ligne > LIGNES) {
+				return false;
+			}
+		}
 		break;
 	}
 	return true;
@@ -108,13 +146,15 @@ bool Board::verifMove(int direction) {
 
 void Board::moveDownPiece() {
 	bool possibleBas = true;
+	bool possibleDroite = true;
+	bool possibleGauche = true;
 	bool nouvellePiece = true;
 
 	do {
 		pieceState(REMOVE);
 
 		if (_kbhit()) movePiece(nouvellePiece);
-		
+
 		if ((possibleBas = verifMove(DOWN)) && (compteur == difficulte)) {
 			piece.goDown();
 			// si une touche a ete pressee
@@ -123,11 +163,7 @@ void Board::moveDownPiece() {
 
 		print();
 	} while (possibleBas == true);
-
-	nouvellePiece = true;
-
 	compteur = 0;
-	verifLigne();
 }
 
 void Board::resetBoard() {
