@@ -194,7 +194,7 @@ void Board::printBoard() {
 	menuPieceSuivante();
 	menuScore();
 }
-}
+
 void Board::menuScore() {
 	std::cout << "Score = " << score;
 	//std::cout << " Min = " << min;
