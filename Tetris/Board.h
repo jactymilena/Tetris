@@ -17,6 +17,7 @@
 #define ADD 1
 #define REMOVE 0
 #define DOWN 0
+#define wKey 87
 
 class Board {
 public:
@@ -27,7 +28,7 @@ public:
 	bool loadPiece(int num_piece);
 	void print();
 	void moveDownPiece();
-	void movePiece(bool possibleBas, bool possibleDroite, bool possibleGauche);
+	void movePiece(bool &nouvellePiece);
 	void pieceState(int state);
 	bool verifMove(int direction);
 	bool verifLigne(); // Aris
@@ -40,11 +41,19 @@ public:
 	void augmenterScore(); // Aris
 	void augmenterLevel(); // Aris
 
+	//Menu hold
+	void changerPiece();
+	void menuHold();
+
+	//Menu Suivante
+	void menuPieceSuivante();
+
 private:
 	int cases[LIGNES][COLONNES];
 	bool game_over;
 	int score;
 	int level;
+	Piece pieceHold;
 	Piece piece;
 	Piece pieceApres;
 	int compteur;

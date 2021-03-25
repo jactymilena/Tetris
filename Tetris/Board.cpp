@@ -1,8 +1,7 @@
 ﻿#include "Board.h"
 #include <chrono>
 #include <thread>
-using namespace std::chrono_literals;
-
+#include<math.h>
 using namespace std::chrono_literals;
 
 Board::Board() {
@@ -15,14 +14,16 @@ Board::Board() {
 }
 
 void Board::startGame() {
+	srand((int)time(0));
 	int cpt = 0;
+	pieceHold.loadPiece(7);
+	pieceApres.loadPiece(rand() % 6);
 
 	while (game_over == false) { // Pour tester les pieces une apres l'autre
-		if (loadPiece(cpt)) {
+		if (loadPiece(pieceApres.getNumPiece())) {
+			pieceApres.loadPiece(rand() % 6);
 			print();
 			moveDownPiece();
-			cpt++;
-			if (cpt == 7) cpt = 0;
 		}
 	}
 	std::cout << "********* GAME OVER ******** \n";
@@ -40,7 +41,7 @@ bool Board::loadPiece(int num_piece) {
 	return true;
 }
 
-void Board::movePiece() { // bouger gauche, droite, bas, tourner
+void Board::movePiece(bool &nouvellePiece) { // bouger gauche, droite, bas, tourner
 
 	if (GetAsyncKeyState(KEY_RIGHT) && verifMove(RIGHT))
 	{
@@ -61,6 +62,11 @@ void Board::movePiece() { // bouger gauche, droite, bas, tourner
 		//Code à Simon pour tourner
 	}
 	*/
+	if(GetAsyncKeyState(wKey)&& nouvellePiece == true)
+	{
+		nouvellePiece = false;
+		changerPiece();
+	}
 }
 
 bool Board::verifMove(int direction) {
@@ -100,13 +106,12 @@ bool Board::verifMove(int direction) {
 
 void Board::moveDownPiece() {
 	bool possibleBas = true;
-	bool possibleDroite = true;
-	bool possibleGauche = true;
+	bool nouvellePiece = true;
 
 	do {
 		pieceState(REMOVE);
 
-		if (_kbhit()) movePiece();
+		if (_kbhit()) movePiece(nouvellePiece);
 		
 		if (possibleBas = verifMove(DOWN) && (compteur == difficulte)) {
 			piece.goDown();
@@ -116,6 +121,9 @@ void Board::moveDownPiece() {
 
 		print();
 	} while (possibleBas == true);
+
+	nouvellePiece = true;
+
 	compteur = 0;
 }
 
@@ -178,4 +186,79 @@ void Board::printBoard() {
 		}
 		std::cout << "|\n";
 	}
+	menuHold();
+	menuPieceSuivante();
+
+}
+
+void Board::menuHold()
+{
+	bool isX = false;
+	std::cout << "\n";
+	std::cout << "     Hold\n";
+	for(int i = 0; i < 2;i++)
+	{
+		std::cout << "|";
+		for (int j = 2; j < 6; j++) {
+			isX = false;
+			for(int z = 0;z < 4; z++)
+			{
+				if(pieceHold.getCarre(z).ligne == i && pieceHold.getCarre(z).colonne == j)
+				{
+					std::cout << " x ";
+					isX = true;
+				}
+			}
+			if(isX == false)
+			{
+				std::cout << "   ";
+			}
+		}
+		std::cout << "|";
+		std::cout << "\n";
+	}
+}
+
+void Board::menuPieceSuivante()
+{
+	bool isX = false;
+	std::cout << "\n";
+	std::cout << "     Suivante\n";
+	for (int i = 0; i < 2; i++)
+	{
+		std::cout << "|";
+		for (int j = 2; j < 6; j++) {
+			isX = false;
+			for (int z = 0; z < 4; z++)
+			{
+				if (pieceApres.getCarre(z).ligne == i && pieceApres.getCarre(z).colonne == j)
+				{
+					std::cout << " x ";
+					isX = true;
+				}
+			}
+			if (isX == false)
+			{
+				std::cout << "   ";
+			}
+		}
+		std::cout << "|";
+		std::cout << "\n";
+	}
+}
+
+void Board::changerPiece()
+{
+	if(pieceHold.getNumPiece() == 7)
+	{
+		pieceHold.loadPiece(piece.getNumPiece());
+		piece.loadPiece(pieceApres.getNumPiece());
+	}
+	else
+	{
+		int numHold = pieceHold.getNumPiece();
+		pieceHold.loadPiece(piece.getNumPiece());
+		piece.loadPiece(numHold);
+	}
+	
 }

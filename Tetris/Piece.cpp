@@ -2,14 +2,21 @@
 
 
 Piece::Piece() {
-
 }
-
+Carre::Carre()
+{
+	ligne = 0;
+	colonne = 0;
+}
 void Piece::loadPiece(int num_piece) {
 	// id�e : avoir un fichier pour chaque piece avec la position de depart (matrice) 
 	//        ou seulement les mettre dans fonction sans fichier
 	// 7 types de pi�ces
-
+	if (num_piece >= 0 && numPiece <= 7) 
+	{
+		numPiece = num_piece;
+	}
+	
 	switch (num_piece) { // position initial des carr�s de la pi�ce  (code � rendre moins laid)
 	case 0:
 		carres[0].ligne = 0;
@@ -109,6 +116,20 @@ void Piece::loadPiece(int num_piece) {
 		carres[3].colonne = 3;
 
 		break;
+
+	case 7:
+		carres[0].ligne = -1;
+		carres[0].colonne = -1;
+
+		carres[1].ligne = -1;
+		carres[1].colonne = -1;
+
+		carres[2].ligne = -1;
+		carres[2].colonne = -1;
+
+		carres[3].ligne = -1;
+		carres[3].colonne = -1;
+		break;
 	}
 }
 
@@ -132,4 +153,14 @@ void Piece::print() {
 	for (int i = 0; i < 4; i++) {
 		std::cout << "( " << carres[i].ligne << ", " << carres[i].colonne << " )\n";
 	}
+}
+
+int Piece::getNumPiece() const
+{
+	return numPiece;
+}
+
+void Piece::setNumPiece(int numPiece)
+{
+	this->numPiece = numPiece;
 }

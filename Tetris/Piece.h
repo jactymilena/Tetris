@@ -9,6 +9,7 @@
 struct Carre {
 	int ligne;
 	int colonne;
+	Carre();
 };
 
 class Piece {
@@ -21,7 +22,11 @@ public:
 	void print();
 
 	Carre getCarre(int index) const;
+	int getNumPiece()const;
+	void setNumPiece(int numPiece);
 
+	
 private:
 	Carre carres[4];
+	int numPiece;
 };
