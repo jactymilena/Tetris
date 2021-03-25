@@ -17,6 +17,7 @@
 #define ADD 1
 #define REMOVE 0
 #define DOWN 0
+#define SCORE 100
 #define wKey 87
 
 class Board {
@@ -32,13 +33,13 @@ public:
 	void pieceState(int state);
 	bool verifMove(int direction);
 	bool verifLigne(); // Aris
-	void enleverLigne(); // Aris 
+	void enleverLigne(int i); // Aris 
 	void tournerPiece(); // Simon
 	void prochainePiece(); // Simon
 
 	//Menu Score
 	void menuScore(); // Aris
-	void augmenterScore(); // Aris
+	void augmenterScore(int nbLigne); // Aris
 	void augmenterLevel(); // Aris
 
 	//Menu hold
@@ -58,4 +59,6 @@ private:
 	Piece pieceApres;
 	int compteur;
 	int difficulte;
+	int min = 0;
+	int max = 0;
 };

@@ -1,7 +1,8 @@
 ﻿#include "Board.h"
 #include <chrono>
 #include <thread>
-#include<math.h>
+#include <cmath>
+
 using namespace std::chrono_literals;
 
 Board::Board() {
@@ -9,7 +10,7 @@ Board::Board() {
 	score = 0;
 	game_over = false;
 	level = 0;
-	difficulte = 1;
+	difficulte = 5;
 	compteur = 0;
 }
 
@@ -99,6 +100,7 @@ bool Board::verifMove(int direction) {
 				return false;
 			}
 		}
+		
 		break;
 	}
 	return true;
@@ -113,7 +115,7 @@ void Board::moveDownPiece() {
 
 		if (_kbhit()) movePiece(nouvellePiece);
 		
-		if (possibleBas = verifMove(DOWN) && (compteur == difficulte)) {
+		if ((possibleBas = verifMove(DOWN)) && (compteur == difficulte)) {
 			piece.goDown();
 			// si une touche a ete pressee
 			compteur = 0;
@@ -125,6 +127,7 @@ void Board::moveDownPiece() {
 	nouvellePiece = true;
 
 	compteur = 0;
+	verifLigne();
 }
 
 void Board::resetBoard() {
@@ -184,11 +187,104 @@ void Board::printBoard() {
 			else
 				std::cout << "   ";
 		}
+
 		std::cout << "|\n";
 	}
 	menuHold();
 	menuPieceSuivante();
+	menuScore();
+}
+}
+void Board::menuScore() {
+	std::cout << "Score = " << score;
+	//std::cout << " Min = " << min;
+	//std::cout << " Max = " << max;
+	std::cout << " Level = " << level;
+}
 
+void Board::augmenterScore(int nbLigne) {
+
+	score += 50 * nbLigne;
+	augmenterLevel();
+	return;
+}
+
+void Board::augmenterLevel() {
+	if (score != 0)
+	{
+		if (score % SCORE == 0)
+		{
+			difficulte -= 1;
+			level++;
+
+			if (difficulte < 0)
+			{
+				difficulte = 1;
+				level++;
+			}
+
+		}
+
+	}
+
+}
+
+bool Board::verifLigne() {
+	int minLigne = piece.getCarre(0).ligne;
+	int maxLigne = piece.getCarre(0).ligne;
+	//std::cout << "Min =" << minLigne;
+	//std::cout << "Max =" << maxLigne;
+	int compteurX = 0;
+	int compteurLigne = 0;
+	for (int i = 1; i < 4; i++) {//Vérifier les quatres carrees pour avoir la ligne minimale et maximale
+		if (piece.getCarre(i).ligne < minLigne)
+		{
+			minLigne = piece.getCarre(i).ligne;
+		}
+		if (piece.getCarre(i).ligne > maxLigne)
+		{
+			maxLigne = piece.getCarre(i).ligne;
+		}
+	}
+	min = minLigne;
+	max = maxLigne;
+	for (int z = minLigne; z <= maxLigne; z++)// Erreur à réglé 
+	{
+
+		compteurX = 0;
+		for (int j = 0; j < COLONNES; j++)
+		{
+			if (cases[z][j] == 1) {
+				compteurX++;
+			}
+		}
+		//score = compteur;//Score pour l'affichage et débogage enlever après  
+		if (compteurX == COLONNES)//Yes sir il fallait faire compteur == colonnes et non compteur == colonnes-1
+		{
+			enleverLigne(z);
+			compteurLigne++;
+		}
+
+	}
+	if (compteurLigne > 0)
+	{
+		augmenterScore(compteurLigne);
+	}
+
+
+	return true;
+}
+
+void Board::enleverLigne(int i)
+{
+
+	for (int w = i; w > 0; w--)//w=17 
+	{
+		for (int j = 0; j < COLONNES; j++)
+		{
+			cases[w][j] = cases[w - 1][j];
+		}
+	}
 }
 
 void Board::menuHold()
@@ -196,20 +292,20 @@ void Board::menuHold()
 	bool isX = false;
 	std::cout << "\n";
 	std::cout << "     Hold\n";
-	for(int i = 0; i < 2;i++)
+	for (int i = 0; i < 2; i++)
 	{
 		std::cout << "|";
 		for (int j = 2; j < 6; j++) {
 			isX = false;
-			for(int z = 0;z < 4; z++)
+			for (int z = 0; z < 4; z++)
 			{
-				if(pieceHold.getCarre(z).ligne == i && pieceHold.getCarre(z).colonne == j)
+				if (pieceHold.getCarre(z).ligne == i && pieceHold.getCarre(z).colonne == j)
 				{
 					std::cout << " x ";
 					isX = true;
 				}
 			}
-			if(isX == false)
+			if (isX == false)
 			{
 				std::cout << "   ";
 			}
@@ -249,7 +345,7 @@ void Board::menuPieceSuivante()
 
 void Board::changerPiece()
 {
-	if(pieceHold.getNumPiece() == 7)
+	if (pieceHold.getNumPiece() == 7)
 	{
 		pieceHold.loadPiece(piece.getNumPiece());
 		piece.loadPiece(pieceApres.getNumPiece());
@@ -260,5 +356,5 @@ void Board::changerPiece()
 		pieceHold.loadPiece(piece.getNumPiece());
 		piece.loadPiece(numHold);
 	}
-	
+
 }
