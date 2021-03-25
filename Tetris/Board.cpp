@@ -4,20 +4,18 @@
 #include <cmath>
 using namespace std::chrono_literals;
 
-using namespace std::chrono_literals;
-
 Board::Board() {
 	resetBoard();
 	score = 0;
 	game_over = false;
 	level = 0;
-	difficulte = 1;
+	difficulte = 3;
 	compteur = 0;
 }
 
 void Board::startGame() {
 	srand((int)time(0));
-	int cpt = 0;
+	pieceApres.loadPiece(rand() % 6);
 
 	while (game_over == false) { // Pour tester les pieces une apres l'autre
 		if (loadPiece(pieceApres.getNumPiece())) {
@@ -164,6 +162,7 @@ void Board::moveDownPiece() {
 		print();
 	} while (possibleBas == true);
 	compteur = 0;
+	verifLigne(); // modif 
 }
 
 void Board::resetBoard() {

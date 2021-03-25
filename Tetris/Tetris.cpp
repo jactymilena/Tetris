@@ -1,10 +1,12 @@
 #include <iostream>
 #include "Board.h"
 
-int main(void) {
+void main(void) {
 
 	Board b;
 	b.startGame();
 
-	return 0;
+	system("pause");
+
+	//return 0;
 }
