@@ -61,28 +61,30 @@ void Board::movePiece(bool& nouvellePiece) { // bouger gauche, droite, bas, tour
 	}
 	if (GetAsyncKeyState(KEY_Q))
 	{
-		piece.turn(LEFT);
-		if (!verifMove(TURN_LEFT)) {
-			piece.unturned();
-		}
+		if (piece.getNumPiece() != O) {
+			piece.turn(LEFT);
 
+			if (!verifMove(TURN_LEFT)) {
+				piece.unturned();
+			}
+		}
 	}
 
 	if (GetAsyncKeyState(KEY_E))
 	{
-		// Garder en mémoire les coords
-		piece.turn(RIGHT);
-		// Véeifier pour chaque carré, s'il y a déjà un 1 dans le board à sa position
-		// Si oui, reattribuer les coords gardées en mémoire
-		// Sinon, rien faire
-		if (!verifMove(TURN_RIGHT)) {
-			piece.unturned();
-			// si différent de vrai, alors le move n'est pas faisable
-			// ne pas appliquer le calcul
-			// revenir aux coords sauvegardées
+		if (piece.getNumPiece() != O) { // ne pas tourner si c'est le carré
+			// Garder en mémoire les coords
+			piece.turn(RIGHT);
+			// Véeifier pour chaque carré, s'il y a déjà un 1 dans le board à sa position
+			// Si oui, reattribuer les coords gardées en mémoire
+			// Sinon, rien faire
+			if (!verifMove(TURN_RIGHT)) {
+				piece.unturned();
+				// si différent de vrai, alors le move n'est pas faisable
+				// ne pas appliquer le calcul
+				// revenir aux coords sauvegardées
+			}
 		}
-		
-
 	}
 
 }

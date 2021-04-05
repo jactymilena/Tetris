@@ -2,9 +2,10 @@
 
 
 Piece::Piece() {
+	numPiece = 0;
 }
-Carre::Carre()
-{
+
+Carre::Carre() {
 	ligne = 0;
 	colonne = 0;
 }
@@ -22,6 +23,7 @@ void Piece::loadPiece(int num_piece) {
 		carres[0].ligne = 0;
 		carres[0].colonne = 4;
 
+		//pivot
 		carres[1].ligne = 0;
 		carres[1].colonne = 3;
 
@@ -50,6 +52,7 @@ void Piece::loadPiece(int num_piece) {
 		carres[0].ligne = 0;//
 		carres[0].colonne = 2; //
 
+		//pivot
 		carres[1].ligne = 1;
 		carres[1].colonne = 2;
 
@@ -64,6 +67,7 @@ void Piece::loadPiece(int num_piece) {
 		carres[0].ligne = 0;
 		carres[0].colonne = 2;
 
+		//pivot
 		carres[1].ligne = 0;
 		carres[1].colonne = 3;
 
@@ -78,11 +82,12 @@ void Piece::loadPiece(int num_piece) {
 		carres[0].ligne = 0;
 		carres[0].colonne = 3;
 
+		//pivot
 		carres[1].ligne = 1;
-		carres[1].colonne = 2;
-
+		carres[1].colonne = 3;
+                       
 		carres[2].ligne = 1;
-		carres[2].colonne = 3;
+		carres[2].colonne = 2;
 
 		carres[3].ligne = 1;
 		carres[3].colonne = 4;
@@ -93,10 +98,10 @@ void Piece::loadPiece(int num_piece) {
 		carres[0].colonne = 4;
 
 		carres[1].ligne = 1;
-		carres[1].colonne = 2;
+		carres[1].colonne = 3;
 
 		carres[2].ligne = 1;
-		carres[2].colonne = 3;
+		carres[2].colonne = 2;
 
 		carres[3].ligne = 1;
 		carres[3].colonne = 4;
@@ -106,14 +111,14 @@ void Piece::loadPiece(int num_piece) {
 		carres[0].ligne = 0;
 		carres[0].colonne = 3;
 
-		carres[1].ligne = 0;
-		carres[1].colonne = 4;
+		carres[1].ligne = 1;
+		carres[1].colonne = 3;
 
 		carres[2].ligne = 1;
 		carres[2].colonne = 2;
 
-		carres[3].ligne = 1;
-		carres[3].colonne = 3;
+		carres[3].ligne = 0;
+		carres[3].colonne = 4;
 
 		break;
 
@@ -174,8 +179,8 @@ void Piece::turn(int direction) { //https://www.youtube.com/watch?v=Atlr5vvdchY&
 		memoireVecteur[i].ligne = carres[i].ligne;
 		memoireVecteur[i].colonne = carres[i].colonne;
 		//Recherche du vecteur relatif
-		vecteurRelatif[i].ligne = carres[i].ligne - carres[index_pivot].ligne;
-		vecteurRelatif[i].colonne = carres[i].colonne - carres[index_pivot].colonne;
+		vecteurRelatif[i].ligne = carres[i].ligne - carres[INDEX_PIVOT].ligne;
+		vecteurRelatif[i].colonne = carres[i].colonne - carres[INDEX_PIVOT].colonne;
 
 
 		//Recherche du Vecteur transposé
@@ -194,8 +199,8 @@ void Piece::turn(int direction) { //https://www.youtube.com/watch?v=Atlr5vvdchY&
 			vecteurTranspose[i].colonne = (-1 * vecteurRelatif[i].ligne) + (0 * vecteurRelatif[i].colonne);
 		}
 
-		carres[i].ligne = carres[index_pivot].ligne + vecteurTranspose[i].ligne;
-		carres[i].colonne = carres[index_pivot].colonne + vecteurTranspose[i].colonne;
+		carres[i].ligne = carres[INDEX_PIVOT].ligne + vecteurTranspose[i].ligne;
+		carres[i].colonne = carres[INDEX_PIVOT].colonne + vecteurTranspose[i].colonne;
 
 	}
 		
