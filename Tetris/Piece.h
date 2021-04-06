@@ -14,7 +14,7 @@
 #define T 4 
 #define L 5
 #define S 6
-#define index_pivot 1
+#define INDEX_PIVOT 1
 
 
 struct Carre {
@@ -33,7 +33,7 @@ public:
 	void print();
 
 	Carre getCarre(int index) const;
-	int getNumPiece()const;
+	int getNumPiece() const;
 	void setNumPiece(int numPiece);
 	Carre getMemoire(int index) const;
 	void unturned();
