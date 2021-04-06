@@ -32,7 +32,7 @@ public:
 	bool loadPiece(int num_piece);
 	void print();
 	void moveDownPiece();
-	void movePiece(bool &nouvellePiece);
+	void movePiece(bool& nouvellePiece, int caseVoix);
 	void pieceState(int state);
 	bool verifMove(int direction);
 	bool verifLigne(); // Aris
@@ -51,6 +51,9 @@ public:
 
 	//Menu Suivante
 	void menuPieceSuivante();
+
+	//Lecture FPGA
+	int lireFPGA();
 
 private:
 	int cases[LIGNES][COLONNES];

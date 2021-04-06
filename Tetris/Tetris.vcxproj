@@ -144,8 +144,12 @@
     <ClCompile Include="Tetris.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\..\can_b2_console\sources\CommunicationFPGA.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Piece.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="CommunicationFPGA.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

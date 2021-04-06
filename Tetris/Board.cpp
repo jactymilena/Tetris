@@ -2,7 +2,34 @@
 #include <chrono>
 #include <thread>
 #include <cmath>
+#include "CommunicationFPGA.h"
+
 using namespace std::chrono_literals;
+
+BOOL statutport = false;            // statut du port de communication qui sera cree
+
+
+int compteur_temps = 0;
+int swt = 0;                         // donnee recue du FPGA
+int aff7sg_octet0 = 0;               // octet 0 (droite) pour afficheur 7 segments
+int aff7sg_octet1 = 0;               // octet 0 (droite) pour afficheur 7 segments                    
+
+const int nitermax = 10000;         // Nbre d'itération max de la boucle de lecture d'acquisition (limite pour tests)
+									 // changer la condition de boucle sans cette limite selon le besoin de l'application
+const int delai_boucle = 10;         // delai d'attente ajouté dans la boucle de lecture en ms
+
+// numeros de registres correspondants pour les echanges FPGA <-> PC  ...
+unsigned const int nreg_lect_stat_btn = 0;  // fpga -> PC  Statut et BTN lus FPGA -> PC
+unsigned const int nreg_lect_swt = 1;       // fpga -> PC  SWT lus FPGA -> PC
+unsigned const int nreg_lect_cmpt_t = 2;    // fpga -> PC  compteur temps FPGA -> PC 
+unsigned const int nreg_lect_can0 = 3;      // fpga -> PC  canal 0 lus FPGA -> PC
+unsigned const int nreg_lect_can1 = 4;      // fpga -> PC  canal 1 lus FPGA -> PC
+unsigned const int nreg_lect_can2 = 5;      // fpga -> PC  canal 2 lus FPGA -> PC
+unsigned const int nreg_lect_can3 = 6;      // fpga -> PC  canal 3 lus FPGA -> PC
+unsigned const int nreg_ecri_aff7sg0 = 7;   // PC -> fpga (octet 0  aff.7 seg.)
+unsigned const int nreg_ecri_aff7sg1 = 8;   // PC -> fpga (octet 1  aff.7 seg.)
+unsigned const int nreg_ecri_aff7dot = 9;   // PC -> fpga (donnees dot-points)
+unsigned const int nreg_ecri_led = 10;
 
 Board::Board() {
 	resetBoard();
@@ -39,18 +66,18 @@ bool Board::loadPiece(int num_piece) {
 	return true;
 }
 
-void Board::movePiece(bool& nouvellePiece) { // bouger gauche, droite, bas, tourner
+void Board::movePiece(bool& nouvellePiece, int caseVoix) { // bouger gauche, droite, bas, tourner
 	//std::cout << "Helloooo\n";
-	if (GetAsyncKeyState(KEY_RIGHT) && verifMove(RIGHT))
+	if ((GetAsyncKeyState(KEY_RIGHT) || caseVoix == 1) && verifMove(RIGHT))
 	{
 		piece.move(RIGHT);
 	}
 
-	if (GetAsyncKeyState(KEY_LEFT) && verifMove(LEFT))
+	if ((GetAsyncKeyState(KEY_LEFT) || caseVoix == 2) && verifMove(LEFT))
 	{
 		piece.move(LEFT);
 	}
-	if (GetAsyncKeyState(KEY_DOWN) && verifMove(DOWN))
+	if ((GetAsyncKeyState(KEY_DOWN) || caseVoix == 3) && verifMove(DOWN))
 	{
 		piece.goDown();
 	}
@@ -68,7 +95,7 @@ void Board::movePiece(bool& nouvellePiece) { // bouger gauche, droite, bas, tour
 
 	}
 
-	if (GetAsyncKeyState(KEY_E))
+	if (GetAsyncKeyState(KEY_E)|| caseVoix == 4)
 	{
 		// Garder en mémoire les coords
 		piece.turn(RIGHT);
@@ -150,8 +177,8 @@ void Board::moveDownPiece() {
 
 	do {
 		pieceState(REMOVE);
-
-		if (_kbhit()) movePiece(nouvellePiece);
+		
+		if (_kbhit() || (lireFPGA() != 0)) movePiece(nouvellePiece, lireFPGA());
 
 		if ((possibleBas = verifMove(DOWN)) && (compteur == difficulte)) {
 			piece.goDown();
@@ -163,6 +190,67 @@ void Board::moveDownPiece() {
 	} while (possibleBas == true);
 	compteur = 0;
 	verifLigne(); // modif 
+}
+
+int Board::lireFPGA() 
+{
+	CommunicationFPGA port;
+	static int canal_a_afficher = 0;    
+	int indice_canal_a_afficher = 0;
+	int stat_btn = 0;
+	int statut_circuit = 0;
+	statutport = port.lireRegistre(nreg_lect_stat_btn, statut_circuit);
+
+	if (statutport) statutport = port.lireRegistre(nreg_lect_stat_btn, stat_btn);     // lecture statut et BTN
+	else { cout << "Erreur du port nreg_lect_stat_btn" << endl; exit(1); }
+	
+	int echconv[4];
+	if (statutport) statutport = port.lireRegistre(nreg_lect_can0, echconv[0]);       // lecture canal 0
+	else { cout << "Erreur du port nreg_lect_can0" << endl; exit(1); }
+	if (statutport) statutport = port.lireRegistre(nreg_lect_can1, echconv[1]);       // lecture canal 1
+	else { cout << "Erreur du port nreg_lect_can1" << endl; exit(1); }
+	if (statutport) statutport = port.lireRegistre(nreg_lect_can2, echconv[2]);       // lecture canal 2
+	else { cout << "Erreur du port nreg_lect_can2" << endl; exit(1); }
+	if (statutport) statutport = port.lireRegistre(nreg_lect_can3, echconv[3]);       // lecture canal 3
+	else { cout << "Erreur du port nreg_lect_can3" << endl; exit(1); }
+	if (!statutport) {
+		cout << "Erreur du port dans la boucle" << endl;
+		exit(1);
+	}
+
+	if ((stat_btn & 1) != 0) 
+	{
+		if((echconv[0] > 202 && echconv[0] < 222) && (echconv[1] > 15 && echconv[1] < 35) && (echconv[2] > 0 && echconv[2] < 20) && (echconv[3] > 0 && echconv[3] < 15))
+		{
+			return 1;
+		}
+		else if(echconv[1] > 0x7d)
+		{
+			return 2;
+		}
+		else if (echconv[2] > 0x7d)
+		{
+			return 3;
+		}
+		else if (echconv[3] > 0x7d)
+		{
+			return 4;
+		}
+	}
+	else if ((stat_btn & 2) != 0)
+	{
+		canal_a_afficher++;
+
+		if (canal_a_afficher  > 3) canal_a_afficher = 0;
+	}
+	
+	if (statutport) statutport = port.ecrireRegistre(nreg_ecri_aff7sg0, canal_a_afficher);                    // envoyer numero canal_a_afficher afficheur 7 segments
+	else { cout << "Erreur du port nreg_ecri_aff7sg0" << endl; exit(1); }
+	if (statutport) statutport = port.ecrireRegistre(nreg_ecri_aff7sg1, echconv[canal_a_afficher]); // envoyer valeur echconv[] afficheur 7 segments
+	else { cout << "Erreur du port nreg_ecri_aff7sg1" << endl; exit(1); }
+	
+
+	return 0;
 }
 
 void Board::resetBoard() {
