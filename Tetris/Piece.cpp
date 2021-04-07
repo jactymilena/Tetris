@@ -2,7 +2,7 @@
 
 
 Piece::Piece() {
-	numPiece = 0;
+	numPiece = 7;
 }
 
 Carre::Carre() {

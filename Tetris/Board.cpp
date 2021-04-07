@@ -43,10 +43,8 @@ Board::Board() {
 void Board::startGame() {
 	srand((int)time(0));
 	pieceApres.loadPiece(rand() % 6);
-
 	while (game_over == false) { // Pour tester les pieces une apres l'autre
 		if (loadPiece(pieceApres.getNumPiece())) {
-			pieceApres.loadPiece(rand() % 6);
 			print();
 			moveDownPiece();
 		}
@@ -63,6 +61,7 @@ bool Board::loadPiece(int num_piece) {
 			return false; // pas possible de loader la piece 
 		}
 	}
+	pieceApres.loadPiece(rand() % 6);
 	return true;
 }
 
@@ -219,22 +218,26 @@ int Board::lireFPGA()
 		cout << "Erreur du port dans la boucle" << endl;
 		exit(1);
 	}
-
+	statutport = port.ecrireRegistre(nreg_ecri_led, 1);
 	if ((stat_btn & 1) != 0) 
 	{
+		//Phonème A
 		if((echconv[0] > 202 && echconv[0] < 222) && (echconv[1] > 15 && echconv[1] < 35) && (echconv[2] > 0 && echconv[2] < 20) && (echconv[3] > 0 && echconv[3] < 15))
 		{
 			return 1;
 		}
-		else if(echconv[1] > 0x7d)
+		//Phonème U
+		else if((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 0 && echconv[1] < 20) && (echconv[2] > 165 && echconv[2] < 185) && (echconv[3] > 40 && echconv[3] < 60))
 		{
 			return 2;
 		}
-		else if (echconv[2] > 0x7d)
+		//Phonème E
+		else if ((echconv[0] > 183 && echconv[0] < 203) && (echconv[1] > 227 && echconv[1] < 247) && (echconv[2] > 90 && echconv[2] < 110) && (echconv[3] > 15 && echconv[3] < 35))
 		{
 			return 3;
 		}
-		else if (echconv[3] > 0x7d)
+		//Phonème I
+		else if ((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 90 && echconv[1] < 110) && (echconv[2] > 177 && echconv[2] < 197) && (echconv[3] > 15 && echconv[3] < 35))
 		{
 			return 4;
 		}
@@ -246,10 +249,8 @@ int Board::lireFPGA()
 		if (canal_a_afficher  > 3) canal_a_afficher = 0;
 	}
 	
-	if (statutport) statutport = port.ecrireRegistre(nreg_ecri_aff7sg0, canal_a_afficher);                    // envoyer numero canal_a_afficher afficheur 7 segments
-	else { cout << "Erreur du port nreg_ecri_aff7sg0" << endl; exit(1); }
-	if (statutport) statutport = port.ecrireRegistre(nreg_ecri_aff7sg1, echconv[canal_a_afficher]); // envoyer valeur echconv[] afficheur 7 segments
-	else { cout << "Erreur du port nreg_ecri_aff7sg1" << endl; exit(1); }
+	statutport = port.ecrireRegistre(nreg_ecri_aff7sg0, canal_a_afficher);                    // envoyer numero canal_a_afficher afficheur 7 segments
+	statutport = port.ecrireRegistre(nreg_ecri_aff7sg1, echconv[canal_a_afficher]); // envoyer valeur echconv[] afficheur 7 segments
 	
 
 	return 0;
