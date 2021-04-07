@@ -5,7 +5,12 @@
 #include <time.h>
 #include <conio.h>
 #include <Windows.h>
+#include <fstream>
+#include <vector>
+#include <cmath>
+#include <stdio.h>
 #include "Piece.h"
+#include "Player.h"
 
 #define LIGNES 18
 #define COLONNES 8
@@ -35,15 +40,17 @@ public:
 	void movePiece(bool& nouvellePiece, int caseVoix);
 	void pieceState(int state);
 	bool verifMove(int direction);
-	bool verifLigne(); // Aris
-	void enleverLigne(int i); // Aris 
-	void tournerPiece(); // Simon
-	void prochainePiece(); // Simon
+	bool verifLigne(); 
+	void enleverLigne(int i); 
+	void printGameOver();
+	void printHighScoreHistorique();
 
 	//Menu Score
-	void menuScore(); // Aris
-	void augmenterScore(int nbLigne); // Aris
-	void augmenterLevel(); // Aris
+	void menuScore(); 
+	void augmenterScore(int nbLigne);
+	void augmenterLevel(); 
+	void loadHighscore();
+	void checkerScore();
 
 	//Menu hold
 	void changerPiece();
@@ -53,12 +60,13 @@ public:
 	void menuPieceSuivante();
 
 	//Lecture FPGA
-	int lireFPGA();
+	//int lireFPGA();
+
+	void clearConsole();
 
 private:
 	int cases[LIGNES][COLONNES];
 	bool game_over;
-	int score;
 	int level;
 	Piece pieceHold;
 	Piece piece;
@@ -67,4 +75,6 @@ private:
 	int difficulte;
 	int min = 0;
 	int max = 0;
+	std::vector<Player> historique;
+	Player player;
 };

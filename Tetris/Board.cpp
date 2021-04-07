@@ -1,39 +1,37 @@
 ﻿#include "Board.h"
-#include <chrono>
-#include <thread>
-#include <cmath>
-#include "CommunicationFPGA.h"
 
 using namespace std::chrono_literals;
-
-BOOL statutport = false;            // statut du port de communication qui sera cree
-
-
-int compteur_temps = 0;
-int swt = 0;                         // donnee recue du FPGA
-int aff7sg_octet0 = 0;               // octet 0 (droite) pour afficheur 7 segments
-int aff7sg_octet1 = 0;               // octet 0 (droite) pour afficheur 7 segments                    
-
-const int nitermax = 10000;         // Nbre d'itération max de la boucle de lecture d'acquisition (limite pour tests)
-									 // changer la condition de boucle sans cette limite selon le besoin de l'application
-const int delai_boucle = 10;         // delai d'attente ajouté dans la boucle de lecture en ms
-
-// numeros de registres correspondants pour les echanges FPGA <-> PC  ...
-unsigned const int nreg_lect_stat_btn = 0;  // fpga -> PC  Statut et BTN lus FPGA -> PC
-unsigned const int nreg_lect_swt = 1;       // fpga -> PC  SWT lus FPGA -> PC
-unsigned const int nreg_lect_cmpt_t = 2;    // fpga -> PC  compteur temps FPGA -> PC 
-unsigned const int nreg_lect_can0 = 3;      // fpga -> PC  canal 0 lus FPGA -> PC
-unsigned const int nreg_lect_can1 = 4;      // fpga -> PC  canal 1 lus FPGA -> PC
-unsigned const int nreg_lect_can2 = 5;      // fpga -> PC  canal 2 lus FPGA -> PC
-unsigned const int nreg_lect_can3 = 6;      // fpga -> PC  canal 3 lus FPGA -> PC
-unsigned const int nreg_ecri_aff7sg0 = 7;   // PC -> fpga (octet 0  aff.7 seg.)
-unsigned const int nreg_ecri_aff7sg1 = 8;   // PC -> fpga (octet 1  aff.7 seg.)
-unsigned const int nreg_ecri_aff7dot = 9;   // PC -> fpga (donnees dot-points)
-unsigned const int nreg_ecri_led = 10;
+//#include "CommunicationFPGA.h"
+//
+//
+//
+//BOOL statutport = false;            // statut du port de communication qui sera cree
+//
+//
+//int compteur_temps = 0;
+//int swt = 0;                         // donnee recue du FPGA
+//int aff7sg_octet0 = 0;               // octet 0 (droite) pour afficheur 7 segments
+//int aff7sg_octet1 = 0;               // octet 0 (droite) pour afficheur 7 segments                    
+//
+//const int nitermax = 10000;         // Nbre d'itération max de la boucle de lecture d'acquisition (limite pour tests)
+//									 // changer la condition de boucle sans cette limite selon le besoin de l'application
+//const int delai_boucle = 10;         // delai d'attente ajouté dans la boucle de lecture en ms
+//
+//// numeros de registres correspondants pour les echanges FPGA <-> PC  ...
+//unsigned const int nreg_lect_stat_btn = 0;  // fpga -> PC  Statut et BTN lus FPGA -> PC
+//unsigned const int nreg_lect_swt = 1;       // fpga -> PC  SWT lus FPGA -> PC
+//unsigned const int nreg_lect_cmpt_t = 2;    // fpga -> PC  compteur temps FPGA -> PC 
+//unsigned const int nreg_lect_can0 = 3;      // fpga -> PC  canal 0 lus FPGA -> PC
+//unsigned const int nreg_lect_can1 = 4;      // fpga -> PC  canal 1 lus FPGA -> PC
+//unsigned const int nreg_lect_can2 = 5;      // fpga -> PC  canal 2 lus FPGA -> PC
+//unsigned const int nreg_lect_can3 = 6;      // fpga -> PC  canal 3 lus FPGA -> PC
+//unsigned const int nreg_ecri_aff7sg0 = 7;   // PC -> fpga (octet 0  aff.7 seg.)
+//unsigned const int nreg_ecri_aff7sg1 = 8;   // PC -> fpga (octet 1  aff.7 seg.)
+//unsigned const int nreg_ecri_aff7dot = 9;   // PC -> fpga (donnees dot-points)
+//unsigned const int nreg_ecri_led = 10;
 
 Board::Board() {
 	resetBoard();
-	score = 0;
 	game_over = false;
 	level = 0;
 	difficulte = 3;
@@ -41,15 +39,94 @@ Board::Board() {
 }
 
 void Board::startGame() {
+	std::string username;
+	std::cout << "Entrer votre nom : ";
+	std::cin >> username;
+	player.setUsername(username);
+	loadHighscore();
+
 	srand((int)time(0));
 	pieceApres.loadPiece(rand() % 6);
-	while (game_over == false) { // Pour tester les pieces une apres l'autre
+	while (game_over == false) { 
 		if (loadPiece(pieceApres.getNumPiece())) {
 			print();
 			moveDownPiece();
 		}
 	}
-	std::cout << "********* GAME OVER ******** \n";
+	
+	checkerScore();
+	clearConsole();
+	printGameOver();
+}
+
+void Board::checkerScore() {
+	bool isPlusGrand = false;
+	int i = 0;
+	while ((!isPlusGrand) && (i < historique.size() - 1))
+	{
+		if (historique[i].getScore() <= player.getScore())
+		{
+			for (int w = historique.size() - 1; w >= i + 1; w--) {
+				historique[w].setScore(historique[w - 1].getScore());
+				historique[w].setUsername(historique[w - 1].getUsername());
+			}
+
+			historique[i].setScore(player.getScore());
+			historique[i].setUsername(player.getUsername());
+			isPlusGrand = true;
+		}
+		i++;
+	}
+
+	if (isPlusGrand)
+	{
+		if (historique.size() > 10) {
+			historique.pop_back();
+		}
+
+		std::fstream myfile;
+		myfile.open("Score.txt");
+		for (int j = 0; j < historique.size(); j++)
+		{
+			myfile << historique[j].getUsername() << " " << historique[j].getScore() << std::endl;
+		}
+
+		myfile.close();
+	}
+}
+
+void Board::printGameOver() {
+	std::cout << "\n********* GAME OVER ********* \n";
+	std::cout << "Username : " << player.getUsername() << std::endl;
+	std::cout << "Score : " << player.getScore() << std::endl;
+	std::cout << "\n********* HIGH SCORE ******** \n";
+	printHighScoreHistorique();
+	std::cout << "\n***************************** \n";
+}
+
+void Board::printHighScoreHistorique() {
+	for (int i = 0; i < historique.size(); i++) {
+		std::cout << i+1 << ". " << historique[i].getUsername()  << "  " << historique[i].getScore() << std::endl;
+	}
+}
+
+void Board::loadHighscore() {
+	//Ouvrir document 
+	std::fstream myfile;
+	myfile.open("Score.txt");
+	std::string line;
+	std::string username;
+	int score;
+
+	if (myfile.is_open())
+	{
+		while (myfile >> username >> score)
+		{
+			Player p(score, username);
+			historique.push_back(p);
+		}
+	}
+	myfile.close();
 }
 
 bool Board::loadPiece(int num_piece) {
@@ -179,7 +256,7 @@ void Board::moveDownPiece() {
 	do {
 		pieceState(REMOVE);
 		
-		if (_kbhit() || (lireFPGA() != 0)) movePiece(nouvellePiece, lireFPGA());
+		if (_kbhit() /*|| (lireFPGA() != 0)*/) movePiece(nouvellePiece, 0);
 
 		if ((possibleBas = verifMove(DOWN)) && (compteur == difficulte)) {
 			piece.goDown();
@@ -193,7 +270,7 @@ void Board::moveDownPiece() {
 	verifLigne(); // modif 
 }
 
-int Board::lireFPGA() 
+/*int Board::lireFPGA() 
 {
 	CommunicationFPGA port;
 	static int canal_a_afficher = 0;    
@@ -254,7 +331,7 @@ int Board::lireFPGA()
 	
 
 	return 0;
-}
+}*/
 
 void Board::resetBoard() {
 	for (int i = 0; i < LIGNES; i++) {
@@ -279,7 +356,7 @@ Description: Utilisation de sa fonction clear() servant à effacer l'écran.
 			 certaines lacunes au niveau de l'efficacité tant qu'au fait d'effacer
 			 plusieurs lignes.
 */
-void clear() {
+void Board::clearConsole() {
 	COORD topLeft = { 0, 0 };
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO screen;
@@ -298,7 +375,7 @@ void clear() {
 
 void Board::print() {
 	pieceState(ADD);
-	clear();//system("CLS");
+	clearConsole();//system("CLS");
 	printBoard();
 	std::this_thread::sleep_for(50ms);
 	compteur++;
@@ -322,7 +399,7 @@ void Board::printBoard() {
 }
 
 void Board::menuScore() {
-	std::cout << "Score = " << score;
+	std::cout << "Score = " << player.getScore();
 	//std::cout << " Min = " << min;
 	//std::cout << " Max = " << max;
 	std::cout << " Level = " << level;
@@ -330,15 +407,15 @@ void Board::menuScore() {
 
 void Board::augmenterScore(int nbLigne) {
 
-	score += 50 * nbLigne;
+	player.setScore(player.getScore() + 50 * nbLigne);
 	augmenterLevel();
 	return;
 }
 
 void Board::augmenterLevel() {
-	if (score != 0)
+	if (player.getScore() != 0)
 	{
-		if (score % SCORE == 0)
+		if (player.getScore() % SCORE == 0)
 		{
 			difficulte -= 1;
 			level++;
@@ -350,9 +427,7 @@ void Board::augmenterLevel() {
 			}
 
 		}
-
 	}
-
 }
 
 bool Board::verifLigne() {
