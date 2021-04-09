@@ -14,15 +14,16 @@
 #include <QPushButton>
 #include <QWidget>
 #include <QString>
+#include <QMenuBar>
 class FenetreDeJeu : public QWidget
 {
     Q_OBJECT
 public:
     FenetreDeJeu();
     ~FenetreDeJeu();
-
-
 private:
+    QMenuBar* menuBar;
+    QMenu* menu;
 
     QLabel* labelDeJeu;
 

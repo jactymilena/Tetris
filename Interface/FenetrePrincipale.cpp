@@ -8,6 +8,7 @@ layoutVertical1(nullptr),
 widget(nullptr),
 fenetreDeJeu(nullptr)
 {
+	
 	labelTetris = new QLabel();
 	labelTetris->setText("QTETRIS MANIA");
 	QFont font = labelTetris->font();
