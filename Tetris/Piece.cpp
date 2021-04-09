@@ -9,16 +9,15 @@ Carre::Carre() {
 	ligne = 0;
 	colonne = 0;
 }
+
 void Piece::loadPiece(int num_piece) {
-	// id�e : avoir un fichier pour chaque piece avec la position de depart (matrice) 
-	//        ou seulement les mettre dans fonction sans fichier
 	// 7 types de pi�ces
 	if (num_piece >= 0 && numPiece <= 7) 
 	{
 		numPiece = num_piece;
 	}
 	
-	switch (num_piece) { // position initial des carr�s de la pi�ce  (code � rendre moins laid)
+	switch (num_piece) { // position initial des carr�s de la pi�ce 
 	case I:
 		carres[0].ligne = 0;
 		carres[0].colonne = 4;
@@ -41,16 +40,16 @@ void Piece::loadPiece(int num_piece) {
 		carres[1].ligne = 0;
 		carres[1].colonne = 4;
 		
-		carres[2].ligne = 0;//
-		carres[2].colonne = 3;//
+		carres[2].ligne = 0;
+		carres[2].colonne = 3;
 
 		carres[3].ligne = 1;
 		carres[3].colonne = 4;
 
 		break;
 	case J:
-		carres[0].ligne = 0;//
-		carres[0].colonne = 2; //
+		carres[0].ligne = 0;
+		carres[0].colonne = 2; 
 
 		//pivot
 		carres[1].ligne = 1;
@@ -71,8 +70,8 @@ void Piece::loadPiece(int num_piece) {
 		carres[1].ligne = 0;
 		carres[1].colonne = 3;
 
-		carres[2].ligne = 1;//
-		carres[2].colonne = 3;//
+		carres[2].ligne = 1;
+		carres[2].colonne = 3;
 
 		carres[3].ligne = 1;
 		carres[3].colonne = 4;
@@ -203,8 +202,6 @@ void Piece::turn(int direction) { //https://www.youtube.com/watch?v=Atlr5vvdchY&
 		carres[i].colonne = carres[INDEX_PIVOT].colonne + vecteurTranspose[i].colonne;
 
 	}
-		
-
 }
 
 int Piece::getNumPiece() const

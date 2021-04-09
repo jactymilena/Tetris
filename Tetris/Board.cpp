@@ -36,6 +36,8 @@ Board::Board() {
 	level = 0;
 	difficulte = 3;
 	compteur = 0;
+	min = 0;
+	max = 0;
 }
 
 void Board::startGame() {
@@ -157,7 +159,7 @@ void Board::movePiece(bool& nouvellePiece, int caseVoix) { // bouger gauche, dro
 	{
 		piece.goDown();
 	}
-	if (GetAsyncKeyState(wKey) && nouvellePiece == true)
+	if (GetAsyncKeyState(KEY_W) && nouvellePiece == true)
 	{
 		nouvellePiece = false;
 		changerPiece();
@@ -400,8 +402,6 @@ void Board::printBoard() {
 
 void Board::menuScore() {
 	std::cout << "Score = " << player.getScore();
-	//std::cout << " Min = " << min;
-	//std::cout << " Max = " << max;
 	std::cout << " Level = " << level;
 }
 

@@ -7,8 +7,6 @@
 
 
 int main(void) {
-
-   
 	Board b;
 	b.startGame();
 

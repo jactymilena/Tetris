@@ -1,4 +1,6 @@
+its 10000000
 Smokey 500000
+hello 100000
 Kojima 100000
 Dio 89000
 Santa 9000
@@ -6,5 +8,3 @@ Hannibal 2000
 Jekyll 1500
 Hyde 1000
 fsdfs 200
-Jacty 200
-Bob 100
