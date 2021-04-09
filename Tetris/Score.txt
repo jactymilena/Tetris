@@ -5,8 +5,6 @@ Santa 9000
 Hannibal 2000
 Jekyll 1500
 Hyde 1000
+fsdfs 200
+Jacty 200
 Bob 100
-Legarsdurapport 60
-Bobette 10
-Simon 0
- 

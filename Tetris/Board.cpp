@@ -83,9 +83,9 @@ void Board::checkerScore() {
 		if (historique.size() > 10) {
 			historique.pop_back();
 		}
+		std::ofstream myfile;
+		myfile.open("Score.txt", std::ofstream::out | std::ofstream::trunc);
 
-		std::fstream myfile;
-		myfile.open("Score.txt");
 		for (int j = 0; j < historique.size(); j++)
 		{
 			myfile << historique[j].getUsername() << " " << historique[j].getScore() << std::endl;
