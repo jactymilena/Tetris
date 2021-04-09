@@ -1,5 +1,6 @@
-TEMPLATE  = vcapp
-TARGET    = Tetris
-CONFIG    += warn_on qt debug_and_release windows console
-SOURCES   += Tetris.cpp 
-QT        += widgets
+TEMPLATE = vcapp
+TARGET = tetris
+HEADERS += FenetrePrincipale.h FenetreDeJeu.h
+SOURCES  += main.cpp FenetreDeJeu.cpp FenetrePrincipale.cpp
+CONFIG  += warn_on qt debug windows console
+QT += widgets
