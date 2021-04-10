@@ -1,18 +1,28 @@
 #include "FenetreDeJeu.h"
 
-FenetreDeJeu::FenetreDeJeu():labelDeJeu(nullptr),
-layoutVerticalFenetreDeJeu(nullptr)
+FenetreDeJeu::FenetreDeJeu(): QWidget(),
+	labelDeJeu(nullptr),
+	layout(nullptr)
 {
 	labelDeJeu = new QLabel("label");
-	layoutVerticalFenetreDeJeu = new QVBoxLayout();
-	layoutVerticalFenetreDeJeu->addWidget(labelDeJeu);
+	labelDeJeu2 = new QLabel("label");
 
-	setLayout(layoutVerticalFenetreDeJeu);
+	layout = new QHBoxLayout();
+	layout->addWidget(labelDeJeu);
+	
+	boardInit();
+	layout->addWidget(labelDeJeu2);
+	setLayout(layout);
 	
 }
+void FenetreDeJeu::boardInit() {
+	board = new Board();
+	layout->addWidget(board);
+}
+
 FenetreDeJeu::~FenetreDeJeu()
 {
 	close();
 	delete labelDeJeu;
-	delete layoutVerticalFenetreDeJeu;
+	delete layout;
 }

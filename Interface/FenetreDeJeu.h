@@ -9,23 +9,33 @@
 #include <QWidget>
 #include <QAction>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QTextEdit>
 #include <QPushButton>
 #include <QWidget>
 #include <QString>
+#include <QGridLayout>
+#include "Board.h"
+
 class FenetreDeJeu : public QWidget
 {
     Q_OBJECT
 public:
     FenetreDeJeu();
     ~FenetreDeJeu();
+    void boardInit();
 
 
 private:
+    // layout
+    QGridLayout* layoutBoard;
+    Board* board;
 
     QLabel* labelDeJeu;
+    QLabel* labelDeJeu2;
 
-    QVBoxLayout* layoutVerticalFenetreDeJeu;
+
+    QHBoxLayout* layout;
 };
 #endif
