@@ -26,6 +26,8 @@ public:
     ~FenetreDeJeu();
     void boardInit();
 
+//protected:
+//    void keyPressEvent(QKeyEvent* event);
 
 private:
     // layout

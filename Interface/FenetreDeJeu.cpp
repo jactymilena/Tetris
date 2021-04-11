@@ -14,11 +14,17 @@ FenetreDeJeu::FenetreDeJeu(): QWidget(),
 	layout->addWidget(labelDeJeu2);
 	setLayout(layout);
 
-	qDebug() << "FenetreDeJeu " << this->hasFocus();
+	//qDebug() << "FenetreDeJeu " << this->hasFocus();
 }
+
+//void FenetreDeJeu::keyPressEvent(QKeyEvent* event) {
+//	qDebug() << "jeu key event";
+//}
 
 void FenetreDeJeu::boardInit() {
 	board = new Board();
+	board->setFocus();
+	board->setFocusPolicy(Qt::StrongFocus);
 	layout->addWidget(board);
 }
 

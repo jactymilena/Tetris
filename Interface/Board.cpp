@@ -36,14 +36,12 @@ Case::Case() {
 
 Board::Board() : QFrame() {
 	// setup
+
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
 	setMidLineWidth(3);
 	setStyleSheet("background-color: rgb(255, 255, 255);");
 	activateWindow();
-	raise();
-	setFocus();
-	setFocusPolicy(Qt::StrongFocus);
 
 	// Board init
 	resetBoard();
@@ -54,27 +52,88 @@ Board::Board() : QFrame() {
 	min = 0;
 	max = 0;
 
-	startGame();
+	//startGame();
 
 	// Timer
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(moveDownPiece()));
-	timer->start(250);
+	isPaused = false;
+	isStarted = false;
 
-	qDebug() << "Board" << this->hasFocus();	
+
+}
+
+void Board::mousePressEvent(QMouseEvent* event) {
+	if (event->button() == Qt::LeftButton) {
+		isStarted = true;
+		startGame();
+		update();
+	}
 }
 
 void Board::keyPressEvent(QKeyEvent* event) {
-	qDebug() << "key event";
-	if ((event->key() == Qt::Key_Right) && verifMove(RIGHT)) {
-		piece.move(RIGHT);
+	bool canGoDown = true;
+	pieceState(REMOVE);
+	if (!isPaused) {
+		if ((event->key() == Qt::Key_Right) && verifMove(RIGHT)) {
+			piece.move(RIGHT);
+		}
+		else if ((event->key() == Qt::Key_Left) && verifMove(LEFT)) {
+			piece.move(LEFT);
+		}
+		else if ((event->key() == Qt::Key_Down)) {
+			canGoDown = verifMove(DOWN);
+			if(canGoDown)
+				piece.goDown();
+		}
+		else if ((event->key() == Qt::Key_W)) {
+			changerPiece();
+		}
+		else if (event->key() == Qt::Key_Q) {
+			if (piece.getNumPiece() != O) {
+				piece.turn(LEFT);
+
+				if (!verifMove(TURN_LEFT)) {
+					piece.unturned();
+				}
+			}
+		}
+		else if (event->key() == Qt::Key_E) {
+			if (piece.getNumPiece() != O) { // ne pas tourner si c'est le carré
+				// Garder en mémoire les coords
+				piece.turn(RIGHT);
+				// Véeifier pour chaque carré, s'il y a déjà un 1 dans le board à sa position
+				// Si oui, reattribuer les coords gardées en mémoire
+				// Sinon, rien faire
+				if (!verifMove(TURN_RIGHT)) {
+					piece.unturned();
+					// si différent de vrai, alors le move n'est pas faisable
+					// ne pas appliquer le calcul
+					// revenir aux coords sauvegardées
+				}
+			}
+		}
 	}
-	else if ((event->key() == Qt::Key_Left) && verifMove(LEFT)) {
-		piece.move(LEFT);
+
+	if (event->key() == Qt::Key_Escape) {
+		if (!isPaused) { // en pause
+			isPaused = true;
+			timer->stop();
+			// menu pause
+			update();
+		}
+		else { // retour au jeu
+
+			isPaused = false;
+			timer->start();
+			update();
+		}
 	}
-	else if ((event->key() == Qt::Key_Down) && verifMove(DOWN)) {
-		piece.goDown();
-	}
+
+	pieceState(ADD);
+
+	if (!canGoDown) verifLigne();
+	update();
 }
 
 void Board::paintEvent(QPaintEvent* event)
@@ -86,21 +145,37 @@ void Board::paintEvent(QPaintEvent* event)
 	QRect rect = contentsRect();
 	float largeurCarre = contentsRect().width() / (float)COLONNES;
 	float hauteurCarre = contentsRect().height() / (float)LIGNES;
-
+	
 	for (int i = 0; i < LIGNES; i++) {
 		for (int j = 0; j < COLONNES; j++) {
 			if (cases[i][j].value == 1) {
 				painter.setBrush(QBrush(cases[i][j].color));
 			}
 			else {
-				painter.setBrush(QBrush("#FFFFF"));
+				painter.setBrush(QBrush("#ffffff"));
 			}
-			painter.drawRect(QRect(j*largeurCarre, i*hauteurCarre, largeurCarre, hauteurCarre));
+			painter.drawRect(QRect(j * largeurCarre + rect.topLeft().x(), i * hauteurCarre + rect.topLeft().y(), largeurCarre, hauteurCarre));
 		}
 	}
+
+	if (isPaused || isStarted == false) {
+		painter.fillRect(rect, QBrush(QColor(160, 160, 160, 128)));
+		painter.setPen(Qt::black);
+		painter.setFont(QFont("Arial", 30));
+
+		if (!isStarted) {
+			painter.drawText(rect, Qt::AlignCenter, "Click to start");
+		}
+		if (isPaused) {
+			painter.drawText(rect, Qt::AlignCenter, "ESC to restart");
+		}
+	}
+	
 }
 
 void Board::startGame() {
+	timer->start(250);
+	isStarted = true;
 	srand((int)time(0));
 	pieceApres.loadPiece(rand() % 6);
 	loadPiece(pieceApres.getNumPiece());
@@ -228,6 +303,7 @@ void Board::movePiece(bool& nouvellePiece, int caseVoix) { // bouger gauche, dro
 }
 
 bool Board::verifMove(int direction) {
+
 	switch (direction) {
 	case RIGHT:
 		for (int i = 0; i < 4; i++) {
@@ -254,6 +330,7 @@ bool Board::verifMove(int direction) {
 				}
 			}
 			else {
+				
 				return false;
 			}
 		}
@@ -290,26 +367,10 @@ void Board::moveDownPiece() {
 	}
 	else {
 		pieceState(ADD);
-		loadPiece(pieceApres.getNumPiece());
 		verifLigne();
+		loadPiece(pieceApres.getNumPiece());
 	}
 	update();
-
-	//do {
-		//pieceState(REMOVE);
-
-		//if (_kbhit() /*|| (lireFPGA() != 0)*/) movePiece(nouvellePiece, 0);
-
-		//if ((possibleBas = verifMove(DOWN))) {
-			//piece.goDown();
-			// si une touche a ete pressee
-			//compteur = 0;
-		//}
-
-		//print();
-	//} while (possibleBas == true);
-	//compteur = 0;
-	//verifLigne(); // modif 
 }
 
 /*int Board::lireFPGA()
@@ -481,6 +542,7 @@ void Board::augmenterLevel() {
 }
 
 bool Board::verifLigne() {
+	qDebug() << "verifLigne";
 	int minLigne = piece.getCarre(0).ligne;
 	int maxLigne = piece.getCarre(0).ligne;
 	//std::cout << "Min =" << minLigne;
@@ -528,7 +590,7 @@ bool Board::verifLigne() {
 
 void Board::enleverLigne(int i)
 {
-
+	qDebug() << "Enlever ligne";
 	for (int w = i; w > 0; w--)//w=17 
 	{
 		for (int j = 0; j < COLONNES; j++)

@@ -17,6 +17,9 @@
 #include <QDebug>
 #include <QTimer>
 #include <QKeyEvent>
+#include <QPushButton>
+#include <QMouseEvent>
+#include <QLabel>
 #include "Piece.h"
 #include "Player.h"
 
@@ -63,8 +66,6 @@ public:
 	bool verifMove(int direction);
 	bool verifLigne();
 	void enleverLigne(int i);
-	void printGameOver();
-	void printHighScoreHistorique();
 
 	//Menu Score
 	void menuScore();
@@ -88,9 +89,13 @@ public:
 protected:
 	void paintEvent(QPaintEvent* event);
 	void keyPressEvent(QKeyEvent* event);
+	void mousePressEvent(QMouseEvent* event);
+
 
 public slots:
 	void moveDownPiece();
+	//void unpauseGame();
+
 
 private:
 	Case cases[LIGNES][COLONNES];
@@ -109,6 +114,8 @@ private:
 	// Qt
 	QGridLayout* layout;
 	QTimer* timer;
+	bool isPaused;
+	bool isStarted;
 
 
 };

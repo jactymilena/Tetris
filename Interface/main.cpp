@@ -14,11 +14,12 @@ int main(int argc, char* argv[])
     
 
     fenetre1.setWindowIcon(*icon);
-    fenetre1.activateWindow();
-    fenetre1.setFocus();
-    fenetre1.setFocusPolicy(Qt::StrongFocus);
+    //fenetre1.activateWindow();
+    //fenetre1.setFocus();
+    //fenetre1.setFocusPolicy(Qt::StrongFocus);
     fenetre1.show();
-    qDebug() << "main " << fenetre1.hasFocus();
+    //qDebug() << "main " << fenetre1.hasFocus();
+    //qDebug() << "Focus " << app.focusWidget();
 
     delete icon;
     return app.exec();
