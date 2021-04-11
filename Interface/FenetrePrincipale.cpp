@@ -14,8 +14,11 @@ fenetreDeJeu(nullptr)
 	font.setPointSize(40);
 	labelTetris->setFont(font);
 	boutonPourFenetreJeu = new QPushButton("Nouvelle Partie");
+	boutonPourFenetreJeu->setFocusPolicy(Qt::NoFocus);
 	boutonPourFenetreReglage = new QPushButton("Reglages");
+	boutonPourFenetreReglage->setFocusPolicy(Qt::NoFocus);
 	boutonPourScore = new QPushButton("Pointage");
+	boutonPourScore->setFocusPolicy(Qt::NoFocus);
 	
 	layoutVertical1 = new QVBoxLayout();
 	widget = new QWidget();
@@ -31,6 +34,7 @@ fenetreDeJeu(nullptr)
 	setCentralWidget(widget);
 
 	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetreDeJeu()));
+	qDebug() << this->hasFocus();
 }
 
 FenetrePrincipale::~FenetrePrincipale()

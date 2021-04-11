@@ -15,13 +15,15 @@
 #include <QGraphicsView>
 #include <QGraphicsRectItem>
 #include <QDebug>
+#include <QTimer>
+#include <QKeyEvent>
 #include "Piece.h"
 #include "Player.h"
 
-//#define LIGNES 18
-//#define COLONNES 8
-#define LIGNES 19
-#define COLONNES 13
+#define LIGNES 18
+#define COLONNES 8
+//#define LIGNES 19
+//#define COLONNES 13
 
 #define SPACE_BAR 32
 #define KEY_UP 72
@@ -37,10 +39,16 @@
 #define DOWN 0
 #define SCORE 100
 
-#define HAUTEUR 870
-#define LARGEUR 560
+#define HAUTEUR 590
+#define LARGEUR 1200/3
 #define COTE_CARRE 30
 
+
+struct Case {
+	int value;
+	std::string hex_color;
+	Case();
+};
 
 class Board : public QFrame {
 	Q_OBJECT
@@ -51,7 +59,6 @@ public:
 	void printBoard();
 	bool loadPiece(int num_piece);
 	void print();
-	void moveDownPiece();
 	void movePiece(bool& nouvellePiece, int caseVoix);
 	void pieceState(int state);
 	bool verifMove(int direction);
@@ -80,9 +87,14 @@ public:
 	void clearConsole();
 
 	void paintEvent(QPaintEvent* event);
+	void keyPressEvent(QKeyEvent* event);
+
+public slots:
+	void moveDownPiece();
+
 
 private:
-	int cases[LIGNES][COLONNES];
+	Case cases[LIGNES][COLONNES];
 	bool game_over;
 	int level;
 	Piece pieceHold;
@@ -97,5 +109,8 @@ private:
 
 	// Layout
 	QGridLayout* layout;
+	//QVector<Case*> carreVect;
+	QTimer* timer;
+
 
 };

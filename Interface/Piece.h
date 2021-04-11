@@ -28,7 +28,7 @@ public:
 	Piece();
 	void goDown();
 	void move(int direction);
-	void turn(int direction);//Simon
+	void turn(int direction);
 	void loadPiece(int num_piece);
 	void print();
 

@@ -30,6 +30,11 @@ using namespace std::chrono_literals;
 //unsigned const int nreg_ecri_aff7dot = 9;   // PC -> fpga (donnees dot-points)
 //unsigned const int nreg_ecri_led = 10;
 
+Case::Case() {
+	hex_color = "#00000";
+	value = 0;
+}
+
 Board::Board() : QFrame() {
 	resetBoard();
 	game_over = false;
@@ -38,14 +43,52 @@ Board::Board() : QFrame() {
 	compteur = 0;
 	min = 0;
 	max = 0;
-
 	layout = new QGridLayout();
-	setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
+	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
 	setMidLineWidth(3);
-	setStyleSheet("background-color: rgb(224, 224, 224);");
-	
+	setStyleSheet("background-color: rgb(255, 255, 255);");
+	setFocusPolicy(Qt::StrongFocus);
+
+	//qDebug() << "height" << frameSize().height();
+	//qDebug() << "width" << frameSize().width();
+
+
+
+	//for (int i = 0; i < LIGNES; i++) {
+	//	for (int j = 0; j < COLONNES; j++) {
+	//		Case* car = new Case();
+	//		carreVect.push_back(car);
+	//		layout->addWidget(car, i, j);
+	//	}
+	//}
+	startGame();
+	timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(moveDownPiece()));
+	timer->start(500);
+
+
+	setLayout(layout);
+	qDebug() << "Board" << this->hasFocus();
 }
+
+void Board::keyPressEvent(QKeyEvent* event) {
+	qDebug() << "key event";
+	if ((event->key() == Qt::Key_Right) && verifMove(RIGHT))
+	{
+		piece.move(RIGHT);
+	}
+
+	if ((event->key() == Qt::Key_Left) && verifMove(LEFT))
+	{
+		piece.move(LEFT);
+	}
+	if ((event->key() == Qt::Key_Down) && verifMove(DOWN))
+	{
+		piece.goDown();
+	}
+}
+
 
 void Board::paintEvent(QPaintEvent* event)
 {
@@ -55,62 +98,49 @@ void Board::paintEvent(QPaintEvent* event)
 	// pass "this" pointer to painter
 	QPainter painter(this);
 
-	// setPen
-	// QPen can take "Qt::black" directly as first arg (without QBrush() constructor)
-	painter.setPen(QPen(Qt::black));
+	painter.setPen(QPen(Qt::white));
 
-	// draw line
+	QRect rect = contentsRect();
+	float largeurCarre = contentsRect().width() / (float)COLONNES;
+	float hauteurCarre = contentsRect().height() / (float)LIGNES;
 
-	painter.drawLine(0, 0, 50, 50);
 
-	int lignes = HAUTEUR / COTE_CARRE;
-	int colonnes = LARGEUR / COTE_CARRE;
-	//painter.drawRect(QRect(100, 100, 50, 50));
-	qDebug() << "lignes " << lignes;
-	qDebug() << "colonnes " << colonnes;
-	int cpt_l = 0, cpt_c = 0;
+	int i, j;
+	for (i = 0; i < LIGNES; i++) {
+		for (j = 0; j < COLONNES; j++) {
+			if (cases[i][j].value == 1) {
+				painter.setBrush(QBrush("#000000"));
+			}
+			else {
+				painter.setBrush(QBrush("#ffffff"));
 
-	
-	for (int i = 0; i < HAUTEUR; i+=COTE_CARRE) {
-		cpt_l++;
-		cpt_c = 0;
-		for (int j = 0; j < LARGEUR; j+=COTE_CARRE) {
-			cpt_c++;
-			painter.drawRect(QRect(i, j, COTE_CARRE, COTE_CARRE));
+			}
+			painter.drawRect(QRect(j* largeurCarre, i * hauteurCarre, largeurCarre, hauteurCarre));
 		}
 	}
-	qDebug() << "lignes " << cpt_l;
-	qDebug() << "colonnes " << cpt_c;
-
-	/*for (int i = 0; i < HAUTEUR; i += COTE_CARRE) {
-		for (int j = 0; j < LARGEUR; j += COTE_CARRE) {
-			painter.drawLine(i, j, COTE_CARRE, COTE_CARRE);
-		}
-	}*/
-
-
-
 }
 
 void Board::startGame() {
-	std::string username;
+	/*std::string username;
 	std::cout << "Entrer votre nom : ";
 	std::cin >> username;
 	player.setUsername(username);
-	loadHighscore();
+	loadHighscore();*/
 
 	srand((int)time(0));
 	pieceApres.loadPiece(rand() % 6);
-	while (game_over == false) {
+	loadPiece(pieceApres.getNumPiece());
+	//pieceState(ADD);
+	/*while (game_over == false) {
 		if (loadPiece(pieceApres.getNumPiece())) {
 			print();
 			moveDownPiece();
 		}
-	}
+	}*/
 
-	checkerScore();
+	/*checkerScore();
 	clearConsole();
-	printGameOver();
+	printGameOver();*/
 }
 
 void Board::checkerScore() {
@@ -187,7 +217,7 @@ bool Board::loadPiece(int num_piece) {
 	piece.loadPiece(num_piece);
 
 	for (int i = 0; i < 4; i++) { // verif si possible de placer pieces a pos initiale 
-		if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne] == 1) {
+		if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value == 1) {
 			game_over = true; // jeu termine
 			return false; // pas possible de loader la piece 
 		}
@@ -250,7 +280,7 @@ bool Board::verifMove(int direction) {
 	switch (direction) {
 	case RIGHT:
 		for (int i = 0; i < 4; i++) {
-			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne + 1] == 1 ||
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne + 1].value == 1 ||
 				piece.getCarre(i).colonne + 1 == COLONNES) {
 				return false;
 			}
@@ -258,7 +288,7 @@ bool Board::verifMove(int direction) {
 		break;
 	case LEFT:
 		for (int i = 0; i < 4; i++) {
-			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne - 1] == 1 ||
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne - 1].value == 1 ||
 				piece.getCarre(i).colonne - 1 < 0) {
 				return false;
 			}
@@ -268,7 +298,7 @@ bool Board::verifMove(int direction) {
 	case DOWN:
 		for (int i = 0; i < 4; i++) {
 			if (piece.getCarre(i).ligne + 1 != LIGNES) {
-				if (cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne] == 1) { // la piece ne peut plus descendre 
+				if (cases[piece.getCarre(i).ligne + 1][piece.getCarre(i).colonne].value == 1) { // la piece ne peut plus descendre 
 					return false;
 				}
 			}
@@ -280,7 +310,7 @@ bool Board::verifMove(int direction) {
 
 	case TURN_RIGHT:
 		for (int i = 0; i < 4; i++) {
-			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne] == 1 ||
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value == 1 ||
 				piece.getCarre(i).colonne >= COLONNES ||
 				piece.getCarre(i).colonne <= 0 || piece.getCarre(i).ligne > LIGNES) {
 				return false;
@@ -290,7 +320,7 @@ bool Board::verifMove(int direction) {
 
 	case TURN_LEFT:
 		for (int i = 0; i < 4; i++) {
-			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne] == 1 ||
+			if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value == 1 ||
 				piece.getCarre(i).colonne >= COLONNES ||
 				piece.getCarre(i).colonne <= 0 || piece.getCarre(i).ligne > LIGNES) {
 				return false;
@@ -302,26 +332,32 @@ bool Board::verifMove(int direction) {
 }
 
 void Board::moveDownPiece() {
-	bool possibleBas = true;
-	bool possibleDroite = true;
-	bool possibleGauche = true;
-	bool nouvellePiece = true;
+	pieceState(REMOVE);
+	if (verifMove(DOWN)) {
+		piece.goDown();
+		pieceState(ADD);
+	}
+	else {
+		pieceState(ADD);
+		loadPiece(pieceApres.getNumPiece());
+	}
+	update();
 
-	do {
-		pieceState(REMOVE);
+	//do {
+		//pieceState(REMOVE);
 
-		if (_kbhit() /*|| (lireFPGA() != 0)*/) movePiece(nouvellePiece, 0);
+		//if (_kbhit() /*|| (lireFPGA() != 0)*/) movePiece(nouvellePiece, 0);
 
-		if ((possibleBas = verifMove(DOWN)) && (compteur == difficulte)) {
-			piece.goDown();
+		//if ((possibleBas = verifMove(DOWN))) {
+			//piece.goDown();
 			// si une touche a ete pressee
-			compteur = 0;
-		}
+			//compteur = 0;
+		//}
 
-		print();
-	} while (possibleBas == true);
-	compteur = 0;
-	verifLigne(); // modif 
+		//print();
+	//} while (possibleBas == true);
+	//compteur = 0;
+	//verifLigne(); // modif 
 }
 
 /*int Board::lireFPGA()
@@ -390,14 +426,15 @@ void Board::moveDownPiece() {
 void Board::resetBoard() {
 	for (int i = 0; i < LIGNES; i++) {
 		for (int j = 0; j < COLONNES; j++) {
-			cases[i][j] = 0;
+			cases[i][j].value = 0;
+			cases[i][j].hex_color = "#FFFFFF";
 		}
 	}
 }
 
 void Board::pieceState(int state) {
 	for (int i = 0; i < 4; i++) {
-		cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne] = state;
+		cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value = state;
 	}
 }
 
@@ -439,7 +476,7 @@ void Board::printBoard() {
 	for (int i = 0; i < LIGNES; i++) {
 		std::cout << "|";
 		for (int j = 0; j < COLONNES; j++) {
-			if (cases[i][j])
+			if (cases[i][j].value)
 				std::cout << " x ";
 			else
 				std::cout << "   ";
@@ -507,7 +544,7 @@ bool Board::verifLigne() {
 		compteurX = 0;
 		for (int j = 0; j < COLONNES; j++)
 		{
-			if (cases[z][j] == 1) {
+			if (cases[z][j].value == 1) {
 				compteurX++;
 			}
 		}

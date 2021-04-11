@@ -6,6 +6,8 @@ FenetreDeJeu::FenetreDeJeu(): QWidget(),
 {
 	labelDeJeu = new QLabel("label");
 	labelDeJeu2 = new QLabel("label");
+	labelDeJeu->setFocusPolicy(Qt::NoFocus);
+	labelDeJeu2->setFocusPolicy(Qt::NoFocus);
 
 	layout = new QHBoxLayout();
 	layout->addWidget(labelDeJeu);
@@ -13,7 +15,8 @@ FenetreDeJeu::FenetreDeJeu(): QWidget(),
 	boardInit();
 	layout->addWidget(labelDeJeu2);
 	setLayout(layout);
-	
+	//resize(550, 370);
+	qDebug() << "FenetreDeJeu " << this->hasFocus();
 }
 void FenetreDeJeu::boardInit() {
 	board = new Board();

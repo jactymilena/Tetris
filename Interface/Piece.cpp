@@ -162,7 +162,6 @@ void Piece::unturned() {
 		carres[i].ligne = memoireVecteur[i].ligne;
 		carres[i].colonne = memoireVecteur[i].colonne;
 	}
-
 }
 
 void Piece::print() {
@@ -200,7 +199,6 @@ void Piece::turn(int direction) { //https://www.youtube.com/watch?v=Atlr5vvdchY&
 
 		carres[i].ligne = carres[INDEX_PIVOT].ligne + vecteurTranspose[i].ligne;
 		carres[i].colonne = carres[INDEX_PIVOT].colonne + vecteurTranspose[i].colonne;
-
 	}
 }
 
