@@ -16,6 +16,7 @@ void Piece::loadPiece(int num_piece) {
 	{
 		numPiece = num_piece;
 	}
+	color = colorTab[QRandomGenerator::global()->bounded(5)];
 
 	switch (num_piece) { // position initial des carr�s de la pi�ce 
 	case I:
@@ -147,6 +148,10 @@ void Piece::move(int direction) { // gauche -1, droite 1
 	for (int i = 0; i < 4; i++) {
 		carres[i].colonne += direction;
 	}
+}
+
+QColor Piece::getColor() const {
+	return color;
 }
 
 Carre Piece::getCarre(int index) const {

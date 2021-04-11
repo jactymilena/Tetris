@@ -43,10 +43,9 @@
 #define LARGEUR 1200/3
 #define COTE_CARRE 30
 
-
 struct Case {
 	int value;
-	std::string hex_color;
+	QColor color;
 	Case();
 };
 
@@ -86,12 +85,12 @@ public:
 
 	void clearConsole();
 
+protected:
 	void paintEvent(QPaintEvent* event);
 	void keyPressEvent(QKeyEvent* event);
 
 public slots:
 	void moveDownPiece();
-
 
 private:
 	Case cases[LIGNES][COLONNES];
@@ -107,9 +106,8 @@ private:
 	std::vector<Player> historique;
 	Player player;
 
-	// Layout
+	// Qt
 	QGridLayout* layout;
-	//QVector<Case*> carreVect;
 	QTimer* timer;
 
 

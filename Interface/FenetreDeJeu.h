@@ -29,12 +29,10 @@ public:
 
 private:
     // layout
-    QGridLayout* layoutBoard;
     Board* board;
 
     QLabel* labelDeJeu;
     QLabel* labelDeJeu2;
-
 
     QHBoxLayout* layout;
 };

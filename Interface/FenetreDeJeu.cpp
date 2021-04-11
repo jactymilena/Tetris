@@ -2,22 +2,21 @@
 
 FenetreDeJeu::FenetreDeJeu(): QWidget(),
 	labelDeJeu(nullptr),
+	labelDeJeu2(nullptr),
 	layout(nullptr)
 {
+	layout = new QHBoxLayout();
+
 	labelDeJeu = new QLabel("label");
 	labelDeJeu2 = new QLabel("label");
-	labelDeJeu->setFocusPolicy(Qt::NoFocus);
-	labelDeJeu2->setFocusPolicy(Qt::NoFocus);
-
-	layout = new QHBoxLayout();
 	layout->addWidget(labelDeJeu);
-	
 	boardInit();
 	layout->addWidget(labelDeJeu2);
 	setLayout(layout);
-	//resize(550, 370);
+
 	qDebug() << "FenetreDeJeu " << this->hasFocus();
 }
+
 void FenetreDeJeu::boardInit() {
 	board = new Board();
 	layout->addWidget(board);
