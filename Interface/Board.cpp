@@ -2,33 +2,6 @@
 
 using namespace std::chrono_literals;
 //#include "CommunicationFPGA.h"
-//
-//
-//
-//BOOL statutport = false;            // statut du port de communication qui sera cree
-//
-//
-//int compteur_temps = 0;
-//int swt = 0;                         // donnee recue du FPGA
-//int aff7sg_octet0 = 0;               // octet 0 (droite) pour afficheur 7 segments
-//int aff7sg_octet1 = 0;               // octet 0 (droite) pour afficheur 7 segments                    
-//
-//const int nitermax = 10000;         // Nbre d'itération max de la boucle de lecture d'acquisition (limite pour tests)
-//									 // changer la condition de boucle sans cette limite selon le besoin de l'application
-//const int delai_boucle = 10;         // delai d'attente ajouté dans la boucle de lecture en ms
-//
-//// numeros de registres correspondants pour les echanges FPGA <-> PC  ...
-//unsigned const int nreg_lect_stat_btn = 0;  // fpga -> PC  Statut et BTN lus FPGA -> PC
-//unsigned const int nreg_lect_swt = 1;       // fpga -> PC  SWT lus FPGA -> PC
-//unsigned const int nreg_lect_cmpt_t = 2;    // fpga -> PC  compteur temps FPGA -> PC 
-//unsigned const int nreg_lect_can0 = 3;      // fpga -> PC  canal 0 lus FPGA -> PC
-//unsigned const int nreg_lect_can1 = 4;      // fpga -> PC  canal 1 lus FPGA -> PC
-//unsigned const int nreg_lect_can2 = 5;      // fpga -> PC  canal 2 lus FPGA -> PC
-//unsigned const int nreg_lect_can3 = 6;      // fpga -> PC  canal 3 lus FPGA -> PC
-//unsigned const int nreg_ecri_aff7sg0 = 7;   // PC -> fpga (octet 0  aff.7 seg.)
-//unsigned const int nreg_ecri_aff7sg1 = 8;   // PC -> fpga (octet 1  aff.7 seg.)
-//unsigned const int nreg_ecri_aff7dot = 9;   // PC -> fpga (donnees dot-points)
-//unsigned const int nreg_ecri_led = 10;
 
 Case::Case() {
 	value = 0;
@@ -44,14 +17,7 @@ Board::Board() : QFrame() {
 
 	// Board init
 	resetBoard();
-	game_over = false;
-	level = 0;
-	difficulte = 3;
-	compteur = 0;
-	min = 0;
-	max = 0;
-	nouvellePiece = true;
-
+	
 	// Timer
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(moveDownPiece()));
@@ -61,9 +27,16 @@ Board::Board() : QFrame() {
 
 void Board::mousePressEvent(QMouseEvent* event) {
 	if (event->button() == Qt::LeftButton) {
-		isStarted = true;
-		startGame();
-		update();
+		if (isStarted == false) {
+			isStarted = true;
+			startGame();
+			update();
+		}
+		if (game_over == true) {
+			game_over = false;
+			resetBoard();
+			startGame();
+		}
 	}
 }
 
@@ -79,8 +52,7 @@ void Board::keyPressEvent(QKeyEvent* event) {
 		}
 		else if ((event->key() == Qt::Key_Down)) {
 			canGoDown = verifMove(DOWN);
-			if(canGoDown)
-				piece.goDown();
+			if (canGoDown) moveDownPiece(); // piece.goDown();
 		}
 		else if ((event->key() == Qt::Key_W) &&	nouvellePiece) {
 			nouvellePiece = false;
@@ -96,17 +68,10 @@ void Board::keyPressEvent(QKeyEvent* event) {
 			}
 		}
 		else if (event->key() == Qt::Key_E) {
-			if (piece.getNumPiece() != O) { // ne pas tourner si c'est le carré
-				// Garder en mémoire les coords
+			if (piece.getNumPiece() != O) { 
 				piece.turn(RIGHT);
-				// Véeifier pour chaque carré, s'il y a déjà un 1 dans le board à sa position
-				// Si oui, reattribuer les coords gardées en mémoire
-				// Sinon, rien faire
 				if (!verifMove(TURN_RIGHT)) {
 					piece.unturned();
-					// si différent de vrai, alors le move n'est pas faisable
-					// ne pas appliquer le calcul
-					// revenir aux coords sauvegardées
 				}
 			}
 		}
@@ -120,16 +85,15 @@ void Board::keyPressEvent(QKeyEvent* event) {
 			update();
 		}
 		else { // retour au jeu
-
 			isPaused = false;
-			timer->start();
+			timer->start(difficulte);
 			update();
 		}
 	}
 
 	pieceState(ADD);
 
-	if (!canGoDown) verifLigne();
+	//if (!canGoDown) verifLigne();
 	update();
 }
 
@@ -151,10 +115,6 @@ void Board::paintEvent(QPaintEvent* event)
 				painter.drawRect(QRect(j * largeurCarre + rect.topLeft().x(), i * hauteurCarre + rect.topLeft().y(), largeurCarre, hauteurCarre));
 
 			}
-			//else {
-			//	//painter.setPen(Qt::black);
-			//	painter.setBrush(QBrush("#00000"));
-			//}
 			
 		}
 	}
@@ -178,11 +138,11 @@ void Board::paintEvent(QPaintEvent* event)
 }
 
 void Board::startGame() {
-	timer->start(250);
+	timer->start(difficulte);
 	isStarted = true;
 	srand((int)time(0));
-	pieceApres.loadPiece(rand() % 6);
-	loadPiece(pieceApres.getNumPiece());
+	pieceApres.loadPiece(rand() % 6, rand() % 5);
+	loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
 }
 
 void Board::checkerScore() {
@@ -240,8 +200,8 @@ void Board::loadHighscore() {
 	myfile.close();
 }
 
-bool Board::loadPiece(int num_piece) {
-	piece.loadPiece(num_piece);
+bool Board::loadPiece(int num_piece, int num_color) {
+	piece.loadPiece(num_piece, num_color);
 	
 
 	for (int i = 0; i < 4; i++) { // verif si possible de placer pieces a pos initiale 
@@ -251,59 +211,9 @@ bool Board::loadPiece(int num_piece) {
 			return false; // pas possible de loader la piece 
 		}
 	}
-	pieceApres.loadPiece(rand() % 6);
+	pieceApres.loadPiece(rand() % 6, rand() % 5);
 
 	return true;
-}
-
-void Board::movePiece(bool& nouvellePiece, int caseVoix) { // bouger gauche, droite, bas, tourner
-	//std::cout << "Helloooo\n";
-	if ((GetAsyncKeyState(KEY_RIGHT) || caseVoix == 1) && verifMove(RIGHT))
-	{
-		piece.move(RIGHT);
-	}
-
-	if ((GetAsyncKeyState(KEY_LEFT) || caseVoix == 2) && verifMove(LEFT))
-	{
-		piece.move(LEFT);
-	}
-	if ((GetAsyncKeyState(KEY_DOWN) || caseVoix == 3) && verifMove(DOWN))
-	{
-		piece.goDown();
-	}
-	if (GetAsyncKeyState(KEY_W) && nouvellePiece == true)
-	{
-		nouvellePiece = false;
-		changerPiece();
-	}
-	if (GetAsyncKeyState(KEY_Q))
-	{
-		if (piece.getNumPiece() != O) {
-			piece.turn(LEFT);
-
-			if (!verifMove(TURN_LEFT)) {
-				piece.unturned();
-			}
-		}
-	}
-
-	if (GetAsyncKeyState(KEY_E) || caseVoix == 4)
-	{
-		if (piece.getNumPiece() != O) { // ne pas tourner si c'est le carré
-			// Garder en mémoire les coords
-			piece.turn(RIGHT);
-			// Véeifier pour chaque carré, s'il y a déjà un 1 dans le board à sa position
-			// Si oui, reattribuer les coords gardées en mémoire
-			// Sinon, rien faire
-			if (!verifMove(TURN_RIGHT)) {
-				piece.unturned();
-				// si différent de vrai, alors le move n'est pas faisable
-				// ne pas appliquer le calcul
-				// revenir aux coords sauvegardées
-			}
-		}
-	}
-
 }
 
 bool Board::verifMove(int direction) {
@@ -371,9 +281,8 @@ void Board::moveDownPiece() {
 	else {
 		pieceState(ADD);
 		verifLigne();
-		loadPiece(pieceApres.getNumPiece());
+		loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
 		nouvellePiece = true;
-
 	}
 	update();
 }
@@ -448,77 +357,24 @@ void Board::resetBoard() {
 			cases[i][j].color = Qt::white;
 		}
 	}
+	game_over = false;
+	level = 0;
+	difficulte = 500;
+	nouvellePiece = true;
 }
 
 void Board::pieceState(int state) {
 	QColor color = Qt::white;
 
 	if (state == ADD) {
-		color = piece.getColor();
+		color = colorTab[piece.getNumColor()];
 	}
-
 
 	for (int i = 0; i < 4; i++) {
 		cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value = state;
 		cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].color = color;
 
 	}
-}
-
-/*
-author: Ryan Pickelsimer
-source: https://github.com/rpickelsimer/Tetris/blob/master/Tetris.cpp
-Date: 2021-03-02
-Description: Utilisation de sa fonction clear() servant à effacer l'écran.
-			 Cela offre une alternative à la fonction system("cls") montrant
-			 certaines lacunes au niveau de l'efficacité tant qu'au fait d'effacer
-			 plusieurs lignes.
-*/
-void Board::clearConsole() {
-	COORD topLeft = { 0, 0 };
-	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO screen;
-	DWORD written;
-
-	GetConsoleScreenBufferInfo(console, &screen);
-	FillConsoleOutputCharacterA(
-		console, ' ', screen.dwSize.X * screen.dwSize.Y, topLeft, &written
-	);
-	FillConsoleOutputAttribute(
-		console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
-		screen.dwSize.X * screen.dwSize.Y, topLeft, &written
-	);
-	SetConsoleCursorPosition(console, topLeft);
-}
-
-void Board::print() {
-	pieceState(ADD);
-	clearConsole();//system("CLS");
-	printBoard();
-	std::this_thread::sleep_for(50ms);
-	compteur++;
-}
-
-void Board::printBoard() {
-	for (int i = 0; i < LIGNES; i++) {
-		std::cout << "|";
-		for (int j = 0; j < COLONNES; j++) {
-			if (cases[i][j].value)
-				std::cout << " x ";
-			else
-				std::cout << "   ";
-		}
-
-		std::cout << "|\n";
-	}
-	menuHold();
-	menuPieceSuivante();
-	menuScore();
-}
-
-void Board::menuScore() {
-	std::cout << "Score = " << player.getScore();
-	std::cout << " Level = " << level;
 }
 
 void Board::augmenterScore(int nbLigne) {
@@ -533,25 +389,25 @@ void Board::augmenterLevel() {
 	{
 		if (player.getScore() % SCORE == 0)
 		{
-			difficulte -= 1;
+			difficulte -= 50;
 			level++;
 
-			if (difficulte < 0)
+			if (difficulte < 100)
 			{
-				difficulte = 1;
+				difficulte = 100;
 				level++;
 			}
+
+			timer->stop();
+			timer->start(difficulte);
 
 		}
 	}
 }
 
 bool Board::verifLigne() {
-	qDebug() << "verifLigne";
 	int minLigne = piece.getCarre(0).ligne;
 	int maxLigne = piece.getCarre(0).ligne;
-	//std::cout << "Min =" << minLigne;
-	//std::cout << "Max =" << maxLigne;
 	int compteurX = 0;
 	int compteurLigne = 0;
 	for (int i = 1; i < 4; i++) {//Vérifier les quatres carrees pour avoir la ligne minimale et maximale
@@ -564,8 +420,7 @@ bool Board::verifLigne() {
 			maxLigne = piece.getCarre(i).ligne;
 		}
 	}
-	min = minLigne;
-	max = maxLigne;
+	
 	for (int z = minLigne; z <= maxLigne; z++)
 	{
 
@@ -576,13 +431,11 @@ bool Board::verifLigne() {
 				compteurX++;
 			}
 		}
-		//score = compteur;//Score pour l'affichage et débogage enlever après  
 		if (compteurX == COLONNES)
 		{
 			enleverLigne(z);
 			compteurLigne++;
 		}
-
 	}
 	if (compteurLigne > 0)
 	{
@@ -595,8 +448,7 @@ bool Board::verifLigne() {
 
 void Board::enleverLigne(int i)
 {
-	qDebug() << "Enlever ligne";
-	for (int w = i; w > 0; w--)//w=17 
+	for (int w = i; w > 0; w--) 
 	{
 		for (int j = 0; j < COLONNES; j++)
 		{
@@ -606,74 +458,18 @@ void Board::enleverLigne(int i)
 	update();
 }
 
-void Board::menuHold()
-{
-	bool isX = false;
-	std::cout << "\n";
-	std::cout << "     Hold\n";
-	for (int i = 0; i < 2; i++)
-	{
-		std::cout << "|";
-		for (int j = 2; j < 6; j++) {
-			isX = false;
-			for (int z = 0; z < 4; z++)
-			{
-				if (pieceHold.getCarre(z).ligne == i && pieceHold.getCarre(z).colonne == j)
-				{
-					std::cout << " x ";
-					isX = true;
-				}
-			}
-			if (isX == false)
-			{
-				std::cout << "   ";
-			}
-		}
-		std::cout << "|";
-		std::cout << "\n";
-	}
-}
-
-void Board::menuPieceSuivante()
-{
-	bool isX = false;
-	std::cout << "\n";
-	std::cout << "     Suivante\n";
-	for (int i = 0; i < 2; i++)
-	{
-		std::cout << "|";
-		for (int j = 2; j < 6; j++) {
-			isX = false;
-			for (int z = 0; z < 4; z++)
-			{
-				if (pieceApres.getCarre(z).ligne == i && pieceApres.getCarre(z).colonne == j)
-				{
-					std::cout << " x ";
-					isX = true;
-				}
-			}
-			if (isX == false)
-			{
-				std::cout << "   ";
-			}
-		}
-		std::cout << "|";
-		std::cout << "\n";
-	}
-}
-
 void Board::changerPiece()
 {
 	if (pieceHold.getNumPiece() == 7)
 	{
-		pieceHold.loadPiece(piece.getNumPiece());
-		piece.loadPiece(pieceApres.getNumPiece());
+		pieceHold.loadPiece(piece.getNumPiece(), piece.getNumColor());
+		piece.loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
 	}
 	else
 	{
 		int numHold = pieceHold.getNumPiece();
-		pieceHold.loadPiece(piece.getNumPiece());
-		piece.loadPiece(numHold);
+		int numColorHold = pieceHold.getNumColor();
+		pieceHold.loadPiece(piece.getNumPiece(), piece.getNumColor());
+		piece.loadPiece(numHold, numColorHold);
 	}
-
 }

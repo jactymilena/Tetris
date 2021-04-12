@@ -34,7 +34,6 @@ fenetreDeJeu(nullptr)
 	setCentralWidget(widget);
 
 	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetreDeJeu()));
-	//qDebug() << "Principale" << this->hasFocus();
 }
 
 FenetrePrincipale::~FenetrePrincipale()

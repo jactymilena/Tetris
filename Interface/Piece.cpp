@@ -1,8 +1,8 @@
 ﻿#include "Piece.h"
 
-
 Piece::Piece() {
 	numPiece = 7;
+	numColor = 0;
 }
 
 Carre::Carre() {
@@ -10,13 +10,13 @@ Carre::Carre() {
 	colonne = 0;
 }
 
-void Piece::loadPiece(int num_piece) {
+void Piece::loadPiece(int num_piece, int color_num) {
 	// 7 types de pi�ces
 	if (num_piece >= 0 && numPiece <= 7)
 	{
 		numPiece = num_piece;
 	}
-	color = colorTab[QRandomGenerator::global()->bounded(5)];
+	numColor = color_num;
 
 	switch (num_piece) { // position initial des carr�s de la pi�ce 
 	case I:
@@ -150,8 +150,8 @@ void Piece::move(int direction) { // gauche -1, droite 1
 	}
 }
 
-QColor Piece::getColor() const {
-	return color;
+int Piece::getNumColor() const {
+	return numColor;
 }
 
 Carre Piece::getCarre(int index) const {

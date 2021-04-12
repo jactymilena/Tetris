@@ -25,17 +25,6 @@
 
 #define LIGNES 18
 #define COLONNES 8
-//#define LIGNES 19
-//#define COLONNES 13
-
-#define SPACE_BAR 32
-#define KEY_UP 72
-#define KEY_DOWN 40
-#define KEY_LEFT 37
-#define KEY_RIGHT 39
-#define KEY_W 87 // Hold
-#define KEY_Q 81 // Tourner a gauche
-#define KEY_E 69 // Tourner a droite
 
 #define ADD 1
 #define REMOVE 0
@@ -45,6 +34,31 @@
 #define HAUTEUR 590
 #define LARGEUR 1200/3
 #define COTE_CARRE 30
+
+//BOOL statutport = false;            // statut du port de communication qui sera cree
+//
+//
+//int compteur_temps = 0;
+//int swt = 0;                         // donnee recue du FPGA
+//int aff7sg_octet0 = 0;               // octet 0 (droite) pour afficheur 7 segments
+//int aff7sg_octet1 = 0;               // octet 0 (droite) pour afficheur 7 segments                    
+//
+//const int nitermax = 10000;         // Nbre d'itération max de la boucle de lecture d'acquisition (limite pour tests)
+//									 // changer la condition de boucle sans cette limite selon le besoin de l'application
+//const int delai_boucle = 10;         // delai d'attente ajouté dans la boucle de lecture en ms
+//
+//// numeros de registres correspondants pour les echanges FPGA <-> PC  ...
+//unsigned const int nreg_lect_stat_btn = 0;  // fpga -> PC  Statut et BTN lus FPGA -> PC
+//unsigned const int nreg_lect_swt = 1;       // fpga -> PC  SWT lus FPGA -> PC
+//unsigned const int nreg_lect_cmpt_t = 2;    // fpga -> PC  compteur temps FPGA -> PC 
+//unsigned const int nreg_lect_can0 = 3;      // fpga -> PC  canal 0 lus FPGA -> PC
+//unsigned const int nreg_lect_can1 = 4;      // fpga -> PC  canal 1 lus FPGA -> PC
+//unsigned const int nreg_lect_can2 = 5;      // fpga -> PC  canal 2 lus FPGA -> PC
+//unsigned const int nreg_lect_can3 = 6;      // fpga -> PC  canal 3 lus FPGA -> PC
+//unsigned const int nreg_ecri_aff7sg0 = 7;   // PC -> fpga (octet 0  aff.7 seg.)
+//unsigned const int nreg_ecri_aff7sg1 = 8;   // PC -> fpga (octet 1  aff.7 seg.)
+//unsigned const int nreg_ecri_aff7dot = 9;   // PC -> fpga (donnees dot-points)
+//unsigned const int nreg_ecri_led = 10;
 
 struct Case {
 	int value;
@@ -58,9 +72,7 @@ public:
 	Board();
 	void startGame();
 	void resetBoard();
-	void printBoard();
-	bool loadPiece(int num_piece);
-	void print();
+	bool loadPiece(int num_piece, int num_color);
 	void movePiece(bool& nouvellePiece, int caseVoix);
 	void pieceState(int state);
 	bool verifMove(int direction);
@@ -68,7 +80,6 @@ public:
 	void enleverLigne(int i);
 
 	//Menu Score
-	void menuScore();
 	void augmenterScore(int nbLigne);
 	void augmenterLevel();
 	void loadHighscore();
@@ -76,15 +87,9 @@ public:
 
 	//Menu hold
 	void changerPiece();
-	void menuHold();
-
-	//Menu Suivante
-	void menuPieceSuivante();
 
 	//Lecture FPGA
 	//int lireFPGA();
-
-	void clearConsole();
 
 protected:
 	void paintEvent(QPaintEvent* event);
@@ -107,8 +112,6 @@ private:
 	Piece pieceApres;
 	int compteur;
 	int difficulte;
-	int min;
-	int max;
 	std::vector<Player> historique;
 	Player player;
 
