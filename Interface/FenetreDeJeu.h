@@ -12,6 +12,7 @@
 #include <QWidget>
 #include <QAction>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QTextEdit>
 #include <QPushButton>
@@ -22,7 +23,7 @@
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QProgressBar>
-
+#include "Board.h"
 
 class FenetreDeJeu : public QWidget
 {
@@ -31,9 +32,12 @@ class FenetreDeJeu : public QWidget
 public:
     FenetreDeJeu(QMainWindow* fenetrePrincipale);
     ~FenetreDeJeu();
+    void boardInit();
 
 
 private:
+    // layout
+    Board* board;
 
    QMenuBar* m_menuBar;
    QMenu *m_menuMenu;

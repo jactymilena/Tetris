@@ -27,10 +27,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="FenetreDeJeu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FenetrePrincipale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Piece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -38,14 +47,29 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="Board.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
     <CustomBuild Include="FenetreDeJeu.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="FenetrePrincipale.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <ClInclude Include="Piece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="debug\moc_Board.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="release\moc_Board.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
     <ClCompile Include="debug\moc_FenetreDeJeu.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>

@@ -24,8 +24,11 @@ index(nullptr)
 
 	//Creation des boutons
 	boutonPourFenetreJeu = new QPushButton("Nouvelle Partie");
+	boutonPourFenetreJeu->setFocusPolicy(Qt::NoFocus);
 	boutonPourFenetreReglage = new QPushButton("Reglages");
+	boutonPourFenetreReglage->setFocusPolicy(Qt::NoFocus);
 	boutonPourScore = new QPushButton("Pointage");
+	boutonPourScore->setFocusPolicy(Qt::NoFocus);
 	
 	//Creation layout 
 	layoutVertical1 = new QVBoxLayout();

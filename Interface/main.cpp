@@ -6,6 +6,7 @@ int main(int argc, char* argv[])
     QApplication app(argc, argv);
 
     FenetrePrincipale fenetre1;
+    fenetre1.setMinimumSize(900, 590);
     QPixmap pixmap("tetrisIcon.jpeg");
     QIcon *icon;
     icon = new QIcon();
@@ -13,9 +14,13 @@ int main(int argc, char* argv[])
     
 
     fenetre1.setWindowIcon(*icon);
+    //fenetre1.activateWindow();
+    //fenetre1.setFocus();
+    //fenetre1.setFocusPolicy(Qt::StrongFocus);
     fenetre1.show();
+    //qDebug() << "main " << fenetre1.hasFocus();
+    //qDebug() << "Focus " << app.focusWidget();
 
     delete icon;
     return app.exec();
-    
 }

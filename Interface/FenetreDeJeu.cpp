@@ -85,6 +85,10 @@ m_pnext(nullptr), m_holdnext(nullptr)
 	QObject::connect(this, SIGNAL(signalRetourPrincipale()), fenetrePrincipale, SLOT(slotChangerFenetrePrincipale()));
 	QObject::connect(m_menuOptionQuitter, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
 	
+	boardInit(); // mettre au centre
+
+	
+	
 	setLayout(m_layout);
 	
 
@@ -97,6 +101,13 @@ void FenetreDeJeu::slotPourFenetrePrincipale()
 	
 	emit signalRetourPrincipale();
 
+}
+
+void FenetreDeJeu::boardInit() {
+	board = new Board();
+	board->setFocus();
+	board->setFocusPolicy(Qt::StrongFocus);
+	layout->addWidget(board);
 }
 
 
