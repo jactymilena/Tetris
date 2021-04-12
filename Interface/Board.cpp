@@ -6,7 +6,7 @@ Case::Case() {
 	value = 0;
 }
 
-Board::Board() : QFrame() {
+Board::Board(Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
 	// set Frame
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
@@ -149,15 +149,15 @@ void Board::checkerScore() {
 	int i = 0;
 	while ((!isPlusGrand) && (i < historique.size() - 1))
 	{
-		if (historique[i].getScore() <= player.getScore())
+		if (historique[i].getScore() <= player->getScore())
 		{
 			for (int w = historique.size() - 1; w >= i + 1; w--) {
 				historique[w].setScore(historique[w - 1].getScore());
 				historique[w].setUsername(historique[w - 1].getUsername());
 			}
 
-			historique[i].setScore(player.getScore());
-			historique[i].setUsername(player.getUsername());
+			historique[i].setScore(player->getScore());
+			historique[i].setUsername(player->getUsername());
 			isPlusGrand = true;
 		}
 		i++;
@@ -180,24 +180,24 @@ void Board::checkerScore() {
 	}
 }
 
-void Board::loadHighscore() {
-	//Ouvrir document 
-	std::fstream myfile;
-	myfile.open("Score.txt");
-	std::string line;
-	std::string username;
-	int score;
-
-	if (myfile.is_open())
-	{
-		while (myfile >> username >> score)
-		{
-			Player p(score, username);
-			historique.push_back(p);
-		}
-	}
-	myfile.close();
-}
+//void Board::loadHighscore() {
+//	//Ouvrir document 
+//	std::fstream myfile;
+//	myfile.open("Score.txt");
+//	std::string line;
+//	std::string username;
+//	int score;
+//
+//	if (myfile.is_open())
+//	{
+//		while (myfile >> username >> score)
+//		{
+//			Player p(score, username);
+//			historique.push_back(p);
+//		}
+//	}
+//	myfile.close();
+//}
 
 bool Board::loadPiece(int num_piece, int num_color) {
 	piece.loadPiece(num_piece, num_color);
@@ -378,15 +378,15 @@ void Board::pieceState(int state) {
 
 void Board::augmenterScore(int nbLigne) {
 
-	player.setScore(player.getScore() + 50 * nbLigne);
+	player->setScore(player->getScore() + 50 * nbLigne);
 	augmenterLevel();
 	return;
 }
 
 void Board::augmenterLevel() {
-	if (player.getScore() != 0)
+	if (player->getScore() != 0)
 	{
-		if (player.getScore() % SCORE == 0)
+		if (player->getScore() % SCORE == 0)
 		{
 			difficulte -= 50;
 			level++;

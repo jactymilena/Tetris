@@ -69,7 +69,7 @@ struct Case {
 class Board : public QFrame {
 	Q_OBJECT
 public:
-	Board();
+	Board(Player* playerPrincipal);
 	void startGame();
 	void resetBoard();
 	bool loadPiece(int num_piece, int num_color);
@@ -82,7 +82,7 @@ public:
 	//Menu Score
 	void augmenterScore(int nbLigne);
 	void augmenterLevel();
-	void loadHighscore();
+	//void loadHighscore();
 	void checkerScore();
 
 	//Menu hold
@@ -113,13 +113,11 @@ private:
 	int compteur;
 	int difficulte;
 	std::vector<Player> historique;
-	Player player;
+	Player* player;
 
 	// Qt
 	QGridLayout* layout;
 	QTimer* timer;
 	bool isPaused;
 	bool isStarted;
-
-
 };

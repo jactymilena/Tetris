@@ -21,14 +21,16 @@
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QProgressBar>
+#include <QLCDNumber>
 #include "Board.h"
+#include "FenetrePointage.h"
 
 class FenetreDeJeu : public QWidget
 {
     Q_OBJECT
 
 public:
-    FenetreDeJeu(QMainWindow* fenetrePrincipale);
+    FenetreDeJeu(QMainWindow* fenetrePrincipale, FenetrePointage* fenetrePointage, Player* playerPrincipal);
     ~FenetreDeJeu();
     void boardInit();
 
@@ -52,11 +54,12 @@ private:
    QGroupBox* m_centre;
    QGroupBox* m_droite;
    QGroupBox* m_holdnext;
+   QGroupBox* m_scoreBox;
 
    QVBoxLayout* m_layoutGauche;
+   QVBoxLayout* m_layoutScore;
    QLabel* m_Garder;
    QLabel* m_Test;
-   QLabel* m_next;
    QLabel* m_score;
    QLabel* m_bestscore;
    QLabel* m_joueur;
@@ -68,6 +71,10 @@ private:
    QVBoxLayout* m_layoutDroite;
    QProgressBar* m_bar;
    QProgressBar* m_elevel;
+   QLCDNumber* m_lcdScore;
+
+   FenetrePointage* m_fenetrePointage;
+   Player* player;
 
 public slots:
     void slotPourFenetrePrincipale();

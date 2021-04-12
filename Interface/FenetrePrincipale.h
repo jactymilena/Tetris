@@ -5,6 +5,7 @@
 
 #include "FenetreDeJeu.h"
 #include "FenetrePointage.h"
+#include "Player.h"
 #include <QMainWindow>
 #include <QMenu>
 #include <QObject>
@@ -18,6 +19,7 @@
 #include <QString>
 #include <QStackedWidget>
 #include <QInputDialog>
+#include "Player.h"
 
 class FenetrePrincipale : public QMainWindow
 {
@@ -53,5 +55,8 @@ private:
     //Pointage
     FenetrePointage* fenetrePointage;
     QInputDialog* demandeUsername;
+
+    //Player
+    Player* player;
 };
 #endif

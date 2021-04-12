@@ -1,0 +1,11 @@
+Smokey 500000
+Kojima 100000
+Dio 89000
+Santa 9000
+Hannibal 2000
+Jekyll 1500
+Hyde 1000
+Legarsdurapport 60
+Bobette 10
+Simon 0
+ 

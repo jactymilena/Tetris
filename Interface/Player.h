@@ -11,10 +11,14 @@ public:
 	void setScore(int score);
 	std::string getUsername();
 	void setUsername(std::string nom);
+	bool getNameSetted();
+	void setNameSetted(bool setted);
+
 
 private:
 	int score;
 	std::string username;
+	bool nameSetted;
 };
 
 

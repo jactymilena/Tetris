@@ -1,15 +1,13 @@
 #include "FenetreDeJeu.h"
 
 
-FenetreDeJeu::FenetreDeJeu(QMainWindow* fenetrePrincipale) : m_menuMenu(nullptr), m_menuBar(nullptr), m_menuOptionAccueil(nullptr), m_menuOptionQuitter(nullptr),
+FenetreDeJeu::FenetreDeJeu(QMainWindow* fenetrePrincipale, FenetrePointage* fenetrePointage, Player* playerPrincipal) : 
+m_menuMenu(nullptr), m_menuBar(nullptr), m_menuOptionAccueil(nullptr), m_menuOptionQuitter(nullptr), player(playerPrincipal),
 m_menuAide(nullptr), m_widget(nullptr), m_layout(nullptr), m_Garder(nullptr), m_hold(nullptr), m_gauche(nullptr), m_layoutGauche(nullptr),
 m_centre(nullptr), m_droite(nullptr), m_gaucheHold(nullptr), m_Test(nullptr), m_bar(nullptr), m_layoutCentre(nullptr), m_tetris(nullptr),
-m_next(nullptr), m_score(nullptr), m_bestscore(nullptr), m_joueur(nullptr), m_level(nullptr), m_layoutDroite(nullptr), m_elevel(nullptr),
-m_pnext(nullptr), m_holdnext(nullptr)
+m_layoutScore(nullptr), m_scoreBox(nullptr), m_score(nullptr), m_bestscore(nullptr), m_joueur(nullptr), m_level(nullptr), m_layoutDroite(nullptr), m_elevel(nullptr),
+m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage)
 {
-
-
-
 	m_layout = new QHBoxLayout();
 	m_widget = new QWidget();
 
@@ -30,7 +28,7 @@ m_pnext(nullptr), m_holdnext(nullptr)
 	m_layout->addWidget(m_gauche);
 
 	//Partie Centre 
-	m_centre = new QGroupBox(tr("Centre"));
+	m_centre = new QGroupBox(tr("Next"));
 	m_console = new QGroupBox(tr("Tetris"));
 	m_layoutCentre = new QVBoxLayout();
 	m_bar = new QProgressBar();
@@ -45,24 +43,28 @@ m_pnext(nullptr), m_holdnext(nullptr)
 	m_layout->addWidget(m_centre);
 
 	//Partie Droite
+	m_lcdScore = new QLCDNumber(2);
 	m_droite = new QGroupBox(tr("Droite"));
 	m_holdnext = new QGroupBox(tr("Next"));
+	m_scoreBox = new QGroupBox();
+
 	m_pnext = new QGridLayout;
 	m_layoutDroite = new QVBoxLayout();
+	m_layoutScore = new QVBoxLayout();
 	m_elevel = new QProgressBar();
-	m_next = new QLabel("Next");
-	m_score = new QLabel("Score");
-	m_bestscore = new QLabel("Prochain meilleur score");
+	m_score = new QLabel("SCORE");
+	m_bestscore = new QLabel("Next meilleur score");
 	m_joueur = new QLabel("Joueur");
 	m_level = new QLabel("Level");
 
+	m_layoutScore->addWidget(m_score);
+	m_layoutScore->addWidget(m_score);
+	m_layoutScore->addWidget(m_lcdScore);
 
-
+	m_scoreBox->setLayout(m_layoutScore);
 	m_holdnext->setLayout(m_pnext);
-	m_layoutDroite->addWidget(m_next);
-	m_layoutDroite->addWidget(m_score);
+	m_layoutDroite->addWidget(m_scoreBox);
 	m_layoutDroite->addWidget(m_holdnext);
-	m_layoutDroite->addWidget(m_score);
 	m_layoutDroite->addWidget(m_bestscore);
 	m_layoutDroite->addWidget(m_joueur);
 	m_layoutDroite->addWidget(m_elevel);
@@ -91,13 +93,14 @@ m_pnext(nullptr), m_holdnext(nullptr)
 	setLayout(m_layout);
 }
 
+
 void FenetreDeJeu::slotPourFenetrePrincipale()
 {
 	emit signalRetourPrincipale();
 }
 
 void FenetreDeJeu::boardInit() {
-	board = new Board();
+	board = new Board(player);
 	board->setFocus();
 	board->setFocusPolicy(Qt::StrongFocus);
 	m_tetris->addWidget(board);
