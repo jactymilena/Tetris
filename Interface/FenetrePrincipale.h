@@ -17,6 +17,7 @@
 #include <QWidget>
 #include <QString>
 #include <QStackedWidget>
+#include <QInputDialog>
 
 class FenetrePrincipale : public QMainWindow
 {
@@ -29,10 +30,10 @@ public slots:
     void slotPourFenetreDeJeu();
     void slotChangerFenetrePrincipale();
     void slotPourFenetrePointage();
- 
+    void slotPourEnableFenetre();
+    void closeEvent(QCloseEvent* event);
 
 private:
-
     //Boutons pour les autres pages
     QPushButton* boutonPourFenetreJeu;
     QPushButton* boutonPourFenetreReglage;
@@ -47,7 +48,10 @@ private:
     QWidget* widget;
 
     FenetreDeJeu* fenetreDeJeu;
-    FenetrePointage* fenetrePointage;
     QStackedWidget* index;
+
+    //Pointage
+    FenetrePointage* fenetrePointage;
+    QInputDialog* demandeUsername;
 };
 #endif

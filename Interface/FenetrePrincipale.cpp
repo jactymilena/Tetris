@@ -29,8 +29,7 @@ index(nullptr)
 	
 	//Pointage
 	fenetrePointage = new FenetrePointage(this);
-
-
+	demandeUsername = new QInputDialog;
 
 	//Creation layout 
 	layoutVertical1 = new QVBoxLayout();
@@ -49,16 +48,14 @@ index(nullptr)
 	widget->setLayout(layoutVertical1);
 	setCentralWidget(widget);
 	QObject::connect(boutonPourScore, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetrePointage()));
-
 	fenetreDeJeu = new FenetreDeJeu(this);
-
 	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), SLOT(slotPourFenetreDeJeu()));
+	
 	//Action
 	index->addWidget(widget);
 	index->addWidget(fenetreDeJeu);
 	setCentralWidget(index);
 	index->setCurrentIndex(0);
-
 }
 
 FenetrePrincipale::~FenetrePrincipale()
@@ -76,21 +73,31 @@ void FenetrePrincipale::slotChangerFenetrePrincipale()
 	index->setCurrentIndex(0);
 }
 
+void FenetrePrincipale::slotPourEnableFenetre()
+{
+	this->setEnabled(true);
+}
+
 void FenetrePrincipale::slotPourFenetrePointage()
 {
-	/*bool ok;
+	bool ok;
 	demandeUsername->setMinimumSize(1000, 1000);
 	QString text = demandeUsername->getText(this, tr("Entrez votre nom"),
 		tr("Username:"), QLineEdit::Normal,
-		QDir::home().dirName(), &ok, Qt::MSWindowsFixedSizeDialogHint);
+		"Enter username", &ok, Qt::MSWindowsFixedSizeDialogHint);
 
 	if (ok && !text.isEmpty())
 	{
 		fenetrePointage->setJoueurUsername(text.toStdString());
 		this->setEnabled(false);
 		fenetrePointage->show();
-	}*/
-	fenetrePointage->show();
+	}
+}
 
-
+void FenetrePrincipale::closeEvent(QCloseEvent* event)
+{
+	if (fenetrePointage != nullptr)
+	{
+		fenetrePointage->hide();
+	}
 }
