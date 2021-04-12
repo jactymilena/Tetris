@@ -30,7 +30,13 @@
     <ClCompile Include="FenetreDeJeu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FenetrePointage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="FenetrePrincipale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -41,15 +47,27 @@
     <CustomBuild Include="FenetreDeJeu.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="FenetrePointage.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
     <CustomBuild Include="FenetrePrincipale.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="debug\moc_FenetreDeJeu.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="release\moc_FenetreDeJeu.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="debug\moc_FenetrePointage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="release\moc_FenetrePointage.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="debug\moc_FenetrePrincipale.cpp">

@@ -4,6 +4,7 @@
 #define FENETREPRINCIPALE_H
 
 #include "FenetreDeJeu.h"
+#include "FenetrePointage.h"
 #include <QMainWindow>
 #include <QMenu>
 #include <QObject>
@@ -15,6 +16,7 @@
 #include <QPushButton>
 #include <QWidget>
 #include <QString>
+#include <QInputDialog>
 class FenetrePrincipale : public QMainWindow
 {
     Q_OBJECT
@@ -24,8 +26,10 @@ public:
 
 public slots:
     void slotPourFenetreDeJeu();
-signals:
-    void recevoirFromCasseTete(void);
+    void slotPourFenetrePointage();
+    void slotPourEnableFenetre();
+
+    void closeEvent(QCloseEvent* event);
 
 private:
 
@@ -41,6 +45,6 @@ private:
     QWidget* widget;
 
     FenetreDeJeu* fenetreDeJeu;
-
+    FenetrePointage* fenetrePointage;
 };
 #endif
