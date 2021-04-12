@@ -15,6 +15,8 @@
 #include <QPushButton>
 #include <QWidget>
 #include <QString>
+#include <QStackedWidget>
+
 class FenetrePrincipale : public QMainWindow
 {
     Q_OBJECT
@@ -24,8 +26,9 @@ public:
 
 public slots:
     void slotPourFenetreDeJeu();
-signals:
-    void recevoirFromCasseTete(void);
+    void slotChangerFenetrePrincipale();
+
+ 
 
 private:
 
@@ -34,13 +37,15 @@ private:
     QPushButton* boutonPourFenetreReglage;
     QPushButton* boutonPourScore;
 
+    //Le titre Tetris Mania 
     QLabel* labelTetris;
-
+    
+    //Creation d'un laytout
     QVBoxLayout* layoutVertical1;
 
     QWidget* widget;
 
     FenetreDeJeu* fenetreDeJeu;
-
+    QStackedWidget* index;
 };
 #endif
