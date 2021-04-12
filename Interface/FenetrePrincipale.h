@@ -5,6 +5,7 @@
 
 #include "FenetreDeJeu.h"
 #include "FenetrePointage.h"
+#include "FenetreAide.h"
 #include <QMainWindow>
 #include <QMenu>
 #include <QObject>
@@ -31,6 +32,7 @@ public slots:
     void slotChangerFenetrePrincipale();
     void slotPourFenetrePointage();
     void slotPourEnableFenetre();
+    void slotChangerFenetreAide();
     void closeEvent(QCloseEvent* event);
 
 private:
@@ -48,6 +50,7 @@ private:
     QWidget* widget;
 
     FenetreDeJeu* fenetreDeJeu;
+    FenetreAide* fenetreAide;
     QStackedWidget* index;
 
     //Pointage

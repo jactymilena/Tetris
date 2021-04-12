@@ -2,10 +2,10 @@
 
 
 FenetreDeJeu::FenetreDeJeu(QMainWindow* fenetrePrincipale) : m_menuMenu(nullptr), m_menuBar(nullptr), m_menuOptionAccueil(nullptr), m_menuOptionQuitter(nullptr),
-m_menuAide(nullptr), m_widget(nullptr), m_layout(nullptr), m_Garder(nullptr), m_hold(nullptr), m_gauche(nullptr), m_layoutGauche(nullptr),
+m_widget(nullptr), m_layout(nullptr), m_Garder(nullptr), m_hold(nullptr), m_gauche(nullptr), m_layoutGauche(nullptr),
 m_centre(nullptr), m_droite(nullptr), m_gaucheHold(nullptr), m_Test(nullptr), m_bar(nullptr), m_layoutCentre(nullptr), m_tetris(nullptr),
 m_next(nullptr), m_score(nullptr), m_bestscore(nullptr), m_joueur(nullptr), m_level(nullptr), m_layoutDroite(nullptr), m_elevel(nullptr),
-m_pnext(nullptr), m_holdnext(nullptr)
+m_pnext(nullptr), m_holdnext(nullptr), m_menuOptionAide(nullptr)
 {
 
 
@@ -73,21 +73,24 @@ m_pnext(nullptr), m_holdnext(nullptr)
 	//Onglet Menu + Aide
 	m_menuBar = new QMenuBar;
 	m_menuMenu = new QMenu("Menu");
-	m_menuAide = new QMenu("Aide");
 	m_menuBar->addMenu(m_menuMenu);
-	m_menuBar->addMenu(m_menuAide);
 	m_menuOptionAccueil = new QAction("Accueil");
 	m_menuOptionQuitter = new QAction("Quitter");
+	m_menuOptionAide = new QAction("Aide");
 	m_menuMenu->addAction(m_menuOptionAccueil);
 	m_menuMenu->addAction(m_menuOptionQuitter);
+	m_menuMenu->addAction(m_menuOptionAide);
 	m_layout->setMenuBar(m_menuBar);
 
 
 	//Action 
 	QObject::connect(m_menuOptionAccueil, SIGNAL(triggered(bool)), this, SLOT(slotPourFenetrePrincipale()));
 	QObject::connect(this, SIGNAL(signalRetourPrincipale()), fenetrePrincipale, SLOT(slotChangerFenetrePrincipale()));
+	QObject::connect(m_menuOptionAide, SIGNAL(triggered(bool)), this, SLOT(slotPourFenetreAide()));
+	QObject::connect(this, SIGNAL(signalAllerAide()), fenetrePrincipale, SLOT(slotChangerFenetreAide()));
 	QObject::connect(m_menuOptionQuitter, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
-	
+
+
 	setLayout(m_layout);
 }
 
@@ -95,6 +98,12 @@ void FenetreDeJeu::slotPourFenetrePrincipale()
 {
 	emit signalRetourPrincipale();
 }
+
+void FenetreDeJeu::slotPourFenetreAide()
+{
+	emit signalAllerAide();
+}
+
 
 void FenetreDeJeu::boardInit() {
 	board = new Board();

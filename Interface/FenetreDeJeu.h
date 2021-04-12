@@ -41,7 +41,7 @@ private:
    QMenu *m_menuMenu;
    QAction *m_menuOptionAccueil;
    QAction *m_menuOptionQuitter;
-   QMenu* m_menuAide;
+   QAction* m_menuOptionAide;
 
    QWidget* m_widget;
    QHBoxLayout* m_layout;
@@ -71,7 +71,10 @@ private:
 
 public slots:
     void slotPourFenetrePrincipale();
+    void slotPourFenetreAide();
 signals:
     void signalRetourPrincipale();
+signals:
+    void signalAllerAide();
 };
 #endif

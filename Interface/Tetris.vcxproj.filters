@@ -30,6 +30,9 @@
     <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FenetreAide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="FenetreDeJeu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -53,6 +56,9 @@
     <CustomBuild Include="Board.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="FenetreAide.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
     <CustomBuild Include="FenetreDeJeu.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -74,6 +80,12 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="release\moc_Board.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="debug\moc_FenetreAide.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="release\moc_FenetreAide.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="debug\moc_FenetreDeJeu.cpp">

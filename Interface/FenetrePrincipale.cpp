@@ -8,6 +8,7 @@ labelTetris(nullptr),
 layoutVertical1(nullptr),
 widget(nullptr),
 fenetreDeJeu(nullptr),
+fenetreAide(nullptr),
 index(nullptr)
 {
 	index = new QStackedWidget;
@@ -49,11 +50,13 @@ index(nullptr)
 	setCentralWidget(widget);
 	QObject::connect(boutonPourScore, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetrePointage()));
 	fenetreDeJeu = new FenetreDeJeu(this);
+	fenetreAide = new FenetreAide(this);
 	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), SLOT(slotPourFenetreDeJeu()));
 	
 	//Action
 	index->addWidget(widget);
 	index->addWidget(fenetreDeJeu);
+	index->addWidget(fenetreAide);
 	setCentralWidget(index);
 	index->setCurrentIndex(0);
 }
@@ -67,6 +70,10 @@ void FenetrePrincipale::slotPourFenetreDeJeu()
 	index->setCurrentIndex(1);
 }
 
+void FenetrePrincipale::slotChangerFenetreAide()
+{
+	index->setCurrentIndex(2);
+}
 
 void FenetrePrincipale::slotChangerFenetrePrincipale()
 {
