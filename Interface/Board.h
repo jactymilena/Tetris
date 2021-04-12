@@ -100,6 +100,7 @@ public slots:
 private:
 	Case cases[LIGNES][COLONNES];
 	bool game_over;
+	bool nouvellePiece;
 	int level;
 	Piece pieceHold;
 	Piece piece;

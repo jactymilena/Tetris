@@ -38,20 +38,16 @@ public:
 	void goDown();
 	void move(int direction);
 	void turn(int direction);
+	bool hold();
+	void unturned();
 	void loadPiece(int num_piece);
 	void print();
 
 	Carre getCarre(int index) const;
-	void setCanGoDown(bool);
 	QColor getColor() const;
 	int getNumPiece() const;
 	void setNumPiece(int numPiece);
 	Carre getMemoire(int index) const;
-	void unturned();
-
-signals:
-	void cantGoDown();
-
 
 private:
 	Carre carres[4];
@@ -61,5 +57,4 @@ private:
 	//int pivot[2];//Permet de faire tourner la píece autour d'une case
 	int numPiece;
 	QColor color;
-	bool canGoDown;
 };

@@ -3,20 +3,11 @@
 
 Piece::Piece() {
 	numPiece = 7;
-	canGoDown = true;
 }
 
 Carre::Carre() {
 	ligne = 0;
 	colonne = 0;
-}
-
-void Piece::setCanGoDown(bool state) {
-	if (state == false && canGoDown == true) {
-		this->canGoDown = state;
-
-		//emit cantGoDown();
-	}
 }
 
 void Piece::loadPiece(int num_piece) {

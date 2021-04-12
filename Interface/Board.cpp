@@ -35,12 +35,11 @@ Case::Case() {
 }
 
 Board::Board() : QFrame() {
-	// setup
-
+	// set Frame
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
 	setMidLineWidth(3);
-	setStyleSheet("background-color: rgb(255, 255, 255);");
+	setStyleSheet("background-color: rgb(0, 0, 0);"); 
 	activateWindow();
 
 	// Board init
@@ -51,16 +50,13 @@ Board::Board() : QFrame() {
 	compteur = 0;
 	min = 0;
 	max = 0;
-
-	//startGame();
+	nouvellePiece = true;
 
 	// Timer
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(moveDownPiece()));
 	isPaused = false;
 	isStarted = false;
-
-
 }
 
 void Board::mousePressEvent(QMouseEvent* event) {
@@ -86,7 +82,8 @@ void Board::keyPressEvent(QKeyEvent* event) {
 			if(canGoDown)
 				piece.goDown();
 		}
-		else if ((event->key() == Qt::Key_W)) {
+		else if ((event->key() == Qt::Key_W) &&	nouvellePiece) {
+			nouvellePiece = false;
 			changerPiece();
 		}
 		else if (event->key() == Qt::Key_Q) {
@@ -149,16 +146,20 @@ void Board::paintEvent(QPaintEvent* event)
 	for (int i = 0; i < LIGNES; i++) {
 		for (int j = 0; j < COLONNES; j++) {
 			if (cases[i][j].value == 1) {
+				//painter.setPen(Qt::white);
 				painter.setBrush(QBrush(cases[i][j].color));
+				painter.drawRect(QRect(j * largeurCarre + rect.topLeft().x(), i * hauteurCarre + rect.topLeft().y(), largeurCarre, hauteurCarre));
+
 			}
-			else {
-				painter.setBrush(QBrush("#ffffff"));
-			}
-			painter.drawRect(QRect(j * largeurCarre + rect.topLeft().x(), i * hauteurCarre + rect.topLeft().y(), largeurCarre, hauteurCarre));
+			//else {
+			//	//painter.setPen(Qt::black);
+			//	painter.setBrush(QBrush("#00000"));
+			//}
+			
 		}
 	}
 
-	if (isPaused || isStarted == false) {
+	if (isPaused || isStarted == false || game_over) {
 		painter.fillRect(rect, QBrush(QColor(160, 160, 160, 128)));
 		painter.setPen(Qt::black);
 		painter.setFont(QFont("Arial", 30));
@@ -168,6 +169,9 @@ void Board::paintEvent(QPaintEvent* event)
 		}
 		if (isPaused) {
 			painter.drawText(rect, Qt::AlignCenter, "ESC to restart");
+		}
+		if (game_over) {
+			painter.drawText(rect, Qt::AlignCenter, "GAME OVER");
 		}
 	}
 	
@@ -330,7 +334,6 @@ bool Board::verifMove(int direction) {
 				}
 			}
 			else {
-				
 				return false;
 			}
 		}
@@ -369,6 +372,8 @@ void Board::moveDownPiece() {
 		pieceState(ADD);
 		verifLigne();
 		loadPiece(pieceApres.getNumPiece());
+		nouvellePiece = true;
+
 	}
 	update();
 }

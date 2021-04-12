@@ -145,7 +145,6 @@ bool Board::loadPiece(int num_piece) {
 }
 
 void Board::movePiece(bool& nouvellePiece, int caseVoix) { // bouger gauche, droite, bas, tourner
-	//std::cout << "Helloooo\n";
 	if ((GetAsyncKeyState(KEY_RIGHT) || caseVoix == 1) && verifMove(RIGHT))
 	{
 		piece.move(RIGHT);
