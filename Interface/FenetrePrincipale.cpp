@@ -1,5 +1,4 @@
 #include "FenetrePrincipale.h"
-#include <QDir>
 
 FenetrePrincipale::FenetrePrincipale():
 boutonPourFenetreJeu(nullptr),
@@ -9,9 +8,9 @@ labelTetris(nullptr),
 layoutVertical1(nullptr),
 widget(nullptr),
 fenetreDeJeu(nullptr),
-index(nullptr),
-fenetrePointage(nullptr),
-demandeUsername(nullptr)
+index(nullptr)
+
+
 {
 
 	index = new QStackedWidget;
@@ -50,54 +49,24 @@ demandeUsername(nullptr)
 	
 
 	fenetreDeJeu = new FenetreDeJeu(this);
-	//fenetrePointage = new FenetrePointage(this);
-	//demandeUsername = new QInputDialog();
+
 
 	//Action
 	index->addWidget(widget);
 	index->addWidget(fenetreDeJeu);
 	setCentralWidget(index);
 	index->setCurrentIndex(0);
-	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetreDeJeu()));
-	//QObject::connect(boutonPourScore, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetrePointage()));
-	
 }
 
 FenetrePrincipale::~FenetrePrincipale()
 {
-	
 }
 
 void FenetrePrincipale::slotPourFenetreDeJeu()
 {
-	index->setCurrentIndex(1);
-}
-
-void FenetrePrincipale::slotPourFenetrePointage()
 {
-	bool ok;
-	demandeUsername->setMinimumSize(1000, 1000);	
-	QString text = demandeUsername->getText(this, tr("Entrez votre nom"),
-		tr("Username:"), QLineEdit::Normal,
-		QDir::home().dirName(), &ok, Qt::MSWindowsFixedSizeDialogHint);
-	
-	if (ok && !text.isEmpty())
-	{
-		fenetrePointage->setJoueurUsername(text.toStdString());
-			this->setEnabled(false);
-		fenetrePointage->show();
-	}
+	this->setEnabled(true);
 }
-
-void FenetrePrincipale::closeEvent(QCloseEvent* event)
-{
-	if(fenetrePointage != nullptr)
-	{
-		fenetrePointage->hide();
-	}
-}
-
-void FenetrePrincipale::slotPourEnableFenetre()
 {
 	this->setEnabled(true);
 }
