@@ -4,6 +4,7 @@
 #define FENETREPRINCIPALE_H
 
 #include "FenetreDeJeu.h"
+#include "FenetrePointage.h"
 #include <QMainWindow>
 #include <QMenu>
 #include <QObject>
@@ -27,7 +28,7 @@ public:
 public slots:
     void slotPourFenetreDeJeu();
     void slotChangerFenetrePrincipale();
-
+    void slotPourFenetrePointage();
  
 
 private:
@@ -46,6 +47,7 @@ private:
     QWidget* widget;
 
     FenetreDeJeu* fenetreDeJeu;
+    FenetrePointage* fenetrePointage;
     QStackedWidget* index;
 };
 #endif

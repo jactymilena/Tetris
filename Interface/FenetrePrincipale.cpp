@@ -9,10 +9,7 @@ layoutVertical1(nullptr),
 widget(nullptr),
 fenetreDeJeu(nullptr),
 index(nullptr)
-
-
 {
-
 	index = new QStackedWidget;
 	
 	//Le titre Tetris Mania 
@@ -30,6 +27,11 @@ index(nullptr)
 	boutonPourScore = new QPushButton("Pointage");
 	boutonPourScore->setFocusPolicy(Qt::NoFocus);
 	
+	//Pointage
+	fenetrePointage = new FenetrePointage(this);
+
+
+
 	//Creation layout 
 	layoutVertical1 = new QVBoxLayout();
 
@@ -46,16 +48,17 @@ index(nullptr)
 	//Ajout widget au layout
 	widget->setLayout(layoutVertical1);
 	setCentralWidget(widget);
-	
+	QObject::connect(boutonPourScore, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetrePointage()));
 
 	fenetreDeJeu = new FenetreDeJeu(this);
 
-
+	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), SLOT(slotPourFenetreDeJeu()));
 	//Action
 	index->addWidget(widget);
 	index->addWidget(fenetreDeJeu);
 	setCentralWidget(index);
 	index->setCurrentIndex(0);
+
 }
 
 FenetrePrincipale::~FenetrePrincipale()
@@ -64,14 +67,30 @@ FenetrePrincipale::~FenetrePrincipale()
 
 void FenetrePrincipale::slotPourFenetreDeJeu()
 {
-{
-	this->setEnabled(true);
+	index->setCurrentIndex(1);
 }
-{
-	this->setEnabled(true);
-}
+
 
 void FenetrePrincipale::slotChangerFenetrePrincipale()
 {
 	index->setCurrentIndex(0);
+}
+
+void FenetrePrincipale::slotPourFenetrePointage()
+{
+	/*bool ok;
+	demandeUsername->setMinimumSize(1000, 1000);
+	QString text = demandeUsername->getText(this, tr("Entrez votre nom"),
+		tr("Username:"), QLineEdit::Normal,
+		QDir::home().dirName(), &ok, Qt::MSWindowsFixedSizeDialogHint);
+
+	if (ok && !text.isEmpty())
+	{
+		fenetrePointage->setJoueurUsername(text.toStdString());
+		this->setEnabled(false);
+		fenetrePointage->show();
+	}*/
+	fenetrePointage->show();
+
+
 }
