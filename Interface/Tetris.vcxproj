@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="FenetreDeJeu.cpp" />
+    <ClCompile Include="FenetrePointage.cpp" />
     <ClCompile Include="FenetrePrincipale.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -167,6 +168,16 @@
       <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC FenetreDeJeu.h</Message>
       <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_FenetreDeJeu.cpp;%(Outputs)</Outputs>
     </CustomBuild>
+    <CustomBuild Include="FenetrePointage.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">FenetrePointage.h;debug\moc_predefs.h;C:\Qt2\6.0.1\msvc2019_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt2\6.0.1\msvc2019_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include C:/Users/afont/source/repos/jactymilena/Tetris/Interface/debug/moc_predefs.h -IC:/Qt2/6.0.1/msvc2019_64/mkspecs/win32-msvc -IC:/Users/afont/source/repos/jactymilena/Tetris/Interface -IC:/Qt2/6.0.1/msvc2019_64/include -IC:/Qt2/6.0.1/msvc2019_64/include/QtWidgets -IC:/Qt2/6.0.1/msvc2019_64/include/QtGui -IC:/Qt2/6.0.1/msvc2019_64/include/QtCore -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\ATLMFC\include&quot; -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt&quot; FenetrePointage.h -o debug\moc_FenetrePointage.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC FenetrePointage.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_FenetrePointage.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">FenetrePointage.h;release\moc_predefs.h;C:\Qt2\6.0.1\msvc2019_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">C:\Qt2\6.0.1\msvc2019_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DNDEBUG -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include C:/Users/afont/source/repos/jactymilena/Tetris/Interface/release/moc_predefs.h -IC:/Qt2/6.0.1/msvc2019_64/mkspecs/win32-msvc -IC:/Users/afont/source/repos/jactymilena/Tetris/Interface -IC:/Qt2/6.0.1/msvc2019_64/include -IC:/Qt2/6.0.1/msvc2019_64/include/QtWidgets -IC:/Qt2/6.0.1/msvc2019_64/include/QtGui -IC:/Qt2/6.0.1/msvc2019_64/include/QtCore -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\ATLMFC\include&quot; -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt&quot; FenetrePointage.h -o release\moc_FenetrePointage.cpp</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC FenetrePointage.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_FenetrePointage.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
     <CustomBuild Include="FenetrePrincipale.h">
       <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">FenetrePrincipale.h;debug\moc_predefs.h;C:\Qt\6.0.0\msvc2019_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">C:\Qt\6.0.0\msvc2019_64\bin\moc.exe  -DUNICODE -D_UNICODE -DWIN32 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include C:/Users/jacty/OneDrive/Desktop/GI_S2_H21/Projet/jactymilena/Tetris/Interface/debug/moc_predefs.h -IC:/Qt/6.0.0/msvc2019_64/mkspecs/win32-msvc -IC:/Users/jacty/OneDrive/Desktop/GI_S2_H21/Projet/jactymilena/Tetris/Interface -IC:/Qt/6.0.0/msvc2019_64/include -IC:/Qt/6.0.0/msvc2019_64/include/QtWidgets -IC:/Qt/6.0.0/msvc2019_64/include/QtGui -IC:/Qt/6.0.0/msvc2019_64/include/QtCore -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\ATLMFC\include&quot; -I&quot;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt&quot; FenetrePrincipale.h -o debug\moc_FenetrePrincipale.cpp</Command>
@@ -191,6 +202,12 @@
       <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="release\moc_FenetreDeJeu.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_FenetrePointage.cpp">
+      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_FenetrePointage.cpp">
       <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="debug\moc_FenetrePrincipale.cpp">
