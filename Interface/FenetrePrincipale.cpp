@@ -50,17 +50,16 @@ demandeUsername(nullptr)
 	
 
 	fenetreDeJeu = new FenetreDeJeu(this);
-	fenetrePointage = new FenetrePointage(this);
-	demandeUsername = new QInputDialog();
+	//fenetrePointage = new FenetrePointage(this);
+	//demandeUsername = new QInputDialog();
 
 	//Action
-	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), SLOT(slotPourFenetreDeJeu()));
 	index->addWidget(widget);
 	index->addWidget(fenetreDeJeu);
 	setCentralWidget(index);
 	index->setCurrentIndex(0);
 	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetreDeJeu()));
-	QObject::connect(boutonPourScore, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetrePointage()));
+	//QObject::connect(boutonPourScore, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetrePointage()));
 	
 }
 
@@ -71,8 +70,7 @@ FenetrePrincipale::~FenetrePrincipale()
 
 void FenetrePrincipale::slotPourFenetreDeJeu()
 {
-	fenetreDeJeu = new FenetreDeJeu;
-	setCentralWidget(fenetreDeJeu);
+	index->setCurrentIndex(1);
 }
 
 void FenetrePrincipale::slotPourFenetrePointage()
@@ -89,8 +87,6 @@ void FenetrePrincipale::slotPourFenetrePointage()
 			this->setEnabled(false);
 		fenetrePointage->show();
 	}
-	
-
 }
 
 void FenetrePrincipale::closeEvent(QCloseEvent* event)
@@ -104,9 +100,6 @@ void FenetrePrincipale::closeEvent(QCloseEvent* event)
 void FenetrePrincipale::slotPourEnableFenetre()
 {
 	this->setEnabled(true);
-}
-
-	index->setCurrentIndex(1);
 }
 
 void FenetrePrincipale::slotChangerFenetrePrincipale()
