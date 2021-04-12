@@ -46,5 +46,6 @@ private:
 
     FenetreDeJeu* fenetreDeJeu;
     FenetrePointage* fenetrePointage;
+    QInputDialog* demandeUsername;
 };
 #endif

@@ -8,7 +8,8 @@ labelTetris(nullptr),
 layoutVertical1(nullptr),
 widget(nullptr),
 fenetreDeJeu(nullptr),
-fenetrePointage(nullptr)
+fenetrePointage(nullptr),
+demandeUsername(nullptr)
 {
 	
 	labelTetris = new QLabel();
@@ -33,6 +34,7 @@ fenetrePointage(nullptr)
 
 	setCentralWidget(widget);
 	fenetrePointage = new FenetrePointage(this);
+	demandeUsername = new QInputDialog();
 
 
 	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetreDeJeu()));
@@ -54,13 +56,18 @@ void FenetrePrincipale::slotPourFenetreDeJeu()
 void FenetrePrincipale::slotPourFenetrePointage()
 {
 	bool ok;
-	QString text = QInputDialog::getText(this, tr("Entrez votre nom"),
+	demandeUsername->setMinimumSize(1000, 1000);	
+	QString text = demandeUsername->getText(this, tr("Entrez votre nom"),
 		tr("Username:"), QLineEdit::Normal,
-		QDir::home().dirName(), &ok);
+		QDir::home().dirName(), &ok, Qt::MSWindowsFixedSizeDialogHint);
+	
 	if (ok && !text.isEmpty())
+	{
 		fenetrePointage->setJoueurUsername(text.toStdString());
-	this->setEnabled(false);
-	fenetrePointage->show();
+			this->setEnabled(false);
+		fenetrePointage->show();
+	}
+	
 
 }
 
