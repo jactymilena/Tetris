@@ -1,6 +1,5 @@
 #include "Board.h"
 
-using namespace std::chrono_literals;
 //#include "CommunicationFPGA.h"
 
 Case::Case() {
@@ -400,7 +399,6 @@ void Board::augmenterLevel() {
 
 			timer->stop();
 			timer->start(difficulte);
-
 		}
 	}
 }
@@ -410,7 +408,7 @@ bool Board::verifLigne() {
 	int maxLigne = piece.getCarre(0).ligne;
 	int compteurX = 0;
 	int compteurLigne = 0;
-	for (int i = 1; i < 4; i++) {//Vérifier les quatres carrees pour avoir la ligne minimale et maximale
+	for (int i = 1; i < 4; i++) { // Vérifier les quatres carrees pour avoir la ligne minimale et maximale
 		if (piece.getCarre(i).ligne < minLigne)
 		{
 			minLigne = piece.getCarre(i).ligne;
@@ -441,7 +439,6 @@ bool Board::verifLigne() {
 	{
 		augmenterScore(compteurLigne);
 	}
-
 
 	return true;
 }

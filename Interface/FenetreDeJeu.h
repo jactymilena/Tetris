@@ -3,8 +3,6 @@
 #ifndef FENETREDEJEU_H
 #define FENETREDEJEU_H
 
-
-
 #include <QMainWindow>
 #include <QMenu>
 #include <QApplication>
@@ -64,7 +62,7 @@ private:
    QLabel* m_joueur;
    QLabel* m_level;
    QGridLayout* m_hold;
-   QGridLayout* m_tetris;
+   QVBoxLayout* m_tetris;
    QGridLayout* m_pnext;
    QVBoxLayout* m_layoutCentre;
    QVBoxLayout* m_layoutDroite;

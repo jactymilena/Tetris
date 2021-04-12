@@ -34,7 +34,10 @@ m_pnext(nullptr), m_holdnext(nullptr)
 	m_console = new QGroupBox(tr("Tetris"));
 	m_layoutCentre = new QVBoxLayout();
 	m_bar = new QProgressBar();
-	m_tetris = new QGridLayout;
+	m_tetris = new QVBoxLayout;
+
+	boardInit(); // mettre au centre
+
 	m_console->setLayout(m_tetris);
 	m_layoutCentre->addWidget(m_bar);
 	m_layoutCentre->addWidget(m_console);
@@ -85,31 +88,20 @@ m_pnext(nullptr), m_holdnext(nullptr)
 	QObject::connect(this, SIGNAL(signalRetourPrincipale()), fenetrePrincipale, SLOT(slotChangerFenetrePrincipale()));
 	QObject::connect(m_menuOptionQuitter, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
 	
-	boardInit(); // mettre au centre
-
-	
-	
 	setLayout(m_layout);
-	
-
-	
-	
 }
 
 void FenetreDeJeu::slotPourFenetrePrincipale()
 {
-	
 	emit signalRetourPrincipale();
-
 }
 
 void FenetreDeJeu::boardInit() {
 	board = new Board();
 	board->setFocus();
 	board->setFocusPolicy(Qt::StrongFocus);
-	layout->addWidget(board);
+	m_tetris->addWidget(board);
 }
-
 
 FenetreDeJeu::~FenetreDeJeu()
 {
