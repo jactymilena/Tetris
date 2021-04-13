@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
     QApplication app(argc, argv);
 
     FenetrePrincipale fenetre1;
-    fenetre1.setMinimumSize(900, 750);
+    fenetre1.setFixedSize(900, 750);
     QPixmap pixmap("tetrisIcon.jpeg");
     QIcon *icon;
     icon = new QIcon();

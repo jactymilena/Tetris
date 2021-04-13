@@ -10,6 +10,11 @@ m_elevel(nullptr), m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(null
 m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionAide(nullptr), frameHold(nullptr), framePieceSuivante(nullptr),
 m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 {
+	// Background
+	//setStyleSheet("background-image: url(background.png)");
+	setStyleSheet("background-color: red");
+
+
 	m_layout = new QHBoxLayout();
 	m_widget = new QWidget();
 	board = new Board(this, playerPrincipal);
@@ -17,7 +22,9 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	framePieceSuivante = new FramePourPiece((board->getPieceSuivante()));
 	//Partie Gauche
 	m_gauche = new QGroupBox(tr("Gauche"));
+	m_gauche->setStyleSheet("QGroupBox { background : transparent;}");
 	m_gaucheHold = new QGroupBox(tr("Hold"));
+	m_gaucheHold->setStyleSheet("QGroupBox { background : transparent;}");
 	m_layoutGauche = new QVBoxLayout();
 	m_Garder = new QLabel("Garder");
 	m_hold = new QGridLayout;
@@ -33,7 +40,9 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 
 	//Partie Centre 
 	m_centre = new QGroupBox(tr("Next"));
+	m_centre->setStyleSheet("QGroupBox { background : transparent;}");
 	m_console = new QGroupBox(tr("Tetris"));
+	m_console->setStyleSheet("QGroupBox { background : transparent;}");
 	m_progressBarBox = new QGroupBox();
 
 	m_layoutProgressBar = new QGridLayout();
@@ -67,8 +76,13 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	QObject::connect(player, SIGNAL(scoreChanged()),this ,SLOT(updateScore()));
 
 	m_droite = new QGroupBox(tr("Droite"));
+	m_droite->setStyleSheet("QGroupBox { background : transparent;}");
+
 	m_holdnext = new QGroupBox(tr("Next"));
+	m_holdnext->setStyleSheet("QGroupBox { background : transparent;}");
+
 	m_scoreBox = new QGroupBox();
+	m_scoreBox->setStyleSheet("QGroupBox { background : transparent;}");
 
 	m_pnext = new QGridLayout;
 	m_layoutDroite = new QVBoxLayout();

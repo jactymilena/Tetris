@@ -12,7 +12,8 @@ Board::Board(QWidget* fenetreJeu, Player* playerPrincipal) : QFrame(), player(pl
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
 	setMidLineWidth(3);
-	setStyleSheet("background-color: rgb(0, 0, 0);"); 
+	//setStyleSheet("background-color: rgb(0, 0, 0);"); 
+	setStyleSheet("background : transparent;"); 
 	activateWindow();
 	setMinimumHeight(550);
 	setMinimumWidth(200);
