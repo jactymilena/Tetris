@@ -47,7 +47,6 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante, Player* playerPrinci
 		name[i] = new QLabel(QString::fromStdString(historique[i]->getUsername()));
 		score[i] = new QLabel(QString::number(historique[i]->getScore()));
 		position[i] = new QLabel(QString::number(i+1));
-
 	}
 
 	//Pour l'affichage
@@ -104,7 +103,7 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante, Player* playerPrinci
 	this->setLayout(layout);
 
 	QObject::connect(this, SIGNAL(signalClosingFenetrePointage()), fenetreArrivante, SLOT(slotPourEnableFenetre()));
-	
+	QObject::connect(player, SIGNAL(scoreChanged()), this, SLOT(updateScore()));
 }
 
 FenetrePointage::~FenetrePointage()
@@ -117,6 +116,50 @@ FenetrePointage::~FenetrePointage()
 
 void FenetrePointage::getNextBestScore() {
 
+}
+
+void FenetrePointage::checkerScore() {
+	bool isPlusGrand = false;
+	int i = 0;
+	while ((!isPlusGrand) && (i < historique.size() - 1))
+	{
+		if (historique[i]->getScore() <= player->getScore())
+		{
+			positionJoueur->setText(QString::number(i));
+			for (int w = historique.size() - 1; w >= i + 1; w--) {
+				historique[w]->setScore(historique[w - 1]->getScore());
+				historique[w]->setUsername(historique[w - 1]->getUsername());
+			}
+
+			historique[i]->setScore(player->getScore());
+			historique[i]->setUsername(player->getUsername());
+			isPlusGrand = true;
+		}
+		i++;
+	}
+
+	if (isPlusGrand)
+	{
+		if (historique.size() > 10) {
+			historique.pop_back();
+		}
+		std::ofstream myfile;
+		myfile.open("Score.txt", std::ofstream::out | std::ofstream::trunc);
+
+		for (int j = 0; j < historique.size(); j++)
+		{
+			myfile << historique[j]->getUsername() << " " << historique[j]->getScore() << std::endl;
+		}
+
+		myfile.close();
+
+		for (int i = 0; i < historique.size(); i++) {
+			name[i]->setText(QString::fromStdString(historique[i]->getUsername()));
+			score[i]->setText(QString::number(historique[i]->getScore()));
+			position[i]->setText(QString::number(i + 1));
+		}
+		qApp->processEvents();
+	}
 }
 
 void FenetrePointage::loadHighscore() {
@@ -136,6 +179,11 @@ void FenetrePointage::loadHighscore() {
 		}
 	}
 	myfile.close();
+}
+
+void FenetrePointage::updateScore() {
+	scoreJoueur->setText(QString::number(player->getScore()));
+	qApp->processEvents();
 }
 
 void FenetrePointage::closeEvent(QCloseEvent* event)

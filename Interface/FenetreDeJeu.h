@@ -55,8 +55,10 @@ private:
    QGroupBox* m_droite;
    QGroupBox* m_holdnext;
    QGroupBox* m_scoreBox;
+   QGroupBox* m_progressBarBox;
 
    QVBoxLayout* m_layoutGauche;
+   QGridLayout* m_layoutProgressBar;
    QVBoxLayout* m_layoutScore;
    QLabel* m_Garder;
    QLabel* m_Test;
@@ -64,6 +66,7 @@ private:
    QLabel* m_bestscore;
    QLabel* m_joueur;
    QLabel* m_level;
+   QLabel* m_nextLevel;
    QGridLayout* m_hold;
    QVBoxLayout* m_tetris;
    QGridLayout* m_pnext;
@@ -78,6 +81,10 @@ private:
 
 public slots:
     void slotPourFenetrePrincipale();
+    void updateScore();
+    void updateLevel();
+    void slotGameOver();
+
 signals:
     void signalRetourPrincipale();
 };

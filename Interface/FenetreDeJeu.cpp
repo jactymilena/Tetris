@@ -5,8 +5,8 @@ FenetreDeJeu::FenetreDeJeu(QMainWindow* fenetrePrincipale, FenetrePointage* fene
 m_menuMenu(nullptr), m_menuBar(nullptr), m_menuOptionAccueil(nullptr), m_menuOptionQuitter(nullptr), player(playerPrincipal),
 m_menuAide(nullptr), m_widget(nullptr), m_layout(nullptr), m_Garder(nullptr), m_hold(nullptr), m_gauche(nullptr), m_layoutGauche(nullptr),
 m_centre(nullptr), m_droite(nullptr), m_gaucheHold(nullptr), m_Test(nullptr), m_bar(nullptr), m_layoutCentre(nullptr), m_tetris(nullptr),
-m_layoutScore(nullptr), m_scoreBox(nullptr), m_score(nullptr), m_bestscore(nullptr), m_joueur(nullptr), m_level(nullptr), m_layoutDroite(nullptr), m_elevel(nullptr),
-m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage)
+m_layoutScore(nullptr), m_scoreBox(nullptr), m_score(nullptr), m_bestscore(nullptr), m_joueur(nullptr), m_level(nullptr), m_layoutDroite(nullptr), 
+m_elevel(nullptr), m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage)
 {
 	m_layout = new QHBoxLayout();
 	m_widget = new QWidget();
@@ -30,14 +30,28 @@ m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage)
 	//Partie Centre 
 	m_centre = new QGroupBox(tr("Next"));
 	m_console = new QGroupBox(tr("Tetris"));
+	m_progressBarBox = new QGroupBox();
+
+	m_layoutProgressBar = new QGridLayout();
 	m_layoutCentre = new QVBoxLayout();
 	m_bar = new QProgressBar();
+	m_bar->setMinimum(0);
+	m_bar->setMaximum(100);
+	m_bar->setMinimumWidth(200);
 	m_tetris = new QVBoxLayout;
+	m_level = new QLabel(QString::number(player->getLevel()));
+	m_nextLevel = new QLabel(QString::number(player->getLevel() + 1));
+	QObject::connect(player, SIGNAL(levelChanged()), this, SLOT(updateLevel()));
+
+	m_layoutProgressBar->addWidget(m_level, 0, 0, Qt::AlignLeft);
+	m_layoutProgressBar->addWidget(m_nextLevel,0, 2, Qt::AlignLeft);
+	m_layoutProgressBar->addWidget(m_bar, 1, 1, 1, 1);
 
 	boardInit(); // mettre au centre
 
 	m_console->setLayout(m_tetris);
-	m_layoutCentre->addWidget(m_bar);
+	m_progressBarBox->setLayout(m_layoutProgressBar);
+	m_layoutCentre->addWidget(m_progressBarBox);
 	m_layoutCentre->addWidget(m_console);
 	m_centre->setLayout(m_layoutCentre);
 	m_layout->addWidget(m_centre);
@@ -46,6 +60,7 @@ m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage)
 	m_lcdScore = new QLCDNumber(this);
 	m_lcdScore->setSegmentStyle(QLCDNumber::Filled);
 	m_lcdScore->display(player->getScore());
+	QObject::connect(player, SIGNAL(scoreChanged()),this ,SLOT(updateScore()));
 
 	m_droite = new QGroupBox(tr("Droite"));
 	m_holdnext = new QGroupBox(tr("Next"));
@@ -58,7 +73,6 @@ m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage)
 	m_score = new QLabel("SCORE");
 	m_bestscore = new QLabel("Next meilleur score");
 	m_joueur = new QLabel("Joueur");
-	m_level = new QLabel("Level");
 
 	m_layoutScore->addWidget(m_score);
 	m_layoutScore->addWidget(m_score);
@@ -71,7 +85,6 @@ m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage)
 	m_layoutDroite->addWidget(m_bestscore);
 	m_layoutDroite->addWidget(m_joueur);
 	m_layoutDroite->addWidget(m_elevel);
-	m_layoutDroite->addWidget(m_level);
 	m_droite->setLayout(m_layoutDroite);
 	m_layout->addWidget(m_droite);
 
@@ -87,15 +100,30 @@ m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage)
 	m_menuMenu->addAction(m_menuOptionQuitter);
 	m_layout->setMenuBar(m_menuBar);
 
-
 	//Action 
 	QObject::connect(m_menuOptionAccueil, SIGNAL(triggered(bool)), this, SLOT(slotPourFenetrePrincipale()));
 	QObject::connect(this, SIGNAL(signalRetourPrincipale()), fenetrePrincipale, SLOT(slotChangerFenetrePrincipale()));
 	QObject::connect(m_menuOptionQuitter, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
-	
+
 	setLayout(m_layout);
 }
 
+void FenetreDeJeu::slotGameOver() {
+	m_fenetrePointage->checkerScore();
+	m_fenetrePointage->show();
+}
+
+void FenetreDeJeu::updateScore() {
+	m_lcdScore->display(player->getScore());
+	m_bar->setValue(player->getScore() % 100);
+	//m_bar->update();
+}
+
+void FenetreDeJeu::updateLevel() {
+	m_level->setText(QString::number(player->getLevel()));
+	m_nextLevel->setText(QString::number(player->getLevel() + 1));
+	qApp->processEvents();
+}
 
 void FenetreDeJeu::slotPourFenetrePrincipale()
 {
@@ -106,11 +134,11 @@ void FenetreDeJeu::boardInit() {
 	board = new Board(player);
 	board->setFocus();
 	board->setFocusPolicy(Qt::StrongFocus);
+	QObject::connect(board, SIGNAL(gameOverSignal()), this, SLOT(slotGameOver()));
 	m_tetris->addWidget(board);
 }
 
 FenetreDeJeu::~FenetreDeJeu()
 {
-
 	close();
 }

@@ -28,8 +28,12 @@ public:
 
     void setJoueurUsername();
     void loadHighscore();
+    void checkerScore();
     void closeEvent(QCloseEvent* event);
     void getNextBestScore();
+
+public slots:
+    void updateScore();
 
 signals:
     void signalClosingFenetrePointage();

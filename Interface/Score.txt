@@ -5,7 +5,6 @@ Santa 9000
 Hannibal 2000
 Jekyll 1500
 Hyde 1000
+Enter username 350
 Legarsdurapport 60
 Bobette 10
-Simon 0
- 

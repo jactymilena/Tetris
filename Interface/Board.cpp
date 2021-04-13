@@ -13,7 +13,8 @@ Board::Board(Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
 	setMidLineWidth(3);
 	setStyleSheet("background-color: rgb(0, 0, 0);"); 
 	activateWindow();
-
+	setMinimumHeight(550);
+	setMinimumWidth(200);
 	// Board init
 	resetBoard();
 	
@@ -144,61 +145,6 @@ void Board::startGame() {
 	loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
 }
 
-void Board::checkerScore() {
-	bool isPlusGrand = false;
-	int i = 0;
-	while ((!isPlusGrand) && (i < historique.size() - 1))
-	{
-		if (historique[i].getScore() <= player->getScore())
-		{
-			for (int w = historique.size() - 1; w >= i + 1; w--) {
-				historique[w].setScore(historique[w - 1].getScore());
-				historique[w].setUsername(historique[w - 1].getUsername());
-			}
-
-			historique[i].setScore(player->getScore());
-			historique[i].setUsername(player->getUsername());
-			isPlusGrand = true;
-		}
-		i++;
-	}
-
-	if (isPlusGrand)
-	{
-		if (historique.size() > 10) {
-			historique.pop_back();
-		}
-		std::ofstream myfile;
-		myfile.open("Score.txt", std::ofstream::out | std::ofstream::trunc);
-
-		for (int j = 0; j < historique.size(); j++)
-		{
-			myfile << historique[j].getUsername() << " " << historique[j].getScore() << std::endl;
-		}
-
-		myfile.close();
-	}
-}
-
-//void Board::loadHighscore() {
-//	//Ouvrir document 
-//	std::fstream myfile;
-//	myfile.open("Score.txt");
-//	std::string line;
-//	std::string username;
-//	int score;
-//
-//	if (myfile.is_open())
-//	{
-//		while (myfile >> username >> score)
-//		{
-//			Player p(score, username);
-//			historique.push_back(p);
-//		}
-//	}
-//	myfile.close();
-//}
-
 bool Board::loadPiece(int num_piece, int num_color) {
 	piece.loadPiece(num_piece, num_color);
 	
@@ -207,6 +153,7 @@ bool Board::loadPiece(int num_piece, int num_color) {
 		if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value == 1) {
 			game_over = true; // jeu termine
 			timer->stop();
+			emit gameOverSignal();
 			return false; // pas possible de loader la piece 
 		}
 	}
@@ -357,7 +304,7 @@ void Board::resetBoard() {
 		}
 	}
 	game_over = false;
-	level = 0;
+	player->setLevel(0);
 	difficulte = 500;
 	nouvellePiece = true;
 }
@@ -372,7 +319,6 @@ void Board::pieceState(int state) {
 	for (int i = 0; i < 4; i++) {
 		cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value = state;
 		cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].color = color;
-
 	}
 }
 
@@ -389,12 +335,13 @@ void Board::augmenterLevel() {
 		if (player->getScore() % SCORE == 0)
 		{
 			difficulte -= 50;
-			level++;
+			player->setLevel(player->getLevel() + 1);
 
 			if (difficulte < 100)
 			{
 				difficulte = 100;
-				level++;
+				//player->setLevel(player->getLevel() + 1);
+
 			}
 
 			timer->stop();
