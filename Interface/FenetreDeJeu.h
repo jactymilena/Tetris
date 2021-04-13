@@ -34,7 +34,6 @@ public:
     ~FenetreDeJeu();
     void boardInit();
 
-
 private:
     // layout
     Board* board;
@@ -76,14 +75,23 @@ private:
    QProgressBar* m_elevel;
    QLCDNumber* m_lcdScore;
 
+   // Game over widget
    FenetrePointage* m_fenetrePointage;
+   QWidget* m_gameOverWidget;
+   QVBoxLayout* m_gameOverLayout;
+   QPushButton* m_gameOverQuitterButton;
+   QPushButton* m_recommencerButton;
+
    Player* player;
+  
 
 public slots:
     void slotPourFenetrePrincipale();
     void updateScore();
     void updateLevel();
     void slotGameOver();
+    void recommencerBoard();
+
 
 signals:
     void signalRetourPrincipale();

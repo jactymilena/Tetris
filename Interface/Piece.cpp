@@ -10,16 +10,16 @@ Carre::Carre() {
 	colonne = 0;
 }
 
-void Piece::loadPiece(int num_piece, int color_num) {
+void Piece::loadPiece(int num_piece) {
 	// 7 types de pi�ces
 	if (num_piece >= 0 && numPiece <= 7)
 	{
 		numPiece = num_piece;
 	}
-	numColor = color_num;
 
 	switch (num_piece) { // position initial des carr�s de la pi�ce 
 	case I:
+		numColor = 0;
 		carres[0].ligne = 0;
 		carres[0].colonne = 4;
 
@@ -35,6 +35,7 @@ void Piece::loadPiece(int num_piece, int color_num) {
 
 		break;
 	case O:
+		numColor = 1;
 		carres[0].ligne = 1;
 		carres[0].colonne = 3;
 
@@ -49,6 +50,7 @@ void Piece::loadPiece(int num_piece, int color_num) {
 
 		break;
 	case J:
+		numColor = 2;
 		carres[0].ligne = 0;
 		carres[0].colonne = 2;
 
@@ -64,6 +66,7 @@ void Piece::loadPiece(int num_piece, int color_num) {
 
 		break;
 	case Z:
+		numColor = 3;
 		carres[0].ligne = 0;
 		carres[0].colonne = 2;
 
@@ -79,6 +82,7 @@ void Piece::loadPiece(int num_piece, int color_num) {
 
 		break;
 	case T:
+		numColor = 4;
 		carres[0].ligne = 0;
 		carres[0].colonne = 3;
 
@@ -94,6 +98,7 @@ void Piece::loadPiece(int num_piece, int color_num) {
 
 		break;
 	case L:
+		numColor = 5;
 		carres[0].ligne = 0;
 		carres[0].colonne = 4;
 
@@ -108,6 +113,7 @@ void Piece::loadPiece(int num_piece, int color_num) {
 
 		break;
 	case S:
+		numColor = 6;
 		carres[0].ligne = 0;
 		carres[0].colonne = 3;
 
@@ -123,6 +129,7 @@ void Piece::loadPiece(int num_piece, int color_num) {
 		break;
 
 	case 7:
+		numColor = 0;
 		carres[0].ligne = -1;
 		carres[0].colonne = -1;
 

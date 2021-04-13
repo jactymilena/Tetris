@@ -29,7 +29,6 @@ int Player::getLevel() {
 }
 
 void Player::setLevel(int level) {
-	qDebug() << level;
 	this->level = level;
 	emit levelChanged();
 }

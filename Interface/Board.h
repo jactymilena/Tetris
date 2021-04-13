@@ -72,12 +72,13 @@ public:
 	Board(Player* playerPrincipal);
 	void startGame();
 	void resetBoard();
-	bool loadPiece(int num_piece, int num_color);
+	bool loadPiece(int num_piece);
 	void movePiece(bool& nouvellePiece, int caseVoix);
 	void pieceState(int state);
 	bool verifMove(int direction);
 	bool verifLigne();
 	void enleverLigne(int i);
+	void restart();
 
 	//Menu Score
 	void augmenterScore(int nbLigne);

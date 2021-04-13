@@ -59,6 +59,8 @@ index(nullptr)
 	index->addWidget(fenetreDeJeu);
 	setCentralWidget(index);
 	index->setCurrentIndex(0);
+
+
 }
 
 FenetrePrincipale::~FenetrePrincipale()
@@ -101,7 +103,6 @@ void FenetrePrincipale::slotPourEnableFenetre()
 
 void FenetrePrincipale::slotPourFenetrePointage()
 {
-	qDebug() << player->getNameSetted();
 	bool ok = true;
 	if (!player->getNameSetted()) {
 		

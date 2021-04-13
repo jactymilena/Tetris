@@ -6,7 +6,8 @@ m_menuMenu(nullptr), m_menuBar(nullptr), m_menuOptionAccueil(nullptr), m_menuOpt
 m_menuAide(nullptr), m_widget(nullptr), m_layout(nullptr), m_Garder(nullptr), m_hold(nullptr), m_gauche(nullptr), m_layoutGauche(nullptr),
 m_centre(nullptr), m_droite(nullptr), m_gaucheHold(nullptr), m_Test(nullptr), m_bar(nullptr), m_layoutCentre(nullptr), m_tetris(nullptr),
 m_layoutScore(nullptr), m_scoreBox(nullptr), m_score(nullptr), m_bestscore(nullptr), m_joueur(nullptr), m_level(nullptr), m_layoutDroite(nullptr), 
-m_elevel(nullptr), m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage)
+m_elevel(nullptr), m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage), m_gameOverLayout(nullptr), m_gameOverWidget(nullptr),
+m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr)
 {
 	m_layout = new QHBoxLayout();
 	m_widget = new QWidget();
@@ -106,17 +107,38 @@ m_elevel(nullptr), m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fene
 	QObject::connect(m_menuOptionQuitter, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
 
 	setLayout(m_layout);
+
+	// Game over widget
+	m_gameOverLayout = new QVBoxLayout();
+
+	m_gameOverQuitterButton = new QPushButton("Quitter");
+	m_recommencerButton = new QPushButton("Recommencer");
+	QObject::connect(m_gameOverQuitterButton, SIGNAL(clicked(bool)), qApp, SLOT(quit()));
+	QObject::connect(m_recommencerButton, SIGNAL(clicked(bool)), this, SLOT(recommencerBoard()));
+
+	m_gameOverLayout->addWidget(fenetrePointage);
+	m_gameOverLayout->addWidget(m_recommencerButton);
+	m_gameOverLayout->addWidget(m_gameOverQuitterButton);
+
+	m_gameOverWidget = new QWidget();
+	m_gameOverWidget->setLayout(m_gameOverLayout);
 }
 
 void FenetreDeJeu::slotGameOver() {
 	m_fenetrePointage->checkerScore();
-	m_fenetrePointage->show();
+	this->setEnabled(false);
+	m_gameOverWidget->show();
+}
+
+void FenetreDeJeu::recommencerBoard() {
+	board->restart();
+	this->setEnabled(true);
+	m_gameOverWidget->hide();
 }
 
 void FenetreDeJeu::updateScore() {
 	m_lcdScore->display(player->getScore());
 	m_bar->setValue(player->getScore() % 100);
-	//m_bar->update();
 }
 
 void FenetreDeJeu::updateLevel() {

@@ -40,6 +40,14 @@ void Board::mousePressEvent(QMouseEvent* event) {
 	}
 }
 
+void Board::restart() {
+	if (game_over == true) {
+		game_over = false;
+		resetBoard();
+		startGame();
+	}
+}
+
 void Board::keyPressEvent(QKeyEvent* event) {
 	bool canGoDown = true;
 	pieceState(REMOVE);
@@ -141,12 +149,12 @@ void Board::startGame() {
 	timer->start(difficulte);
 	isStarted = true;
 	srand((int)time(0));
-	pieceApres.loadPiece(rand() % 6, rand() % 5);
-	loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
+	pieceApres.loadPiece(rand() % 6);
+	loadPiece(pieceApres.getNumPiece());
 }
 
-bool Board::loadPiece(int num_piece, int num_color) {
-	piece.loadPiece(num_piece, num_color);
+bool Board::loadPiece(int num_piece) {
+	piece.loadPiece(num_piece);
 	
 
 	for (int i = 0; i < 4; i++) { // verif si possible de placer pieces a pos initiale 
@@ -157,7 +165,7 @@ bool Board::loadPiece(int num_piece, int num_color) {
 			return false; // pas possible de loader la piece 
 		}
 	}
-	pieceApres.loadPiece(rand() % 6, rand() % 5);
+	pieceApres.loadPiece(rand() % 6);
 
 	return true;
 }
@@ -227,7 +235,7 @@ void Board::moveDownPiece() {
 	else {
 		pieceState(ADD);
 		verifLigne();
-		loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
+		loadPiece(pieceApres.getNumPiece());
 		nouvellePiece = true;
 	}
 	update();
@@ -406,14 +414,13 @@ void Board::changerPiece()
 {
 	if (pieceHold.getNumPiece() == 7)
 	{
-		pieceHold.loadPiece(piece.getNumPiece(), piece.getNumColor());
-		piece.loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
+		pieceHold.loadPiece(piece.getNumPiece());
+		piece.loadPiece(pieceApres.getNumPiece());
 	}
 	else
 	{
 		int numHold = pieceHold.getNumPiece();
-		int numColorHold = pieceHold.getNumColor();
-		pieceHold.loadPiece(piece.getNumPiece(), piece.getNumColor());
-		piece.loadPiece(numHold, numColorHold);
+		pieceHold.loadPiece(piece.getNumPiece());
+		piece.loadPiece(numHold);
 	}
 }

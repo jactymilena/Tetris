@@ -21,8 +21,9 @@
 #define INDEX_PIVOT 1
 
 
-const QRgb colorTab[5] = { 
-	0x0341AE, 0x72CB3B, 0xFFD500, 0xFF971C, 0xFF3213 //blue, green, yellow, orange, red
+const QRgb colorTab[7] = { 
+	0x0341AE, 0x72CB3B, 0xFFD500, 0xFF971C, 0xFF3213, //blue, green, yellow, orange, red
+	0x8532A8, 0x4EC2D9//purple, light blue
 };
 
 struct Carre {
@@ -38,7 +39,7 @@ public:
 	void move(int direction);
 	void turn(int direction);
 	void unturned();
-	void loadPiece(int num_piece, int color_num);
+	void loadPiece(int num_piece);
 	void print();
 
 	Carre getCarre(int index) const;
