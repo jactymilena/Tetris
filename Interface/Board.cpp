@@ -6,8 +6,8 @@ Case::Case() {
 	value = 0;
 }
 
-Board::Board(Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
-	fenetre = fenetreDeJeu;
+Board::Board(QWidget* fenetreJeu, Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
+	fenetre = fenetreJeu;
 	// set Frame
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
@@ -22,8 +22,8 @@ Board::Board(Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
 	// Timer
 	timer = new QTimer(this);
 	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(moveDownPiece()));
-	QObject::connect(this, SIGNAL(declencherHold()), fenetreDeJeu, SLOT(slotPourTrigeredHold()));
-	QObject::connect(this, SIGNAL(declencherSuivante()), fenetreDeJeu, SLOT(slotPourTrigeredSuivante()));
+	QObject::connect(this, SIGNAL(declencherHold()), fenetreJeu, SLOT(slotPourTrigeredHold()));
+	QObject::connect(this, SIGNAL(declencherSuivante()), fenetreJeu, SLOT(slotPourTrigeredSuivante()));
 	isPaused = false;
 	isStarted = false;
 }

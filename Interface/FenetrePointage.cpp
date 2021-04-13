@@ -1,7 +1,36 @@
 #include "FenetrePointage.h"
 #include "FenetrePrincipale.h"
 
+
+FenetrePointage::FenetrePointage(Player* playerPrincipal) :
+	QWidget(),
+	layout(nullptr),
+	usernameTitre(nullptr),
+	positionTitreJoueur(nullptr),
+	highscoreTitre(nullptr),
+	scoreJoueur(nullptr),
+	votreScore(nullptr),
+	nomJoueur(nullptr),
+	nomTitre(nullptr),
+	scoreTitre(nullptr),
+	positionJoueur(nullptr),
+	positionTitre(nullptr),
+	position(nullptr),
+	name(nullptr),
+	score(nullptr),
+	highscore(nullptr),
+	groupBoxScore(nullptr),
+	groupBoxUser(nullptr),
+	gridScore(nullptr),
+	gridScoreUser(nullptr),
+	retourPagePrincipale(nullptr),
+	player(playerPrincipal)
+{
+	fenetreInit(player);
+}
+
 FenetrePointage::FenetrePointage(QObject* fenetreArrivante, Player* playerPrincipal) :
+	QWidget(),
 	layout(nullptr),
 	usernameTitre(nullptr),
 	positionTitreJoueur(nullptr),
@@ -24,8 +53,21 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante, Player* playerPrinci
 	retourPagePrincipale(nullptr),
 	player(playerPrincipal)
 {	
-	loadHighscore(); // load histoirique des scores
+	fenetreInit(player);
+	QObject::connect(this, SIGNAL(signalClosingFenetrePointage()), fenetreArrivante, SLOT(slotPourEnableFenetre()));
 
+}
+
+FenetrePointage::~FenetrePointage()
+{
+	for (auto player : historique) {
+		delete player;
+	}
+	historique.clear();
+}
+
+void FenetrePointage::fenetreInit(Player* player) {
+	loadHighscore(); // load histoirique des scores
 
 	//Pour les info du joueur
 	//Pour Username
@@ -46,7 +88,7 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante, Player* playerPrinci
 	for (int i = 0; i < historique.size(); i++) {
 		name[i] = new QLabel(QString::fromStdString(historique[i]->getUsername()));
 		score[i] = new QLabel(QString::number(historique[i]->getScore()));
-		position[i] = new QLabel(QString::number(i+1));
+		position[i] = new QLabel(QString::number(i + 1));
 	}
 
 	//Pour l'affichage
@@ -102,16 +144,7 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante, Player* playerPrinci
 
 	this->setLayout(layout);
 
-	QObject::connect(this, SIGNAL(signalClosingFenetrePointage()), fenetreArrivante, SLOT(slotPourEnableFenetre()));
 	QObject::connect(player, SIGNAL(scoreChanged()), this, SLOT(updateScore()));
-}
-
-FenetrePointage::~FenetrePointage()
-{
-	for (auto player : historique) {
-		delete player;
-	}
-	historique.clear();
 }
 
 void FenetrePointage::getNextBestScore() {

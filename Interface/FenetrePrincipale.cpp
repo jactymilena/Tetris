@@ -52,7 +52,7 @@ index(nullptr)
 	widget->setLayout(layoutVertical1);
 	setCentralWidget(widget);
 	QObject::connect(boutonPourScore, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetrePointage()));
-	fenetreDeJeu = new FenetreDeJeu(this, fenetrePointage, player);
+	fenetreDeJeu = new FenetreDeJeu(this, player);
 	fenetreAide = new FenetreAide(this);
 	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), SLOT(slotPourFenetreDeJeu()));
 	
@@ -62,8 +62,6 @@ index(nullptr)
 	index->addWidget(fenetreAide);
 	setCentralWidget(index);
 	index->setCurrentIndex(0);
-
-
 }
 
 FenetrePrincipale::~FenetrePrincipale()
@@ -88,6 +86,7 @@ void FenetrePrincipale::slotPourFenetreDeJeu()
 			player->setNameSetted(true);
 			player->setUsername(text.toStdString());
 			fenetrePointage->setJoueurUsername();
+			fenetrePointage->loadHighscore();
 		}
 	}
 	index->setCurrentIndex(1);
@@ -128,8 +127,8 @@ void FenetrePrincipale::slotPourFenetrePointage()
 	if (ok)
 	{
 		fenetrePointage->setJoueurUsername();
-		this->setEnabled(false);
 		fenetrePointage->show();
+		this->setEnabled(false);
 	}
 }
 

@@ -73,7 +73,6 @@ public:
 	void startGame();
 	void resetBoard();
 	bool loadPiece(int num_piece);
-	void movePiece(bool& nouvellePiece, int caseVoix);
 	void pieceState(int state);
 	bool verifMove(int direction);
 	bool verifLigne();

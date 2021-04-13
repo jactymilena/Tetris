@@ -18,13 +18,18 @@
 #include <QGroupBox>
 #include <string>
 #include <QDebug>
+#include <QWidget>
+#include <QObject>
 #include "Player.h"
 class FenetrePointage : public QWidget
 {
     Q_OBJECT
 public:
     FenetrePointage(QObject* fenetreArrivante, Player* playerPrincipal);
+    FenetrePointage(Player* playerPrincipal);
     ~FenetrePointage();
+
+    void fenetreInit(Player* player);
 
     void setJoueurUsername();
     void loadHighscore();

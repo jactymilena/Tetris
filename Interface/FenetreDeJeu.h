@@ -31,7 +31,7 @@ class FenetreDeJeu : public QWidget
     Q_OBJECT
 
 public:
-    FenetreDeJeu(QMainWindow* fenetrePrincipale, FenetrePointage* fenetrePointage, Player* playerPrincipal);
+    FenetreDeJeu(QMainWindow* fenetrePrincipale, Player* playerPrincipal);
     ~FenetreDeJeu();
     void boardInit();
 
