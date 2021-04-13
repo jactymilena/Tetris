@@ -3,7 +3,6 @@
 #include <iostream>
 #include <QObject>
 #include <QWidget>
-#include <QtCore/qtmetamacros.h>
 #include <QDebug>
 
 
