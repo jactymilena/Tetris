@@ -74,6 +74,9 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_layoutDroite = new QVBoxLayout();
 	m_layoutScore = new QVBoxLayout();
 	m_elevel = new QProgressBar();
+	m_elevel->setMinimum(0);
+	m_elevel ->setMaximum(100);
+	m_elevel->setMinimumWidth(200);
 	m_score = new QLabel("SCORE");
 	m_bestscore = new QLabel("Next meilleur score");
 	m_joueur = new QLabel("Joueur");
@@ -158,6 +161,8 @@ void FenetreDeJeu::updateScore() {
 	m_lcdScore->display(player->getScore());
 	m_bar->setValue(player->getScore() % 100);
 	nextBestPlayer = (m_fenetrePointage->getNextBestScore());
+	qDebug() << player->getScore() * 100 / (nextBestPlayer->getScore());
+	m_elevel->setValue((player->getScore() * 100) / (nextBestPlayer->getScore()));
 	m_prochainScore->setText(QString::number(nextBestPlayer->getScore()));
 	m_prochainIndividu->setText(QString::fromStdString(nextBestPlayer->getUsername()));
 }
