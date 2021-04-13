@@ -39,6 +39,9 @@
     <ClCompile Include="FenetrePrincipale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FramePourPiece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Piece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -62,6 +65,9 @@
     <CustomBuild Include="FenetrePrincipale.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <ClInclude Include="FramePourPiece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Piece.h">
       <Filter>Header Files</Filter>
     </ClInclude>

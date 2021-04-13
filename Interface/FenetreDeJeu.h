@@ -22,6 +22,7 @@
 #include <QGroupBox>
 #include <QProgressBar>
 #include "Board.h"
+#include "FramePourPiece.h"
 
 class FenetreDeJeu : public QWidget
 {
@@ -31,7 +32,6 @@ public:
     FenetreDeJeu(QMainWindow* fenetrePrincipale);
     ~FenetreDeJeu();
     void boardInit();
-
 
 private:
     // layout
@@ -68,9 +68,15 @@ private:
    QVBoxLayout* m_layoutDroite;
    QProgressBar* m_bar;
    QProgressBar* m_elevel;
+   FramePourPiece* frameHold;
+   FramePourPiece* framePieceSuivante;
+
+
 
 public slots:
     void slotPourFenetrePrincipale();
+    void slotPourTrigeredHold();
+    void slotPourTrigeredSuivante();
 signals:
     void signalRetourPrincipale();
 };
