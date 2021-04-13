@@ -69,7 +69,7 @@ struct Case {
 class Board : public QFrame {
 	Q_OBJECT
 public:
-	Board();
+	Board(QWidget* fenetreJeu);
 	void startGame();
 	void resetBoard();
 	bool loadPiece(int num_piece, int num_color);
@@ -90,7 +90,9 @@ public:
 
 	//Lecture FPGA
 	//int lireFPGA();
-
+	//Getter Pieces
+	Piece getPieceHold();
+	Piece getPieceSuivante();
 protected:
 	void paintEvent(QPaintEvent* event);
 	void keyPressEvent(QKeyEvent* event);
@@ -101,6 +103,9 @@ public slots:
 	void moveDownPiece();
 	//void unpauseGame();
 
+signals:
+	void declencherHold();
+	void declencherSuivante();
 
 private:
 	Case cases[LIGNES][COLONNES];
@@ -120,6 +125,6 @@ private:
 	QTimer* timer;
 	bool isPaused;
 	bool isStarted;
-
+	QWidget *fenetre;
 
 };

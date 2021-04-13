@@ -6,7 +6,8 @@ Case::Case() {
 	value = 0;
 }
 
-Board::Board() : QFrame() {
+Board::Board(QWidget* fenetreDeJeu) : QFrame() {
+	fenetre = fenetreDeJeu;
 	// set Frame
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
@@ -19,7 +20,9 @@ Board::Board() : QFrame() {
 	
 	// Timer
 	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(moveDownPiece()));
+	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(moveDownPiece()));
+	QObject::connect(this, SIGNAL(declencherHold()), fenetreDeJeu, SLOT(slotPourTrigeredHold()));
+	QObject::connect(this, SIGNAL(declencherSuivante()), fenetreDeJeu, SLOT(slotPourTrigeredSuivante()));
 	isPaused = false;
 	isStarted = false;
 }
@@ -56,6 +59,7 @@ void Board::keyPressEvent(QKeyEvent* event) {
 		else if ((event->key() == Qt::Key_W) &&	nouvellePiece) {
 			nouvellePiece = false;
 			changerPiece();
+			emit declencherHold();
 		}
 		else if (event->key() == Qt::Key_Q) {
 			if (piece.getNumPiece() != O) {
@@ -210,8 +214,9 @@ bool Board::loadPiece(int num_piece, int num_color) {
 			return false; // pas possible de loader la piece 
 		}
 	}
+	
 	pieceApres.loadPiece(rand() % 6, rand() % 5);
-
+	emit declencherSuivante();
 	return true;
 }
 
@@ -356,6 +361,8 @@ void Board::resetBoard() {
 			cases[i][j].color = Qt::white;
 		}
 	}
+	pieceHold.setNumPiece(7);
+	emit declencherHold();
 	game_over = false;
 	level = 0;
 	difficulte = 500;
@@ -461,6 +468,7 @@ void Board::changerPiece()
 	{
 		pieceHold.loadPiece(piece.getNumPiece(), piece.getNumColor());
 		piece.loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
+		loadPiece(piece.getNumPiece(), piece.getNumColor());
 	}
 	else
 	{
@@ -469,4 +477,13 @@ void Board::changerPiece()
 		pieceHold.loadPiece(piece.getNumPiece(), piece.getNumColor());
 		piece.loadPiece(numHold, numColorHold);
 	}
+}
+
+Piece Board::getPieceHold()
+{
+	return pieceHold;
+}
+Piece Board::getPieceSuivante()
+{
+	return pieceApres;
 }
