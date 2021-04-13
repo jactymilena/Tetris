@@ -25,6 +25,7 @@
 
 class FenetreAide : public QWidget
 {
+
     Q_OBJECT
 
 public:
@@ -33,8 +34,6 @@ public:
 
 
 private:
-
-
     QVBoxLayout* m_layoutAide;
     QLabel* m_label1;
     QLabel* m_label2;

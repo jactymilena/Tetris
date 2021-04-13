@@ -17,20 +17,33 @@
 #include <QMenuBar>
 #include <QGroupBox>
 #include <string>
+#include <QDebug>
+#include <QWidget>
+#include <QObject>
 #include "Player.h"
 
 class FenetrePointage : public QWidget
 {
     Q_OBJECT
 public:
-    FenetrePointage(QObject* fenetreArrivante);
+    FenetrePointage(QObject* fenetreArrivante, Player* playerPrincipal);
+    FenetrePointage(Player* playerPrincipal);
     ~FenetrePointage();
 
-    void setJoueurUsername(std::string username);
+    void fenetreInit(Player* player);
 
+    void setJoueurUsername();
+    void loadHighscore();
+    void checkerScore();
     void closeEvent(QCloseEvent* event);
+    void getNextBestScore();
+
+public slots:
+    void updateScore();
+
 signals:
     void signalClosingFenetrePointage();
+
 private:
     QVBoxLayout* layout;
 
@@ -55,11 +68,13 @@ private:
 
     QPushButton* retourPagePrincipale;
 
-    Player joueur1;
-
     QGroupBox* groupBoxScore;
     QGroupBox* groupBoxUser;
     QGridLayout* gridScore;
     QGridLayout* gridScoreUser;
+    std::vector<Player*> historique;
+
+    Player* player;
+
 };
 #endif

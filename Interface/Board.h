@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -43,9 +43,9 @@
 //int aff7sg_octet0 = 0;               // octet 0 (droite) pour afficheur 7 segments
 //int aff7sg_octet1 = 0;               // octet 0 (droite) pour afficheur 7 segments                    
 //
-//const int nitermax = 10000;         // Nbre d'itération max de la boucle de lecture d'acquisition (limite pour tests)
+//const int nitermax = 10000;         // Nbre d'itï¿½ration max de la boucle de lecture d'acquisition (limite pour tests)
 //									 // changer la condition de boucle sans cette limite selon le besoin de l'application
-//const int delai_boucle = 10;         // delai d'attente ajouté dans la boucle de lecture en ms
+//const int delai_boucle = 10;         // delai d'attente ajoutï¿½ dans la boucle de lecture en ms
 //
 //// numeros de registres correspondants pour les echanges FPGA <-> PC  ...
 //unsigned const int nreg_lect_stat_btn = 0;  // fpga -> PC  Statut et BTN lus FPGA -> PC
@@ -69,20 +69,20 @@ struct Case {
 class Board : public QFrame {
 	Q_OBJECT
 public:
-	Board(QWidget* fenetreJeu);
+	Board(QWidget* fenetreJeu, Player* playerPrincipal);
 	void startGame();
 	void resetBoard();
-	bool loadPiece(int num_piece, int num_color);
-	void movePiece(bool& nouvellePiece, int caseVoix);
+	bool loadPiece(int num_piece);
 	void pieceState(int state);
 	bool verifMove(int direction);
 	bool verifLigne();
 	void enleverLigne(int i);
+	void restart();
 
 	//Menu Score
 	void augmenterScore(int nbLigne);
 	void augmenterLevel();
-	void loadHighscore();
+	//void loadHighscore();
 	void checkerScore();
 
 	//Menu hold
@@ -106,19 +106,19 @@ public slots:
 signals:
 	void declencherHold();
 	void declencherSuivante();
+	void gameOverSignal();
 
 private:
 	Case cases[LIGNES][COLONNES];
 	bool game_over;
 	bool nouvellePiece;
-	int level;
 	Piece pieceHold;
 	Piece piece;
 	Piece pieceApres;
 	int compteur;
 	int difficulte;
 	std::vector<Player> historique;
-	Player player;
+	Player* player;
 
 	// Qt
 	QGridLayout* layout;

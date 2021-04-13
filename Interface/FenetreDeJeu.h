@@ -21,15 +21,17 @@
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QProgressBar>
+#include <QLCDNumber>
 #include "Board.h"
 #include "FramePourPiece.h"
+#include "FenetrePointage.h"
 
 class FenetreDeJeu : public QWidget
 {
     Q_OBJECT
 
 public:
-    FenetreDeJeu(QMainWindow* fenetrePrincipale);
+    FenetreDeJeu(QMainWindow* fenetrePrincipale, Player* playerPrincipal);
     ~FenetreDeJeu();
     void boardInit();
 
@@ -52,15 +54,19 @@ private:
    QGroupBox* m_centre;
    QGroupBox* m_droite;
    QGroupBox* m_holdnext;
+   QGroupBox* m_scoreBox;
+   QGroupBox* m_progressBarBox;
 
    QVBoxLayout* m_layoutGauche;
+   QGridLayout* m_layoutProgressBar;
+   QVBoxLayout* m_layoutScore;
    QLabel* m_Garder;
    QLabel* m_Test;
-   QLabel* m_next;
    QLabel* m_score;
    QLabel* m_bestscore;
    QLabel* m_joueur;
    QLabel* m_level;
+   QLabel* m_nextLevel;
    QGridLayout* m_hold;
    QVBoxLayout* m_tetris;
    QGridLayout* m_pnext;
@@ -70,11 +76,25 @@ private:
    QProgressBar* m_elevel;
    FramePourPiece* frameHold;
    FramePourPiece* framePieceSuivante;
+   QLCDNumber* m_lcdScore;
 
+   // Game over widget
+   FenetrePointage* m_fenetrePointage;
+   QWidget* m_gameOverWidget;
+   QVBoxLayout* m_gameOverLayout;
+   QPushButton* m_gameOverQuitterButton;
+   QPushButton* m_recommencerButton;
 
+   Player* player;
+  
 
 public slots:
     void slotPourFenetrePrincipale();
+    void updateScore();
+    void updateLevel();
+    void slotGameOver();
+    void recommencerBoard();
+
     void slotPourTrigeredHold();
     void slotPourTrigeredSuivante();
     void slotPourFenetreAide();

@@ -1,4 +1,4 @@
-#include "Board.h"
+ï»¿#include "Board.h"
 
 //#include "CommunicationFPGA.h"
 
@@ -6,23 +6,24 @@ Case::Case() {
 	value = 0;
 }
 
-Board::Board(QWidget* fenetreDeJeu) : QFrame() {
-	fenetre = fenetreDeJeu;
+Board::Board(QWidget* fenetreJeu, Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
+	fenetre = fenetreJeu;
 	// set Frame
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
 	setMidLineWidth(3);
 	setStyleSheet("background-color: rgb(0, 0, 0);"); 
 	activateWindow();
-
+	setMinimumHeight(550);
+	setMinimumWidth(200);
 	// Board init
 	resetBoard();
 	
 	// Timer
 	timer = new QTimer(this);
 	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(moveDownPiece()));
-	QObject::connect(this, SIGNAL(declencherHold()), fenetreDeJeu, SLOT(slotPourTrigeredHold()));
-	QObject::connect(this, SIGNAL(declencherSuivante()), fenetreDeJeu, SLOT(slotPourTrigeredSuivante()));
+	QObject::connect(this, SIGNAL(declencherHold()), fenetreJeu, SLOT(slotPourTrigeredHold()));
+	QObject::connect(this, SIGNAL(declencherSuivante()), fenetreJeu, SLOT(slotPourTrigeredSuivante()));
 	isPaused = false;
 	isStarted = false;
 }
@@ -39,6 +40,14 @@ void Board::mousePressEvent(QMouseEvent* event) {
 			resetBoard();
 			startGame();
 		}
+	}
+}
+
+void Board::restart() {
+	if (game_over == true) {
+		game_over = false;
+		resetBoard();
+		startGame();
 	}
 }
 
@@ -144,78 +153,23 @@ void Board::startGame() {
 	timer->start(difficulte);
 	isStarted = true;
 	srand((int)time(0));
-	pieceApres.loadPiece(rand() % 6, rand() % 5);
-	loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
+	pieceApres.loadPiece(rand() % 6);
+	loadPiece(pieceApres.getNumPiece());
 }
 
-void Board::checkerScore() {
-	bool isPlusGrand = false;
-	int i = 0;
-	while ((!isPlusGrand) && (i < historique.size() - 1))
-	{
-		if (historique[i].getScore() <= player.getScore())
-		{
-			for (int w = historique.size() - 1; w >= i + 1; w--) {
-				historique[w].setScore(historique[w - 1].getScore());
-				historique[w].setUsername(historique[w - 1].getUsername());
-			}
-
-			historique[i].setScore(player.getScore());
-			historique[i].setUsername(player.getUsername());
-			isPlusGrand = true;
-		}
-		i++;
-	}
-
-	if (isPlusGrand)
-	{
-		if (historique.size() > 10) {
-			historique.pop_back();
-		}
-		std::ofstream myfile;
-		myfile.open("Score.txt", std::ofstream::out | std::ofstream::trunc);
-
-		for (int j = 0; j < historique.size(); j++)
-		{
-			myfile << historique[j].getUsername() << " " << historique[j].getScore() << std::endl;
-		}
-
-		myfile.close();
-	}
-}
-
-void Board::loadHighscore() {
-	//Ouvrir document 
-	std::fstream myfile;
-	myfile.open("Score.txt");
-	std::string line;
-	std::string username;
-	int score;
-
-	if (myfile.is_open())
-	{
-		while (myfile >> username >> score)
-		{
-			Player p(score, username);
-			historique.push_back(p);
-		}
-	}
-	myfile.close();
-}
-
-bool Board::loadPiece(int num_piece, int num_color) {
-	piece.loadPiece(num_piece, num_color);
+bool Board::loadPiece(int num_piece) {
+	piece.loadPiece(num_piece);
 	
 
 	for (int i = 0; i < 4; i++) { // verif si possible de placer pieces a pos initiale 
 		if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value == 1) {
 			game_over = true; // jeu termine
 			timer->stop();
+			emit gameOverSignal();
 			return false; // pas possible de loader la piece 
 		}
 	}
-	
-	pieceApres.loadPiece(rand() % 6, rand() % 5);
+	pieceApres.loadPiece(rand() % 6);
 	emit declencherSuivante();
 	return true;
 }
@@ -285,7 +239,7 @@ void Board::moveDownPiece() {
 	else {
 		pieceState(ADD);
 		verifLigne();
-		loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
+		loadPiece(pieceApres.getNumPiece());
 		nouvellePiece = true;
 	}
 	update();
@@ -319,22 +273,22 @@ void Board::moveDownPiece() {
 	statutport = port.ecrireRegistre(nreg_ecri_led, 1);
 	if ((stat_btn & 1) != 0)
 	{
-		//Phonème A
+		//Phonï¿½me A
 		if((echconv[0] > 202 && echconv[0] < 222) && (echconv[1] > 15 && echconv[1] < 35) && (echconv[2] > 0 && echconv[2] < 20) && (echconv[3] > 0 && echconv[3] < 15))
 		{
 			return 1;
 		}
-		//Phonème U
+		//Phonï¿½me U
 		else if((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 0 && echconv[1] < 20) && (echconv[2] > 165 && echconv[2] < 185) && (echconv[3] > 40 && echconv[3] < 60))
 		{
 			return 2;
 		}
-		//Phonème E
+		//Phonï¿½me E
 		else if ((echconv[0] > 183 && echconv[0] < 203) && (echconv[1] > 227 && echconv[1] < 247) && (echconv[2] > 90 && echconv[2] < 110) && (echconv[3] > 15 && echconv[3] < 35))
 		{
 			return 3;
 		}
-		//Phonème I
+		//Phonï¿½me I
 		else if ((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 90 && echconv[1] < 110) && (echconv[2] > 177 && echconv[2] < 197) && (echconv[3] > 15 && echconv[3] < 35))
 		{
 			return 4;
@@ -364,7 +318,7 @@ void Board::resetBoard() {
 	pieceHold.setNumPiece(7);
 	emit declencherHold();
 	game_over = false;
-	level = 0;
+	player->setLevel(0);
 	difficulte = 500;
 	nouvellePiece = true;
 }
@@ -379,29 +333,29 @@ void Board::pieceState(int state) {
 	for (int i = 0; i < 4; i++) {
 		cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value = state;
 		cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].color = color;
-
 	}
 }
 
 void Board::augmenterScore(int nbLigne) {
 
-	player.setScore(player.getScore() + 50 * nbLigne);
+	player->setScore(player->getScore() + 50 * nbLigne);
 	augmenterLevel();
 	return;
 }
 
 void Board::augmenterLevel() {
-	if (player.getScore() != 0)
+	if (player->getScore() != 0)
 	{
-		if (player.getScore() % SCORE == 0)
+		if (player->getScore() % SCORE == 0)
 		{
 			difficulte -= 50;
-			level++;
+			player->setLevel(player->getLevel() + 1);
 
 			if (difficulte < 100)
 			{
 				difficulte = 100;
-				level++;
+				//player->setLevel(player->getLevel() + 1);
+
 			}
 
 			timer->stop();
@@ -415,7 +369,7 @@ bool Board::verifLigne() {
 	int maxLigne = piece.getCarre(0).ligne;
 	int compteurX = 0;
 	int compteurLigne = 0;
-	for (int i = 1; i < 4; i++) { // Vérifier les quatres carrees pour avoir la ligne minimale et maximale
+	for (int i = 1; i < 4; i++) { // Vï¿½rifier les quatres carrees pour avoir la ligne minimale et maximale
 		if (piece.getCarre(i).ligne < minLigne)
 		{
 			minLigne = piece.getCarre(i).ligne;
@@ -466,16 +420,15 @@ void Board::changerPiece()
 {
 	if (pieceHold.getNumPiece() == 7)
 	{
-		pieceHold.loadPiece(piece.getNumPiece(), piece.getNumColor());
-		piece.loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
-		loadPiece(piece.getNumPiece(), piece.getNumColor());
+		pieceHold.loadPiece(piece.getNumPiece());
+		piece.loadPiece(pieceApres.getNumPiece());
+		loadPiece(piece.getNumPiece());
 	}
 	else
 	{
 		int numHold = pieceHold.getNumPiece();
-		int numColorHold = pieceHold.getNumColor();
-		pieceHold.loadPiece(piece.getNumPiece(), piece.getNumColor());
-		piece.loadPiece(numHold, numColorHold);
+		pieceHold.loadPiece(piece.getNumPiece());
+		piece.loadPiece(numHold);
 	}
 }
 

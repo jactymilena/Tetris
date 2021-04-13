@@ -20,6 +20,10 @@ FenetreAide::FenetreAide(QMainWindow* fenetrePrincipale) :
 	m_label4->setText("Descendre -> ");
 	m_label5->setText("Garder ->");
 	m_label6->setText("Have fun or die trying ;)");
+	m_layoutAide->addWidget(label1);
+	m_layoutAide->addWidget(label2);
+	m_layoutAide->addWidget(label3);
+	m_layoutAide->addWidget(label4);
 
 	m_layoutAide->addWidget(m_label1);
 	m_layoutAide->addWidget(m_label2);
