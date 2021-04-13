@@ -35,7 +35,7 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante, Player* playerPrinci
 	scoreJoueur = new QLabel(QString::number(player->getScore()));
 
 	//Pour Position du joueur
-	positionJoueur = new QLabel("x");
+	positionJoueur = new QLabel("0");
 	//Pour la table des scores
 	//Créer tous les labels avec les personnes dedans (une fois qu'ils seront lus mettre les strings dans les labels)
 
@@ -121,6 +121,7 @@ void FenetrePointage::getNextBestScore() {
 void FenetrePointage::checkerScore() {
 	bool isPlusGrand = false;
 	int i = 0;
+
 	while ((!isPlusGrand) && (i < historique.size() - 1))
 	{
 		if (historique[i]->getScore() <= player->getScore())
