@@ -6,14 +6,15 @@ Case::Case() {
 	value = 0;
 }
 
-Board::Board() : QFrame() {
+Board::Board(Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
 	// set Frame
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
 	setMidLineWidth(3);
 	setStyleSheet("background-color: rgb(0, 0, 0);"); 
 	activateWindow();
-
+	setMinimumHeight(550);
+	setMinimumWidth(200);
 	// Board init
 	resetBoard();
 	
@@ -36,6 +37,14 @@ void Board::mousePressEvent(QMouseEvent* event) {
 			resetBoard();
 			startGame();
 		}
+	}
+}
+
+void Board::restart() {
+	if (game_over == true) {
+		game_over = false;
+		resetBoard();
+		startGame();
 	}
 }
 
@@ -140,77 +149,23 @@ void Board::startGame() {
 	timer->start(difficulte);
 	isStarted = true;
 	srand((int)time(0));
-	pieceApres.loadPiece(rand() % 6, rand() % 5);
-	loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
+	pieceApres.loadPiece(rand() % 6);
+	loadPiece(pieceApres.getNumPiece());
 }
 
-void Board::checkerScore() {
-	bool isPlusGrand = false;
-	int i = 0;
-	while ((!isPlusGrand) && (i < historique.size() - 1))
-	{
-		if (historique[i].getScore() <= player.getScore())
-		{
-			for (int w = historique.size() - 1; w >= i + 1; w--) {
-				historique[w].setScore(historique[w - 1].getScore());
-				historique[w].setUsername(historique[w - 1].getUsername());
-			}
-
-			historique[i].setScore(player.getScore());
-			historique[i].setUsername(player.getUsername());
-			isPlusGrand = true;
-		}
-		i++;
-	}
-
-	if (isPlusGrand)
-	{
-		if (historique.size() > 10) {
-			historique.pop_back();
-		}
-		std::ofstream myfile;
-		myfile.open("Score.txt", std::ofstream::out | std::ofstream::trunc);
-
-		for (int j = 0; j < historique.size(); j++)
-		{
-			myfile << historique[j].getUsername() << " " << historique[j].getScore() << std::endl;
-		}
-
-		myfile.close();
-	}
-}
-
-void Board::loadHighscore() {
-	//Ouvrir document 
-	std::fstream myfile;
-	myfile.open("Score.txt");
-	std::string line;
-	std::string username;
-	int score;
-
-	if (myfile.is_open())
-	{
-		while (myfile >> username >> score)
-		{
-			Player p(score, username);
-			historique.push_back(p);
-		}
-	}
-	myfile.close();
-}
-
-bool Board::loadPiece(int num_piece, int num_color) {
-	piece.loadPiece(num_piece, num_color);
+bool Board::loadPiece(int num_piece) {
+	piece.loadPiece(num_piece);
 	
 
 	for (int i = 0; i < 4; i++) { // verif si possible de placer pieces a pos initiale 
 		if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value == 1) {
 			game_over = true; // jeu termine
 			timer->stop();
+			emit gameOverSignal();
 			return false; // pas possible de loader la piece 
 		}
 	}
-	pieceApres.loadPiece(rand() % 6, rand() % 5);
+	pieceApres.loadPiece(rand() % 6);
 
 	return true;
 }
@@ -280,7 +235,7 @@ void Board::moveDownPiece() {
 	else {
 		pieceState(ADD);
 		verifLigne();
-		loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
+		loadPiece(pieceApres.getNumPiece());
 		nouvellePiece = true;
 	}
 	update();
@@ -357,7 +312,7 @@ void Board::resetBoard() {
 		}
 	}
 	game_over = false;
-	level = 0;
+	player->setLevel(0);
 	difficulte = 500;
 	nouvellePiece = true;
 }
@@ -372,29 +327,29 @@ void Board::pieceState(int state) {
 	for (int i = 0; i < 4; i++) {
 		cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value = state;
 		cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].color = color;
-
 	}
 }
 
 void Board::augmenterScore(int nbLigne) {
 
-	player.setScore(player.getScore() + 50 * nbLigne);
+	player->setScore(player->getScore() + 50 * nbLigne);
 	augmenterLevel();
 	return;
 }
 
 void Board::augmenterLevel() {
-	if (player.getScore() != 0)
+	if (player->getScore() != 0)
 	{
-		if (player.getScore() % SCORE == 0)
+		if (player->getScore() % SCORE == 0)
 		{
 			difficulte -= 50;
-			level++;
+			player->setLevel(player->getLevel() + 1);
 
 			if (difficulte < 100)
 			{
 				difficulte = 100;
-				level++;
+				//player->setLevel(player->getLevel() + 1);
+
 			}
 
 			timer->stop();
@@ -459,14 +414,13 @@ void Board::changerPiece()
 {
 	if (pieceHold.getNumPiece() == 7)
 	{
-		pieceHold.loadPiece(piece.getNumPiece(), piece.getNumColor());
-		piece.loadPiece(pieceApres.getNumPiece(), pieceApres.getNumColor());
+		pieceHold.loadPiece(piece.getNumPiece());
+		piece.loadPiece(pieceApres.getNumPiece());
 	}
 	else
 	{
 		int numHold = pieceHold.getNumPiece();
-		int numColorHold = pieceHold.getNumColor();
-		pieceHold.loadPiece(piece.getNumPiece(), piece.getNumColor());
-		piece.loadPiece(numHold, numColorHold);
+		pieceHold.loadPiece(piece.getNumPiece());
+		piece.loadPiece(numHold);
 	}
 }

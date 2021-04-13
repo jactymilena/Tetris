@@ -13,6 +13,9 @@ index(nullptr)
 {
 	index = new QStackedWidget;
 	
+	//Player
+	player = new Player();
+
 	//Le titre Tetris Mania 
 	labelTetris = new QLabel();
 	labelTetris->setText("QTETRIS MANIA");
@@ -29,7 +32,7 @@ index(nullptr)
 	boutonPourScore->setFocusPolicy(Qt::NoFocus);
 	
 	//Pointage
-	fenetrePointage = new FenetrePointage(this);
+	fenetrePointage = new FenetrePointage(this, player);
 	demandeUsername = new QInputDialog;
 
 	//Creation layout 
@@ -49,7 +52,7 @@ index(nullptr)
 	widget->setLayout(layoutVertical1);
 	setCentralWidget(widget);
 	QObject::connect(boutonPourScore, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetrePointage()));
-	fenetreDeJeu = new FenetreDeJeu(this);
+	fenetreDeJeu = new FenetreDeJeu(this, fenetrePointage, player);
 	fenetreAide = new FenetreAide(this);
 	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), SLOT(slotPourFenetreDeJeu()));
 	
@@ -59,6 +62,8 @@ index(nullptr)
 	index->addWidget(fenetreAide);
 	setCentralWidget(index);
 	index->setCurrentIndex(0);
+
+
 }
 
 FenetrePrincipale::~FenetrePrincipale()
@@ -67,6 +72,24 @@ FenetrePrincipale::~FenetrePrincipale()
 
 void FenetrePrincipale::slotPourFenetreDeJeu()
 {
+	if (!player->getNameSetted()) {
+		bool ok;
+		QString text;
+		do {
+			demandeUsername->setMinimumSize(1000, 1000);
+			text = demandeUsername->getText(this, tr("Entrez votre nom"),
+				tr("Username:"), QLineEdit::Normal,
+				"Enter username", &ok, Qt::MSWindowsFixedSizeDialogHint);
+		} while (text.isEmpty());
+		
+
+		if (ok && !text.isEmpty())
+		{
+			player->setNameSetted(true);
+			player->setUsername(text.toStdString());
+			fenetrePointage->setJoueurUsername();
+		}
+	}
 	index->setCurrentIndex(1);
 }
 
@@ -87,15 +110,24 @@ void FenetrePrincipale::slotPourEnableFenetre()
 
 void FenetrePrincipale::slotPourFenetrePointage()
 {
-	bool ok;
-	demandeUsername->setMinimumSize(1000, 1000);
-	QString text = demandeUsername->getText(this, tr("Entrez votre nom"),
-		tr("Username:"), QLineEdit::Normal,
-		"Enter username", &ok, Qt::MSWindowsFixedSizeDialogHint);
+	bool ok = true;
+	if (!player->getNameSetted()) {
+		
+		demandeUsername->setMinimumSize(1000, 1000);
+		QString text = demandeUsername->getText(this, tr("Entrez votre nom"),
+			tr("Username:"), QLineEdit::Normal,
+			"Enter username", &ok, Qt::MSWindowsFixedSizeDialogHint);
 
-	if (ok && !text.isEmpty())
+		if (!text.isEmpty())
+		{
+			player->setNameSetted(true);
+			player->setUsername(text.toStdString());
+		}
+	}
+
+	if (ok)
 	{
-		fenetrePointage->setJoueurUsername(text.toStdString());
+		fenetrePointage->setJoueurUsername();
 		this->setEnabled(false);
 		fenetrePointage->show();
 	}

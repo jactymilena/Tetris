@@ -1,7 +1,7 @@
 #include "FenetrePointage.h"
 #include "FenetrePrincipale.h"
 
-FenetrePointage::FenetrePointage(QObject* fenetreArrivante) :
+FenetrePointage::FenetrePointage(QObject* fenetreArrivante, Player* playerPrincipal) :
 	layout(nullptr),
 	usernameTitre(nullptr),
 	positionTitreJoueur(nullptr),
@@ -21,19 +21,21 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante) :
 	groupBoxUser(nullptr),
 	gridScore(nullptr),
 	gridScoreUser(nullptr),
-	retourPagePrincipale(nullptr)
-{
-	joueur1.setScore(10000);
+	retourPagePrincipale(nullptr),
+	player(playerPrincipal)
+{	
+	loadHighscore(); // load histoirique des scores
+
 
 	//Pour les info du joueur
 	//Pour Username
-	nomJoueur = new QLabel(QString::fromStdString(joueur1.getUsername()));
+	nomJoueur = new QLabel(QString::fromStdString(player->getUsername()));
 
 	//Pour score du joueur
-	scoreJoueur = new QLabel(QString::number(joueur1.getScore()));
+	scoreJoueur = new QLabel(QString::number(player->getScore()));
 
 	//Pour Position du joueur
-	positionJoueur = new QLabel("x");
+	positionJoueur = new QLabel("0");
 	//Pour la table des scores
 	//Créer tous les labels avec les personnes dedans (une fois qu'ils seront lus mettre les strings dans les labels)
 
@@ -41,44 +43,11 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante) :
 	score = new QLabel * [10];
 	position = new QLabel * [10];
 
-	for (int i = 0; i < 10; i++) {
-		name[i] = new QLabel();
-		score[i] = new QLabel();
-		position[i] = new QLabel(QString::number(i));
+	for (int i = 0; i < historique.size(); i++) {
+		name[i] = new QLabel(QString::fromStdString(historique[i]->getUsername()));
+		score[i] = new QLabel(QString::number(historique[i]->getScore()));
+		position[i] = new QLabel(QString::number(i+1));
 	}
-
-	name[0] = new QLabel("Smokey");
-	score[0] = new QLabel("500 000");
-
-	name[1] = new QLabel("Kojima");
-	score[1] = new QLabel("100 000");
-
-	name[1] = new QLabel("Dio");
-	score[1] = new QLabel("89 000");
-
-	name[2] = new QLabel("Santa");
-	score[2] = new QLabel("9 000");
-
-	name[3] = new QLabel("Hannibal");
-	score[3] = new QLabel("2 000");
-
-	name[4] = new QLabel("Jekyll");
-	score[4] = new QLabel("1 500");
-
-	name[5] = new QLabel("Hyde");
-	score[5] = new QLabel("1 000");
-
-	name[6] = new QLabel("Bob");
-	score[6] = new QLabel("100");
-
-	name[7] = new QLabel("Legarsdurappport");
-	score[7] = new QLabel("60");
-
-	name[8] = new QLabel("Bobette");
-	score[8] = new QLabel("10");
-
-	name[9] = new QLabel("Simon");
-	score[9] = new QLabel("0");
 
 	//Pour l'affichage
 	usernameTitre = new QLabel("Nom");
@@ -119,7 +88,7 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante) :
 	gridScore->addWidget(scoreTitre, 1, 1);
 	gridScore->addWidget(nomTitre, 1, 2);
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < historique.size(); i++)
 	{
 		gridScore->addWidget(position[i], i + 2, 0);
 		gridScore->addWidget(score[i], i + 2, 1);
@@ -134,11 +103,88 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante) :
 	this->setLayout(layout);
 
 	QObject::connect(this, SIGNAL(signalClosingFenetrePointage()), fenetreArrivante, SLOT(slotPourEnableFenetre()));
-
+	QObject::connect(player, SIGNAL(scoreChanged()), this, SLOT(updateScore()));
 }
+
 FenetrePointage::~FenetrePointage()
 {
+	for (auto player : historique) {
+		delete player;
+	}
+	historique.clear();
+}
 
+void FenetrePointage::getNextBestScore() {
+
+}
+
+void FenetrePointage::checkerScore() {
+	bool isPlusGrand = false;
+	int i = 0;
+
+	while ((!isPlusGrand) && (i < historique.size() - 1))
+	{
+		if (historique[i]->getScore() <= player->getScore())
+		{
+			positionJoueur->setText(QString::number(i));
+			for (int w = historique.size() - 1; w >= i + 1; w--) {
+				historique[w]->setScore(historique[w - 1]->getScore());
+				historique[w]->setUsername(historique[w - 1]->getUsername());
+			}
+
+			historique[i]->setScore(player->getScore());
+			historique[i]->setUsername(player->getUsername());
+			isPlusGrand = true;
+		}
+		i++;
+	}
+
+	if (isPlusGrand)
+	{
+		if (historique.size() > 10) {
+			historique.pop_back();
+		}
+		std::ofstream myfile;
+		myfile.open("Score.txt", std::ofstream::out | std::ofstream::trunc);
+
+		for (int j = 0; j < historique.size(); j++)
+		{
+			myfile << historique[j]->getUsername() << " " << historique[j]->getScore() << std::endl;
+		}
+
+		myfile.close();
+
+		for (int i = 0; i < historique.size(); i++) {
+			name[i]->setText(QString::fromStdString(historique[i]->getUsername()));
+			score[i]->setText(QString::number(historique[i]->getScore()));
+			position[i]->setText(QString::number(i + 1));
+		}
+		qApp->processEvents();
+	}
+}
+
+void FenetrePointage::loadHighscore() {
+	//Ouvrir document 
+	std::fstream myfile;
+	myfile.open("Score.txt");
+	std::string line;
+	std::string username;
+	int score;
+
+	if (myfile.is_open())
+	{
+		while (myfile >> username >> score)
+		{
+			Player *p = new Player(score, username);
+			historique.push_back(p);
+		}
+	}
+	myfile.close();
+}
+
+void FenetrePointage::updateScore() {
+	scoreJoueur->setText(QString::number(player->getScore()));
+	qApp->processEvents();
 }
 
 void FenetrePointage::closeEvent(QCloseEvent* event)
@@ -146,8 +192,7 @@ void FenetrePointage::closeEvent(QCloseEvent* event)
 	emit signalClosingFenetrePointage();
 }
 
-void FenetrePointage::setJoueurUsername(std::string username)
+void FenetrePointage::setJoueurUsername()
 {
-	joueur1.setUsername(username);
-	nomJoueur->setText(QString::fromStdString(username));
+	nomJoueur->setText(QString::fromStdString(player->getUsername()));
 }
