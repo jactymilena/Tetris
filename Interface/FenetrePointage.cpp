@@ -154,6 +154,7 @@ void FenetrePointage::getNextBestScore() {
 void FenetrePointage::checkerScore() {
 	bool isPlusGrand = false;
 	int i = 0;
+	nomJoueur->setText(QString::fromStdString(player->getUsername()));
 
 	while ((!isPlusGrand) && (i < historique.size() - 1))
 	{

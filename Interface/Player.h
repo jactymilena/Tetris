@@ -3,9 +3,7 @@
 #include <iostream>
 #include <QObject>
 #include <QWidget>
-#include <QtCore/qtmetamacros.h>
 #include <QDebug>
-
 
 class Player : public QWidget {
 	Q_OBJECT

@@ -73,23 +73,25 @@ void FenetrePrincipale::slotPourFenetreDeJeu()
 	if (!player->getNameSetted()) {
 		bool ok;
 		QString text;
-		do {
-			demandeUsername->setMinimumSize(1000, 1000);
-			text = demandeUsername->getText(this, tr("Entrez votre nom"),
-				tr("Username:"), QLineEdit::Normal,
-				"Enter username", &ok, Qt::MSWindowsFixedSizeDialogHint);
-		} while (text.isEmpty());
+	
+		demandeUsername->setMinimumSize(1000, 1000);
+		text = demandeUsername->getText(this, tr("Entrez votre nom"),
+			tr("Username:"), QLineEdit::Normal,
+			"Enter username", &ok, Qt::MSWindowsFixedSizeDialogHint);
 		
-
 		if (ok && !text.isEmpty())
 		{
 			player->setNameSetted(true);
-			player->setUsername(text.toStdString());
+			player->setUsername((text.simplified().remove(' ')).toStdString());
 			fenetrePointage->setJoueurUsername();
 			fenetrePointage->loadHighscore();
+			index->setCurrentIndex(1);
+
 		}
 	}
-	index->setCurrentIndex(1);
+	else {
+		index->setCurrentIndex(1);
+	}
 }
 
 void FenetrePrincipale::slotChangerFenetreAide()
@@ -109,7 +111,7 @@ void FenetrePrincipale::slotPourEnableFenetre()
 
 void FenetrePrincipale::slotPourFenetrePointage()
 {
-	bool ok = true;
+	bool ok;
 	if (!player->getNameSetted()) {
 		
 		demandeUsername->setMinimumSize(1000, 1000);
@@ -117,18 +119,14 @@ void FenetrePrincipale::slotPourFenetrePointage()
 			tr("Username:"), QLineEdit::Normal,
 			"Enter username", &ok, Qt::MSWindowsFixedSizeDialogHint);
 
-		if (!text.isEmpty())
+		if (!text.isEmpty() && ok )
 		{
 			player->setNameSetted(true);
-			player->setUsername(text.toStdString());
+			player->setUsername((text.simplified().remove(' ')).toStdString());
+			fenetrePointage->setJoueurUsername();
+			fenetrePointage->show();
+			this->setEnabled(false);
 		}
-	}
-
-	if (ok)
-	{
-		fenetrePointage->setJoueurUsername();
-		fenetrePointage->show();
-		this->setEnabled(false);
 	}
 }
 
