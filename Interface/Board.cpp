@@ -1,4 +1,4 @@
-#include "Board.h"
+ï»¿#include "Board.h"
 
 //#include "CommunicationFPGA.h"
 
@@ -7,6 +7,7 @@ Case::Case() {
 }
 
 Board::Board(Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
+	fenetre = fenetreDeJeu;
 	// set Frame
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
@@ -20,7 +21,9 @@ Board::Board(Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
 	
 	// Timer
 	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(moveDownPiece()));
+	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(moveDownPiece()));
+	QObject::connect(this, SIGNAL(declencherHold()), fenetreDeJeu, SLOT(slotPourTrigeredHold()));
+	QObject::connect(this, SIGNAL(declencherSuivante()), fenetreDeJeu, SLOT(slotPourTrigeredSuivante()));
 	isPaused = false;
 	isStarted = false;
 }
@@ -65,6 +68,7 @@ void Board::keyPressEvent(QKeyEvent* event) {
 		else if ((event->key() == Qt::Key_W) &&	nouvellePiece) {
 			nouvellePiece = false;
 			changerPiece();
+			emit declencherHold();
 		}
 		else if (event->key() == Qt::Key_Q) {
 			if (piece.getNumPiece() != O) {
@@ -166,7 +170,7 @@ bool Board::loadPiece(int num_piece) {
 		}
 	}
 	pieceApres.loadPiece(rand() % 6);
-
+	emit declencherSuivante();
 	return true;
 }
 
@@ -269,22 +273,22 @@ void Board::moveDownPiece() {
 	statutport = port.ecrireRegistre(nreg_ecri_led, 1);
 	if ((stat_btn & 1) != 0)
 	{
-		//Phonème A
+		//Phonï¿½me A
 		if((echconv[0] > 202 && echconv[0] < 222) && (echconv[1] > 15 && echconv[1] < 35) && (echconv[2] > 0 && echconv[2] < 20) && (echconv[3] > 0 && echconv[3] < 15))
 		{
 			return 1;
 		}
-		//Phonème U
+		//Phonï¿½me U
 		else if((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 0 && echconv[1] < 20) && (echconv[2] > 165 && echconv[2] < 185) && (echconv[3] > 40 && echconv[3] < 60))
 		{
 			return 2;
 		}
-		//Phonème E
+		//Phonï¿½me E
 		else if ((echconv[0] > 183 && echconv[0] < 203) && (echconv[1] > 227 && echconv[1] < 247) && (echconv[2] > 90 && echconv[2] < 110) && (echconv[3] > 15 && echconv[3] < 35))
 		{
 			return 3;
 		}
-		//Phonème I
+		//Phonï¿½me I
 		else if ((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 90 && echconv[1] < 110) && (echconv[2] > 177 && echconv[2] < 197) && (echconv[3] > 15 && echconv[3] < 35))
 		{
 			return 4;
@@ -311,6 +315,8 @@ void Board::resetBoard() {
 			cases[i][j].color = Qt::white;
 		}
 	}
+	pieceHold.setNumPiece(7);
+	emit declencherHold();
 	game_over = false;
 	player->setLevel(0);
 	difficulte = 500;
@@ -363,7 +369,7 @@ bool Board::verifLigne() {
 	int maxLigne = piece.getCarre(0).ligne;
 	int compteurX = 0;
 	int compteurLigne = 0;
-	for (int i = 1; i < 4; i++) { // Vérifier les quatres carrees pour avoir la ligne minimale et maximale
+	for (int i = 1; i < 4; i++) { // Vï¿½rifier les quatres carrees pour avoir la ligne minimale et maximale
 		if (piece.getCarre(i).ligne < minLigne)
 		{
 			minLigne = piece.getCarre(i).ligne;
@@ -416,6 +422,7 @@ void Board::changerPiece()
 	{
 		pieceHold.loadPiece(piece.getNumPiece());
 		piece.loadPiece(pieceApres.getNumPiece());
+		loadPiece(piece.getNumPiece());
 	}
 	else
 	{
@@ -423,4 +430,13 @@ void Board::changerPiece()
 		pieceHold.loadPiece(piece.getNumPiece());
 		piece.loadPiece(numHold);
 	}
+}
+
+Piece Board::getPieceHold()
+{
+	return pieceHold;
+}
+Piece Board::getPieceSuivante()
+{
+	return pieceApres;
 }

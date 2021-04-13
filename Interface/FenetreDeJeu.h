@@ -23,6 +23,7 @@
 #include <QProgressBar>
 #include <QLCDNumber>
 #include "Board.h"
+#include "FramePourPiece.h"
 #include "FenetrePointage.h"
 
 class FenetreDeJeu : public QWidget
@@ -73,6 +74,8 @@ private:
    QVBoxLayout* m_layoutDroite;
    QProgressBar* m_bar;
    QProgressBar* m_elevel;
+   FramePourPiece* frameHold;
+   FramePourPiece* framePieceSuivante;
    QLCDNumber* m_lcdScore;
 
    // Game over widget
@@ -92,6 +95,8 @@ public slots:
     void slotGameOver();
     void recommencerBoard();
 
+    void slotPourTrigeredHold();
+    void slotPourTrigeredSuivante();
     void slotPourFenetreAide();
 signals:
     void signalRetourPrincipale();

@@ -7,11 +7,13 @@ m_menuAide(nullptr), m_widget(nullptr), m_layout(nullptr), m_Garder(nullptr), m_
 m_centre(nullptr), m_droite(nullptr), m_gaucheHold(nullptr), m_Test(nullptr), m_bar(nullptr), m_layoutCentre(nullptr), m_tetris(nullptr),
 m_layoutScore(nullptr), m_scoreBox(nullptr), m_score(nullptr), m_bestscore(nullptr), m_joueur(nullptr), m_level(nullptr), m_layoutDroite(nullptr), 
 m_elevel(nullptr), m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage), m_gameOverLayout(nullptr), m_gameOverWidget(nullptr),
-m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionsAide(nullptr)
+m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionsAide(nullptr), m_next(nullptr), frameHold(nullptr), framePieceSuivante(nullptr)
 {
 	m_layout = new QHBoxLayout();
 	m_widget = new QWidget();
-
+	board = new Board(this);
+	frameHold = new FramePourPiece((board->getPieceHold()));
+	framePieceSuivante = new FramePourPiece((board->getPieceSuivante()));
 	//Partie Gauche
 	m_gauche = new QGroupBox(tr("Gauche"));
 	m_gaucheHold = new QGroupBox(tr("Hold"));
@@ -21,7 +23,7 @@ m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionsAid
 	m_Test = new QLabel("Test");
 	m_Garder->setAlignment(Qt::AlignLeft);
 	m_hold->setAlignment(Qt::AlignLeft);
-	m_hold->addWidget(m_Test, 0, 0);
+	m_hold->addWidget(frameHold, 0, 0);
 	m_gaucheHold->setLayout(m_hold);
 	m_layoutGauche->addWidget(m_Garder);
 	m_layoutGauche->addWidget(m_gaucheHold);
@@ -81,6 +83,8 @@ m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionsAid
 
 	m_scoreBox->setLayout(m_layoutScore);
 	m_holdnext->setLayout(m_pnext);
+	m_layoutDroite->addWidget(m_next);
+	m_layoutDroite->addWidget(framePieceSuivante);
 	m_layoutDroite->addWidget(m_scoreBox);
 	m_layoutDroite->addWidget(m_holdnext);
 	m_layoutDroite->addWidget(m_bestscore);
@@ -172,4 +176,14 @@ void FenetreDeJeu::boardInit() {
 FenetreDeJeu::~FenetreDeJeu()
 {
 	close();
+}
+
+void FenetreDeJeu::slotPourTrigeredHold()
+{
+	frameHold->setPiece(board->getPieceHold());
+}
+
+void FenetreDeJeu::slotPourTrigeredSuivante()
+{
+	framePieceSuivante->setPiece(board->getPieceSuivante());
 }
