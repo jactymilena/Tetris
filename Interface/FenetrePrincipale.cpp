@@ -12,24 +12,27 @@ fenetreAide(nullptr),
 index(nullptr)
 {
 	index = new QStackedWidget;
-	
+	setMouseTracking(true);
 	//Player
 	player = new Player();
 
 	//Le titre Tetris Mania 
 	labelTetris = new QLabel();
-	labelTetris->setText("QTETRIS MANIA");
+	QPixmap pixmapTitre("Tetris-logo1.png");
+	labelTetris->setPixmap(pixmapTitre);
+	labelTetris->setAttribute(Qt::WA_TranslucentBackground);
 	QFont font = labelTetris->font();
 	font.setPointSize(40);
 	labelTetris->setFont(font);
-
+	
 	//Creation des boutons
-	boutonPourFenetreJeu = new QPushButton("Nouvelle Partie");
-	boutonPourFenetreJeu->setFocusPolicy(Qt::NoFocus);
-	boutonPourFenetreReglage = new QPushButton("Reglages");
-	boutonPourFenetreReglage->setFocusPolicy(Qt::NoFocus);
-	boutonPourScore = new QPushButton("Pointage");
-	boutonPourScore->setFocusPolicy(Qt::NoFocus);
+	boutonPourFenetreJeu = new BoutonPrincipal();
+	boutonPourFenetreJeu->setText("Nouvelle Partie");
+	boutonPourFenetreReglage = new BoutonPrincipal();
+	boutonPourFenetreReglage->setText("Reglages");
+	boutonPourScore = new BoutonPrincipal();
+	boutonPourScore->setText("Pointage");
+	
 	
 	//Pointage
 	fenetrePointage = new FenetrePointage(this, player);
@@ -45,11 +48,16 @@ index(nullptr)
 	layoutVertical1->addWidget(labelTetris);
 	layoutVertical1->setAlignment(labelTetris, Qt::AlignCenter);
 	layoutVertical1->addWidget(boutonPourFenetreJeu);
+	layoutVertical1->setAlignment(boutonPourFenetreJeu, Qt::AlignHCenter);
 	layoutVertical1->addWidget(boutonPourFenetreReglage);
+	layoutVertical1->setAlignment(boutonPourFenetreReglage, Qt::AlignHCenter);
 	layoutVertical1->addWidget(boutonPourScore);
+	layoutVertical1->setAlignment(boutonPourScore, Qt::AlignHCenter);
 
 	//Ajout widget au layout
 	widget->setLayout(layoutVertical1);
+	setFixedSize(900,750);
+	setStyleSheet("background-image: url(background.png)");
 	setCentralWidget(widget);
 	QObject::connect(boutonPourScore, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetrePointage()));
 	fenetreDeJeu = new FenetreDeJeu(this, player);
@@ -137,3 +145,4 @@ void FenetrePrincipale::closeEvent(QCloseEvent* event)
 		fenetrePointage->hide();
 	}
 }
+

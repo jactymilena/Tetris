@@ -20,6 +20,7 @@
 #include <QString>
 #include <QStackedWidget>
 #include <QInputDialog>
+#include "BoutonPrincipal.h"
 #include "Player.h"
 
 class FenetrePrincipale : public QMainWindow
@@ -39,9 +40,9 @@ public slots:
 
 private:
     //Boutons pour les autres pages
-    QPushButton* boutonPourFenetreJeu;
-    QPushButton* boutonPourFenetreReglage;
-    QPushButton* boutonPourScore;
+    BoutonPrincipal* boutonPourFenetreJeu;
+    BoutonPrincipal* boutonPourFenetreReglage;
+    BoutonPrincipal* boutonPourScore;
 
     //Le titre Tetris Mania 
     QLabel* labelTetris;

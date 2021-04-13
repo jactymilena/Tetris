@@ -30,6 +30,9 @@
     <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BoutonPrincipal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="FenetreAide.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -59,6 +62,9 @@
     <CustomBuild Include="Board.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <ClInclude Include="BoutonPrincipal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <CustomBuild Include="FenetreAide.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
