@@ -36,7 +36,12 @@ private:
 
 
     QVBoxLayout* m_layoutAide;
-
+    QLabel* m_label1;
+    QLabel* m_label2;
+    QLabel* m_label3;
+    QLabel* m_label4;
+    QLabel* m_label5;
+    QLabel* m_label6;
 
 };
 #endif
