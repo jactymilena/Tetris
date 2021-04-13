@@ -15,6 +15,14 @@ Player::Player(int score, std::string username) : QWidget() {
 	level = 0;
 }
 
+Player::Player(const Player& p) : QWidget()
+{
+	score = p.score;
+	qDebug() << p.score;
+	username = p.username;
+	nameSetted = true;
+	level = 0;
+}
 int Player::getScore() {
 	return score;
 }

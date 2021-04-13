@@ -31,7 +31,7 @@ index(nullptr)
 	boutonPourScore = new QPushButton("Pointage");
 	boutonPourScore->setFocusPolicy(Qt::NoFocus);
 	
-	//Pointage
+	//Pointage + Dialogue(Entrer votre nom)
 	fenetrePointage = new FenetrePointage(this, player);
 	demandeUsername = new QInputDialog;
 

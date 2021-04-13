@@ -36,7 +36,7 @@ public:
     void loadHighscore();
     void checkerScore();
     void closeEvent(QCloseEvent* event);
-    void getNextBestScore();
+    Player* getNextBestScore();
 
 public slots:
     void updateScore();
