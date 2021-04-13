@@ -10,6 +10,7 @@ class Player : public QWidget {
 public:
 	Player();
 	Player(int score, std::string user);
+	Player(const Player& p);
 	int getScore();
 	void setScore(int score);
 	int getLevel();

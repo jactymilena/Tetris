@@ -7,7 +7,8 @@ m_widget(nullptr), m_layout(nullptr), m_Garder(nullptr), m_hold(nullptr), m_gauc
 m_centre(nullptr), m_droite(nullptr), m_gaucheHold(nullptr), m_Test(nullptr), m_bar(nullptr), m_layoutCentre(nullptr), m_tetris(nullptr),
 m_layoutScore(nullptr), m_scoreBox(nullptr), m_score(nullptr), m_bestscore(nullptr), m_joueur(nullptr), m_level(nullptr), m_layoutDroite(nullptr), 
 m_elevel(nullptr), m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(nullptr), m_gameOverLayout(nullptr), m_gameOverWidget(nullptr),
-m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionAide(nullptr), frameHold(nullptr), framePieceSuivante(nullptr)
+m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionAide(nullptr), frameHold(nullptr), framePieceSuivante(nullptr),
+m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 {
 	m_layout = new QHBoxLayout();
 	m_widget = new QWidget();
@@ -73,9 +74,20 @@ m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionAide
 	m_layoutDroite = new QVBoxLayout();
 	m_layoutScore = new QVBoxLayout();
 	m_elevel = new QProgressBar();
+	m_elevel->setMinimum(0);
+	m_elevel ->setMaximum(100);
+	m_elevel->setMinimumWidth(200);
 	m_score = new QLabel("SCORE");
 	m_bestscore = new QLabel("Next meilleur score");
 	m_joueur = new QLabel("Joueur");
+	m_fenetrePointage = new FenetrePointage(player);
+	nextBestPlayer = new Player();
+	nextBestPlayer = (m_fenetrePointage->getNextBestScore());
+	m_prochainScore = new QLabel(QString::number(nextBestPlayer->getScore()));
+	m_prochainIndividu = new QLabel(QString::fromStdString(nextBestPlayer->getUsername()));
+
+
+
 
 	m_layoutScore->addWidget(m_score);
 	m_layoutScore->addWidget(m_score);
@@ -89,6 +101,8 @@ m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionAide
 	m_layoutDroite->addWidget(m_bestscore);
 	m_layoutDroite->addWidget(m_joueur);
 	m_layoutDroite->addWidget(m_elevel);
+	m_layoutDroite->addWidget(m_prochainIndividu);
+	m_layoutDroite->addWidget(m_prochainScore);
 	m_droite->setLayout(m_layoutDroite);
 	m_layout->addWidget(m_droite);
 
@@ -122,7 +136,7 @@ m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionAide
 	QObject::connect(m_gameOverQuitterButton, SIGNAL(clicked(bool)), qApp, SLOT(quit()));
 	QObject::connect(m_recommencerButton, SIGNAL(clicked(bool)), this, SLOT(recommencerBoard()));
 
-	m_fenetrePointage = new FenetrePointage(player);
+	
 	m_gameOverLayout->addWidget(m_fenetrePointage);
 	m_gameOverLayout->addWidget(m_recommencerButton);
 	m_gameOverLayout->addWidget(m_gameOverQuitterButton);
@@ -146,6 +160,11 @@ void FenetreDeJeu::recommencerBoard() {
 void FenetreDeJeu::updateScore() {
 	m_lcdScore->display(player->getScore());
 	m_bar->setValue(player->getScore() % 100);
+	nextBestPlayer = (m_fenetrePointage->getNextBestScore());
+	qDebug() << player->getScore() * 100 / (nextBestPlayer->getScore());
+	m_elevel->setValue((player->getScore() * 100) / (nextBestPlayer->getScore()));
+	m_prochainScore->setText(QString::number(nextBestPlayer->getScore()));
+	m_prochainIndividu->setText(QString::fromStdString(nextBestPlayer->getUsername()));
 }
 
 void FenetreDeJeu::updateLevel() {

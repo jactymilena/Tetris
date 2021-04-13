@@ -21,6 +21,7 @@
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QProgressBar>
+#include <QDebug>
 #include <QLCDNumber>
 #include "Board.h"
 #include "FramePourPiece.h"
@@ -67,6 +68,8 @@ private:
    QLabel* m_joueur;
    QLabel* m_level;
    QLabel* m_nextLevel;
+   QLabel* m_prochainScore;
+   QLabel* m_prochainIndividu;
    QGridLayout* m_hold;
    QVBoxLayout* m_tetris;
    QGridLayout* m_pnext;
@@ -86,7 +89,7 @@ private:
    QPushButton* m_recommencerButton;
 
    Player* player;
-  
+   Player* nextBestPlayer;
 
 public slots:
     void slotPourFenetrePrincipale();

@@ -21,6 +21,7 @@
 #include <QWidget>
 #include <QObject>
 #include "Player.h"
+
 class FenetrePointage : public QWidget
 {
     Q_OBJECT
@@ -35,7 +36,7 @@ public:
     void loadHighscore();
     void checkerScore();
     void closeEvent(QCloseEvent* event);
-    void getNextBestScore();
+    Player* getNextBestScore();
 
 public slots:
     void updateScore();

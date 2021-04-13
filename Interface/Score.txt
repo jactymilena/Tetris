@@ -4,7 +4,7 @@ Dio 89000
 Santa 9000
 Hannibal 2000
 Jekyll 1500
+A 1150
 Hyde 1000
-Enterusername 300
-Enterusername 250
+Enterusername 350
 Bob 100

@@ -91,12 +91,13 @@ void FenetrePointage::fenetreInit(Player* player) {
 		position[i] = new QLabel(QString::number(i + 1));
 	}
 
-	//Pour l'affichage
+	//Déclaration Score+Username
 	usernameTitre = new QLabel("Nom");
 	positionTitreJoueur = new QLabel("Pos");
 	highscoreTitre = new QLabel("Score");
 	votreScore = new QLabel("Votre Score");
 
+	//Déclaration Highscore
 	nomTitre = new QLabel("Nom");
 	positionTitre = new QLabel("Position");
 	scoreTitre = new QLabel("Score");
@@ -111,20 +112,17 @@ void FenetrePointage::fenetreInit(Player* player) {
 	groupBoxUser = new QGroupBox();
 	gridScoreUser = new QGridLayout();
 
-	//Pour le score du joueur
+	//Affichage du Score du joueur
 	gridScoreUser->addWidget(votreScore, 0, 0, 1, 3, Qt::AlignCenter);
 	gridScoreUser->addWidget(positionTitreJoueur, 1, 0);
 	gridScoreUser->addWidget(highscoreTitre, 1, 1);
 	gridScoreUser->addWidget(usernameTitre, 1, 2);
-
 	gridScoreUser->addWidget(positionJoueur, 2, 0);
 	gridScoreUser->addWidget(scoreJoueur, 2, 1);
 	gridScoreUser->addWidget(nomJoueur, 2, 2);
-
 	groupBoxUser->setLayout(gridScoreUser);
 
-	//Pour la table des scores
-
+	//Affichade de la Table des Scores
 	gridScore->addWidget(highscore, 0, 0, 1, 3, Qt::AlignCenter);
 	gridScore->addWidget(positionTitre, 1, 0);
 	gridScore->addWidget(scoreTitre, 1, 1);
@@ -138,18 +136,37 @@ void FenetrePointage::fenetreInit(Player* player) {
 	}
 
 	groupBoxScore->setLayout(gridScore);
-
 	layout->addWidget(groupBoxScore);
 	layout->addWidget(groupBoxUser);
-
 	this->setLayout(layout);
 
 	QObject::connect(player, SIGNAL(scoreChanged()), this, SLOT(updateScore()));
 }
 
-void FenetrePointage::getNextBestScore() {
+Player* FenetrePointage::getNextBestScore()
+{
+	
+	int i = 0;
+	for (int w = 0; w < historique.size(); w++)
+	{
+		
+		if (player->getScore() > historique[w]->getScore())
+		{
 
-}
+
+			qDebug() << "Historique  " << historique[w - 1]->getScore();
+			if (w - 1 != -1)
+			{
+				
+				return historique[w - 1];
+			}
+
+			return player;
+		}
+		
+	}
+	return historique[historique.size() - 1];
+}	
 
 void FenetrePointage::checkerScore() {
 	bool isPlusGrand = false;
