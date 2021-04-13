@@ -18,6 +18,7 @@
 #include <QGroupBox>
 #include <string>
 #include "Player.h"
+
 class FenetrePointage : public QWidget
 {
     Q_OBJECT
