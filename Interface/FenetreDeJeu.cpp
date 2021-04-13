@@ -10,18 +10,24 @@ m_elevel(nullptr), m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(null
 m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionAide(nullptr), frameHold(nullptr), framePieceSuivante(nullptr),
 m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 {
+
+
 	m_layout = new QHBoxLayout();
 	m_widget = new QWidget();
 	board = new Board(this, playerPrincipal);
 	frameHold = new FramePourPiece((board->getPieceHold()));
 	framePieceSuivante = new FramePourPiece((board->getPieceSuivante()));
 	//Partie Gauche
-	m_gauche = new QGroupBox(tr("Gauche"));
+	m_gauche = new QGroupBox();
+	m_gauche->setStyleSheet("QGroupBox { background : transparent;}");
 	m_gaucheHold = new QGroupBox(tr("Hold"));
+	m_gaucheHold->setStyleSheet("QGroupBox { background : transparent;}");
 	m_layoutGauche = new QVBoxLayout();
-	m_Garder = new QLabel("Garder");
+	m_Garder = new QLabel();
+	m_Garder->setStyleSheet("background : transparent;");
 	m_hold = new QGridLayout;
 	m_Test = new QLabel("Test");
+	m_Test->setStyleSheet("background : transparent;");
 	m_Garder->setAlignment(Qt::AlignLeft);
 	m_hold->setAlignment(Qt::AlignLeft);
 	m_hold->addWidget(frameHold, 0, 0);
@@ -32,19 +38,25 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_layout->addWidget(m_gauche);
 
 	//Partie Centre 
-	m_centre = new QGroupBox(tr("Next"));
+	m_centre = new QGroupBox();
+	m_centre->setStyleSheet("QGroupBox { background : transparent;}");
 	m_console = new QGroupBox(tr("Tetris"));
+	m_console->setStyleSheet("QGroupBox { background : transparent;}");
 	m_progressBarBox = new QGroupBox();
 
 	m_layoutProgressBar = new QGridLayout();
 	m_layoutCentre = new QVBoxLayout();
 	m_bar = new QProgressBar();
+	m_bar->setStyleSheet("background : transparent;");
 	m_bar->setMinimum(0);
 	m_bar->setMaximum(100);
 	m_bar->setMinimumWidth(200);
 	m_tetris = new QVBoxLayout;
 	m_level = new QLabel(QString::number(player->getLevel()));
+	m_level->setStyleSheet("QLabel{background : transparent; color: white; font-size: 20px;}");
 	m_nextLevel = new QLabel(QString::number(player->getLevel() + 1));
+	m_nextLevel->setStyleSheet("background : transparent; color: white; font-size: 20pt;");
+
 	QObject::connect(player, SIGNAL(levelChanged()), this, SLOT(updateLevel()));
 
 	m_layoutProgressBar->addWidget(m_level, 0, 0, Qt::AlignLeft);
@@ -62,31 +74,44 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 
 	//Partie Droite
 	m_lcdScore = new QLCDNumber(this);
+	m_lcdScore->setStyleSheet("background : transparent;");
 	m_lcdScore->setSegmentStyle(QLCDNumber::Filled);
 	m_lcdScore->display(player->getScore());
 	QObject::connect(player, SIGNAL(scoreChanged()),this ,SLOT(updateScore()));
 
-	m_droite = new QGroupBox(tr("Droite"));
+	m_droite = new QGroupBox();
+	m_droite->setStyleSheet("QGroupBox { background : transparent;}");
+
 	m_holdnext = new QGroupBox(tr("Next"));
+	m_holdnext->setStyleSheet("QGroupBox { background : transparent;}");
+
 	m_scoreBox = new QGroupBox();
+	m_scoreBox->setStyleSheet("QGroupBox { background : transparent;}");
 
 	m_pnext = new QGridLayout;
 	m_layoutDroite = new QVBoxLayout();
 	m_layoutScore = new QVBoxLayout();
 	m_elevel = new QProgressBar();
+	m_elevel->setStyleSheet("background : transparent;");
 	m_elevel->setMinimum(0);
 	m_elevel ->setMaximum(100);
 	m_elevel->setMinimumWidth(200);
 	m_score = new QLabel("SCORE");
+	m_score->setStyleSheet("background : transparent;");
+
 	m_bestscore = new QLabel("Next meilleur score");
+	m_bestscore->setStyleSheet("background : transparent;");
+
 	m_joueur = new QLabel("Joueur");
+	m_joueur->setStyleSheet("background : transparent;");
+
 	m_fenetrePointage = new FenetrePointage(player);
 	nextBestPlayer = new Player();
 	nextBestPlayer = (m_fenetrePointage->getNextBestScore());
 	m_prochainScore = new QLabel(QString::number(nextBestPlayer->getScore()));
+	m_prochainScore->setStyleSheet("background : transparent;");
 	m_prochainIndividu = new QLabel(QString::fromStdString(nextBestPlayer->getUsername()));
-
-
+	m_prochainIndividu->setStyleSheet("background : transparent;");
 
 
 	m_layoutScore->addWidget(m_score);
