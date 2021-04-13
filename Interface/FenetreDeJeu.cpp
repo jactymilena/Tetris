@@ -43,7 +43,10 @@ m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(fenetrePointage)
 	m_layout->addWidget(m_centre);
 
 	//Partie Droite
-	m_lcdScore = new QLCDNumber(2);
+	m_lcdScore = new QLCDNumber(this);
+	m_lcdScore->setSegmentStyle(QLCDNumber::Filled);
+	m_lcdScore->display(player->getScore());
+
 	m_droite = new QGroupBox(tr("Droite"));
 	m_holdnext = new QGroupBox(tr("Next"));
 	m_scoreBox = new QGroupBox();
