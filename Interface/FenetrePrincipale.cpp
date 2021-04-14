@@ -55,7 +55,7 @@ index(nullptr)
 	fenetreDeJeu = new FenetreDeJeu(this, player);
 	fenetreAide = new FenetreAide(this);
 	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), SLOT(slotPourFenetreDeJeu()));
-	
+	QObject::connect(boutonPourFenetreReglage, SIGNAL(clicked(bool)), SLOT(slotChangerFenetreAide()));
 	//Action
 	index->addWidget(widget);
 	index->addWidget(fenetreDeJeu);

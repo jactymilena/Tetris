@@ -59,6 +59,10 @@ private:
     FenetrePointage* fenetrePointage;
     QInputDialog* demandeUsername;
 
+    //Reglage 
+
+
+
     //Player
     Player* player;
 };
