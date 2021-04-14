@@ -19,6 +19,7 @@
 #include <QKeyEvent>
 #include <QPushButton>
 #include <QMouseEvent>
+#include <QFontDataBase>
 #include <QLabel>
 #include "Piece.h"
 #include "Player.h"
@@ -78,6 +79,7 @@ public:
 	bool verifLigne();
 	void enleverLigne(int i);
 	void restart();
+	void pause();
 
 	//Menu Score
 	void augmenterScore(int nbLigne);

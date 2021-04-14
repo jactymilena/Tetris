@@ -57,12 +57,15 @@ private:
    QGroupBox* m_holdnext;
    QGroupBox* m_scoreBox;
    QGroupBox* m_progressBarBox;
+   QGroupBox* m_nextBestPlayerBox;
 
    QVBoxLayout* m_layoutGauche;
    QGridLayout* m_layoutProgressBar;
    QVBoxLayout* m_layoutScore;
+   QVBoxLayout* m_layoutBestPlayer;
    QLabel* m_Garder;
-   QLabel* m_Test;
+   QLabel* m_holdLabel;
+   QLabel* m_nextLabel;
    QLabel* m_score;
    QLabel* m_bestscore;
    QLabel* m_joueur;
@@ -80,6 +83,8 @@ private:
    FramePourPiece* frameHold;
    FramePourPiece* framePieceSuivante;
    QLCDNumber* m_lcdScore;
+   QPixmap* m_userIcon;
+   QLabel* m_userIconLabel;
 
    // Game over widget
    FenetrePointage* m_fenetrePointage;
