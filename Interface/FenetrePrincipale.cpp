@@ -57,7 +57,6 @@ index(nullptr)
 	//Ajout widget au layout
 	widget->setLayout(layoutVertical1);
 	setFixedSize(900,750);
-	setStyleSheet("background-image: url(background.png)");
 	setCentralWidget(widget);
 	QObject::connect(boutonPourScore, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetrePointage()));
 	fenetreDeJeu = new FenetreDeJeu(this, player);

@@ -7,7 +7,7 @@ FramePourPiece::FramePourPiece(Piece laPiece)
 	setLineWidth(2);
 	setMidLineWidth(3);
 	//setStyleSheet("background-color: rgb(0, 0, 0);");
-	setStyleSheet("background: transparent;");
+	setStyleSheet("background : transparent; border: 2px solid white");
 	setFixedSize(250, 250);
 	activateWindow();
 }

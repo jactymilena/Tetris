@@ -39,6 +39,7 @@ public slots:
     void closeEvent(QCloseEvent* event);
 
 private:
+
     //Boutons pour les autres pages
     BoutonPrincipal* boutonPourFenetreJeu;
     BoutonPrincipal* boutonPourFenetreReglage;

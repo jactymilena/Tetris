@@ -8,12 +8,12 @@ Case::Case() {
 
 Board::Board(QWidget* fenetreJeu, Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
 	fenetre = fenetreJeu;
+	//qDebug() << QFontDatabase::families(); // pour voir la liste des font family
 	// set Frame
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
 	setMidLineWidth(3);
-	//setStyleSheet("background-color: rgb(0, 0, 0);"); 
-	setStyleSheet("background : transparent;"); 
+	setStyleSheet("background : transparent; border: 2px solid white"); 
 	activateWindow();
 	setMinimumHeight(550);
 	setMinimumWidth(200);
@@ -64,7 +64,7 @@ void Board::keyPressEvent(QKeyEvent* event) {
 		}
 		else if ((event->key() == Qt::Key_Down)) {
 			canGoDown = verifMove(DOWN);
-			if (canGoDown) moveDownPiece(); // piece.goDown();
+			if (canGoDown) moveDownPiece(); 
 		}
 		else if ((event->key() == Qt::Key_W) &&	nouvellePiece) {
 			nouvellePiece = false;
@@ -123,19 +123,19 @@ void Board::paintEvent(QPaintEvent* event)
 	for (int i = 0; i < LIGNES; i++) {
 		for (int j = 0; j < COLONNES; j++) {
 			if (cases[i][j].value == 1) {
-				//painter.setPen(Qt::white);
 				painter.setBrush(QBrush(cases[i][j].color));
 				painter.drawRect(QRect(j * largeurCarre + rect.topLeft().x(), i * hauteurCarre + rect.topLeft().y(), largeurCarre, hauteurCarre));
 
 			}
-			
 		}
 	}
 
 	if (isPaused || isStarted == false || game_over) {
-		painter.fillRect(rect, QBrush(QColor(160, 160, 160, 128)));
-		painter.setPen(Qt::black);
-		painter.setFont(QFont("Arial", 30));
+		painter.fillRect(rect, QBrush(QColor(170, 170, 170, 180)));
+		painter.setPen(Qt::white);
+		QFont font("Arial", 20);
+		font.setWeight(QFont::Bold);
+		painter.setFont(font);
 
 		if (!isStarted) {
 			painter.drawText(rect, Qt::AlignCenter, "Click to start");

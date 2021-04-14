@@ -19,6 +19,7 @@
 #include <QKeyEvent>
 #include <QPushButton>
 #include <QMouseEvent>
+#include <QFontDataBase>
 #include <QLabel>
 #include "Piece.h"
 #include "Player.h"

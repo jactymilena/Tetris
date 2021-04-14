@@ -4,14 +4,12 @@
 FenetreDeJeu::FenetreDeJeu(QMainWindow* fenetrePrincipale, Player* playerPrincipal) : 
 m_menuMenu(nullptr), m_menuBar(nullptr), m_menuOptionAccueil(nullptr), m_menuOptionQuitter(nullptr), player(playerPrincipal),
 m_widget(nullptr), m_layout(nullptr), m_Garder(nullptr), m_hold(nullptr), m_gauche(nullptr), m_layoutGauche(nullptr),
-m_centre(nullptr), m_droite(nullptr), m_gaucheHold(nullptr), m_Test(nullptr), m_bar(nullptr), m_layoutCentre(nullptr), m_tetris(nullptr),
+m_centre(nullptr), m_droite(nullptr), m_gaucheHold(nullptr), m_holdLabel(nullptr), m_bar(nullptr), m_layoutCentre(nullptr), m_tetris(nullptr),
 m_layoutScore(nullptr), m_scoreBox(nullptr), m_score(nullptr), m_bestscore(nullptr), m_joueur(nullptr), m_level(nullptr), m_layoutDroite(nullptr), 
 m_elevel(nullptr), m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(nullptr), m_gameOverLayout(nullptr), m_gameOverWidget(nullptr),
 m_recommencerButton(nullptr), m_gameOverQuitterButton(nullptr), m_menuOptionAide(nullptr), frameHold(nullptr), framePieceSuivante(nullptr),
 m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 {
-
-
 	m_layout = new QHBoxLayout();
 	m_widget = new QWidget();
 	board = new Board(this, playerPrincipal);
@@ -19,18 +17,19 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	framePieceSuivante = new FramePourPiece((board->getPieceSuivante()));
 	//Partie Gauche
 	m_gauche = new QGroupBox();
-	m_gauche->setStyleSheet("QGroupBox { background : transparent;}");
-	m_gaucheHold = new QGroupBox(tr("Hold"));
+	m_gauche->setStyleSheet("QGroupBox { background : transparent; border: none}");
+	m_gaucheHold = new QGroupBox();
 	m_gaucheHold->setStyleSheet("QGroupBox { background : transparent;}");
 	m_layoutGauche = new QVBoxLayout();
 	m_Garder = new QLabel();
 	m_Garder->setStyleSheet("background : transparent;");
 	m_hold = new QGridLayout;
-	m_Test = new QLabel("Test");
-	m_Test->setStyleSheet("background : transparent;");
+	m_holdLabel = new QLabel("Hold");
+	m_holdLabel->setStyleSheet("background : transparent; color: white; font-size: 36px; font: bold;");
 	m_Garder->setAlignment(Qt::AlignLeft);
 	m_hold->setAlignment(Qt::AlignLeft);
-	m_hold->addWidget(frameHold, 0, 0);
+	m_hold->addWidget(m_holdLabel, 0, 0);
+	m_hold->addWidget(frameHold, 1, 0);
 	m_gaucheHold->setLayout(m_hold);
 	m_layoutGauche->addWidget(m_Garder);
 	m_layoutGauche->addWidget(m_gaucheHold);
@@ -39,15 +38,20 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 
 	//Partie Centre 
 	m_centre = new QGroupBox();
-	m_centre->setStyleSheet("QGroupBox { background : transparent;}");
+	m_centre->setStyleSheet("QGroupBox { background : transparent; border: none;}");
 	m_console = new QGroupBox(tr("Tetris"));
 	m_console->setStyleSheet("QGroupBox { background : transparent;}");
 	m_progressBarBox = new QGroupBox();
+	m_progressBarBox->setFixedHeight(50);
+	m_progressBarBox->setStyleSheet("QGroupBox { background : transparent; border: 2px solid white;}");
+
 
 	m_layoutProgressBar = new QGridLayout();
 	m_layoutCentre = new QVBoxLayout();
 	m_bar = new QProgressBar();
-	m_bar->setStyleSheet("background : transparent;");
+	// Prendre la bar par defaut ou celle avec le degrade?
+	//m_bar->setStyleSheet("QProgressBar::chunck { background-color: #05B8CC; width: 20px; } QProgressBar { border: 2px solid white; border-radius: 5px; background: transparent; text-align: center; color: white }");
+	m_bar->setStyleSheet("QProgressBar::chunk {background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0,stop: 0 #05B8CC,stop: 0.4999 #05a4cc,stop: 0.5 #05a4cc,stop: 1 #0551cc );border-radius: 5px; border: 2px solid black;} QProgressBar { border: 2px solid white; border-radius: 5px; background: transparent; text-align: center; color: white }");
 	m_bar->setMinimum(0);
 	m_bar->setMaximum(100);
 	m_bar->setMinimumWidth(200);
@@ -55,79 +59,105 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_level = new QLabel(QString::number(player->getLevel()));
 	m_level->setStyleSheet("QLabel{background : transparent; color: white; font-size: 20px;}");
 	m_nextLevel = new QLabel(QString::number(player->getLevel() + 1));
-	m_nextLevel->setStyleSheet("background : transparent; color: white; font-size: 20pt;");
+	m_nextLevel->setStyleSheet("background : transparent; color: white; font-size: 20px;");
 
 	QObject::connect(player, SIGNAL(levelChanged()), this, SLOT(updateLevel()));
 
 	m_layoutProgressBar->addWidget(m_level, 0, 0, Qt::AlignLeft);
 	m_layoutProgressBar->addWidget(m_nextLevel,0, 2, Qt::AlignLeft);
-	m_layoutProgressBar->addWidget(m_bar, 1, 1, 1, 1);
+	m_layoutProgressBar->addWidget(m_bar, 0, 1);
 
 	boardInit(); // mettre au centre
 
 	m_console->setLayout(m_tetris);
 	m_progressBarBox->setLayout(m_layoutProgressBar);
-	m_layoutCentre->addWidget(m_progressBarBox);
+	m_layoutCentre->addWidget(m_progressBarBox, Qt::AlignTop);
 	m_layoutCentre->addWidget(m_console);
 	m_centre->setLayout(m_layoutCentre);
 	m_layout->addWidget(m_centre);
 
 	//Partie Droite
+
+	m_nextLabel = new QLabel("Next");
+	m_nextLabel->setStyleSheet("background : transparent; color: white; font-size: 36px; font: bold;");
+	m_nextLabel->setFixedHeight(40);
+
+	m_score = new QLabel("SCORE");
+	m_score->setMaximumHeight(40);
+	m_score->setStyleSheet("background : transparent; font-size: 20px; font: bold; color: black;");
+
 	m_lcdScore = new QLCDNumber(this);
+	m_lcdScore->setMaximumHeight(90);
 	m_lcdScore->setStyleSheet("background : transparent;");
 	m_lcdScore->setSegmentStyle(QLCDNumber::Filled);
 	m_lcdScore->display(player->getScore());
 	QObject::connect(player, SIGNAL(scoreChanged()),this ,SLOT(updateScore()));
 
 	m_droite = new QGroupBox();
-	m_droite->setStyleSheet("QGroupBox { background : transparent;}");
+	m_droite->setStyleSheet("QGroupBox { background : transparent; border: none;}");
 
 	m_holdnext = new QGroupBox(tr("Next"));
-	m_holdnext->setStyleSheet("QGroupBox { background : transparent;}");
+	m_holdnext->setStyleSheet("QGroupBox { background : transparent; border: none}");
 
 	m_scoreBox = new QGroupBox();
-	m_scoreBox->setStyleSheet("QGroupBox { background : transparent;}");
+	m_scoreBox->setMaximumHeight(60);
+	m_scoreBox->setStyleSheet("QGroupBox { background : rgba(170, 170, 170, 128);}");
+
+	//Prochain meilleur
+	m_userIconLabel = new QLabel();
+	m_userIcon = new QPixmap("user-solid.png");
+	m_userIconLabel->setPixmap(*m_userIcon);
 
 	m_pnext = new QGridLayout;
 	m_layoutDroite = new QVBoxLayout();
 	m_layoutScore = new QVBoxLayout();
 	m_elevel = new QProgressBar();
-	m_elevel->setStyleSheet("background : transparent;");
+	m_elevel->setStyleSheet("QProgressBar::chunk {background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0,stop: 0 #05B8CC,stop: 0.4999 #05a4cc,stop: 0.5 #05a4cc,stop: 1 #0551cc );border-radius: 5px; border: 2px solid black;} QProgressBar { border: 2px solid white; border-radius: 5px; background: transparent; text-align: center; color: white }");
 	m_elevel->setMinimum(0);
 	m_elevel ->setMaximum(100);
 	m_elevel->setMinimumWidth(200);
-	m_score = new QLabel("SCORE");
-	m_score->setStyleSheet("background : transparent;");
 
-	m_bestscore = new QLabel("Next meilleur score");
-	m_bestscore->setStyleSheet("background : transparent;");
+	m_bestscore = new QLabel("Next best score");
+	m_bestscore->setStyleSheet("background :  rgba(170, 170, 170, 128); color: white; font-size: 25px; font: bold;");
+	m_bestscore->setAlignment(Qt::AlignCenter);
 
 	m_joueur = new QLabel("Joueur");
 	m_joueur->setStyleSheet("background : transparent;");
 
+	m_nextBestPlayerBox = new QGroupBox();
+	m_nextBestPlayerBox->setStyleSheet("QGroupBox { background : transparent; border: 2px solid white;}");
+	m_layoutBestPlayer = new QVBoxLayout();
+
 	m_fenetrePointage = new FenetrePointage(player);
 	nextBestPlayer = new Player();
 	nextBestPlayer = (m_fenetrePointage->getNextBestScore());
+
 	m_prochainScore = new QLabel(QString::number(nextBestPlayer->getScore()));
-	m_prochainScore->setStyleSheet("background : transparent;");
+	m_prochainScore->setStyleSheet("background : transparent; color: white; font-size: 25px; font: bold;");
+	m_prochainScore->setAlignment(Qt::AlignCenter);
+
 	m_prochainIndividu = new QLabel(QString::fromStdString(nextBestPlayer->getUsername()));
-	m_prochainIndividu->setStyleSheet("background : transparent;");
+	m_prochainIndividu->setStyleSheet("background : transparent; color: white; font-size: 18px; font: bold;");
+	m_prochainIndividu->setAlignment(Qt::AlignCenter);
+
+	m_layoutBestPlayer->addWidget(m_bestscore);
+	m_layoutBestPlayer->addWidget(m_prochainIndividu);
+	m_layoutBestPlayer->addWidget(m_userIconLabel);
+	m_layoutBestPlayer->addWidget(m_elevel);
+	m_layoutBestPlayer->addWidget(m_prochainScore);
+	m_nextBestPlayerBox->setLayout(m_layoutBestPlayer);
 
 
 	m_layoutScore->addWidget(m_score);
-	m_layoutScore->addWidget(m_score);
-	m_layoutScore->addWidget(m_lcdScore);
+	m_layoutScore->addWidget(m_lcdScore, Qt::AlignCenter);
+	m_pnext->addWidget(m_nextLabel, 0, 0);
+	m_pnext->addWidget(framePieceSuivante, 1, 0);
 
 	m_scoreBox->setLayout(m_layoutScore);
 	m_holdnext->setLayout(m_pnext);
-	m_layoutDroite->addWidget(framePieceSuivante);
-	m_layoutDroite->addWidget(m_scoreBox);
 	m_layoutDroite->addWidget(m_holdnext);
-	m_layoutDroite->addWidget(m_bestscore);
-	m_layoutDroite->addWidget(m_joueur);
-	m_layoutDroite->addWidget(m_elevel);
-	m_layoutDroite->addWidget(m_prochainIndividu);
-	m_layoutDroite->addWidget(m_prochainScore);
+	m_layoutDroite->addWidget(m_scoreBox);
+	m_layoutDroite->addWidget(m_nextBestPlayerBox);
 	m_droite->setLayout(m_layoutDroite);
 	m_layout->addWidget(m_droite);
 
@@ -150,18 +180,15 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	QObject::connect(this, SIGNAL(signalAllerAide()), fenetrePrincipale, SLOT(slotChangerFenetreAide()));
 	QObject::connect(m_menuOptionQuitter, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
 
-
 	setLayout(m_layout);
 
 	// Game over widget
 	m_gameOverLayout = new QVBoxLayout();
-
 	m_gameOverQuitterButton = new QPushButton("Quitter");
 	m_recommencerButton = new QPushButton("Recommencer");
 	QObject::connect(m_gameOverQuitterButton, SIGNAL(clicked(bool)), qApp, SLOT(quit()));
 	QObject::connect(m_recommencerButton, SIGNAL(clicked(bool)), this, SLOT(recommencerBoard()));
 
-	
 	m_gameOverLayout->addWidget(m_fenetrePointage);
 	m_gameOverLayout->addWidget(m_recommencerButton);
 	m_gameOverLayout->addWidget(m_gameOverQuitterButton);
@@ -186,7 +213,6 @@ void FenetreDeJeu::updateScore() {
 	m_lcdScore->display(player->getScore());
 	m_bar->setValue(player->getScore() % 100);
 	nextBestPlayer = (m_fenetrePointage->getNextBestScore());
-	qDebug() << player->getScore() * 100 / (nextBestPlayer->getScore());
 	m_elevel->setValue((player->getScore() * 100) / (nextBestPlayer->getScore()));
 	m_prochainScore->setText(QString::number(nextBestPlayer->getScore()));
 	m_prochainIndividu->setText(QString::fromStdString(nextBestPlayer->getUsername()));

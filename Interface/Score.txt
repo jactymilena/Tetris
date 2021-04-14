@@ -6,5 +6,5 @@ Hannibal 2000
 Jekyll 1500
 A 1150
 Hyde 1000
-Enterusername 350
-Bob 100
+Enterusername 800
+Enterusername 450
