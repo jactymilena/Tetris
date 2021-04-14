@@ -26,7 +26,7 @@ FenetrePointage::FenetrePointage(Player* playerPrincipal) :
 	retourPagePrincipale(nullptr),
 	player(playerPrincipal)
 {
-	fenetreInit(player);
+	fenetreInit();
 }
 
 FenetrePointage::FenetrePointage(QObject* fenetreArrivante, Player* playerPrincipal) :
@@ -53,31 +53,42 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante, Player* playerPrinci
 	retourPagePrincipale(nullptr),
 	player(playerPrincipal)
 {	
-	fenetreInit(player);
+	fenetreInit();
 	QObject::connect(this, SIGNAL(signalClosingFenetrePointage()), fenetreArrivante, SLOT(slotPourEnableFenetre()));
 
 }
 
 FenetrePointage::~FenetrePointage()
 {
-	for (auto player : historique) {
+	/*for (auto player : historique) {
 		delete player;
 	}
-	historique.clear();
+	historique.clear();*/
 }
 
-void FenetrePointage::fenetreInit(Player* player) {
+void FenetrePointage::fenetreInit() {
 	loadHighscore(); // load histoirique des scores
-
+	QIcon iconeHautPage;
+	iconeHautPage.addPixmap(QPixmap("icon-cercle.png"));
+	setWindowIcon(iconeHautPage);
+	setWindowTitle("Tetris");
+	setFixedSize(300, 500);
 	//Pour les info du joueur
 	//Pour Username
 	nomJoueur = new QLabel(QString::fromStdString(player->getUsername()));
+	nomJoueur->setStyleSheet("background : transparent; color:white");
+	nomJoueur->setAlignment(Qt::AlignCenter);
 
 	//Pour score du joueur
 	scoreJoueur = new QLabel(QString::number(player->getScore()));
+	scoreJoueur->setStyleSheet("background : transparent; color:white");
+	scoreJoueur->setAlignment(Qt::AlignCenter);
 
 	//Pour Position du joueur
 	positionJoueur = new QLabel("0");
+	positionJoueur->setStyleSheet("background : transparent; color:white");
+	positionJoueur->setAlignment(Qt::AlignCenter);
+
 	//Pour la table des scores
 	//Créer tous les labels avec les personnes dedans (une fois qu'ils seront lus mettre les strings dans les labels)
 
@@ -87,29 +98,64 @@ void FenetrePointage::fenetreInit(Player* player) {
 
 	for (int i = 0; i < historique.size(); i++) {
 		name[i] = new QLabel(QString::fromStdString(historique[i]->getUsername()));
+		name[i]->setStyleSheet("background : transparent; color:white");
+		name[i]->setAlignment(Qt::AlignCenter);
+
 		score[i] = new QLabel(QString::number(historique[i]->getScore()));
+		score[i]->setStyleSheet("background : transparent; color:white");
+		score[i]->setAlignment(Qt::AlignCenter);
+
 		position[i] = new QLabel(QString::number(i + 1));
+		position[i]->setStyleSheet("background : transparent; color:white");
+		position[i]->setAlignment(Qt::AlignCenter);
 	}
 
 	//Déclaration Score+Username
 	usernameTitre = new QLabel("Nom");
-	positionTitreJoueur = new QLabel("Pos");
+	usernameTitre->setStyleSheet("background : transparent; color: white; font: bold; font-size: 15px; border-bottom: 1px solid yellow;");
+	usernameTitre->setAlignment(Qt::AlignCenter);
+
+	positionTitreJoueur = new QLabel("Position");
+	positionTitreJoueur->setStyleSheet("background : transparent; color: white; font: bold; font-size: 15px; border-bottom: 1px solid yellow;");
+	positionTitreJoueur->setAlignment(Qt::AlignCenter);
+
 	highscoreTitre = new QLabel("Score");
+	highscoreTitre->setStyleSheet("background : transparent; color: white; font: bold; font-size: 15px; border-bottom: 1px solid yellow;");
+	highscoreTitre->setAlignment(Qt::AlignCenter);
+
 	votreScore = new QLabel("Votre Score");
+	votreScore->setStyleSheet("background : transparent; color: white; font-size: 25px; font: bold;");
+	votreScore->setAlignment(Qt::AlignCenter);
 
 	//Déclaration Highscore
 	nomTitre = new QLabel("Nom");
+	nomTitre->setStyleSheet("background : transparent; font: bold; font-size: 15px; border-bottom: 1px solid yellow;");
+	nomTitre->setAlignment(Qt::AlignCenter);
+
 	positionTitre = new QLabel("Position");
+	positionTitre->setStyleSheet("background : transparent; color: white; font: bold; font-size: 15px; border-bottom: 1px solid yellow;");
+	positionTitre->setAlignment(Qt::AlignCenter);
+
 	scoreTitre = new QLabel("Score");
+	scoreTitre->setStyleSheet("background : transparent; color: white; font: bold; font-size: 15px; border-bottom: 1px solid yellow;");
+	scoreTitre->setAlignment(Qt::AlignCenter);
+
+
 	highscore = new QLabel("HIGHSCORE");
+	highscore->setStyleSheet("background : transparent; color:white; font-size: 36px; font: bold");
+	highscore->setAlignment(Qt::AlignCenter);
 
 
 	layout = new QVBoxLayout();
 
 	groupBoxScore = new QGroupBox();
+	groupBoxScore->setStyleSheet("background-image: url(background.png); color: white;");
+
 	gridScore = new QGridLayout();
 
 	groupBoxUser = new QGroupBox();
+	groupBoxUser->setStyleSheet("background-image: url(background.png); color: white;");
+
 	gridScoreUser = new QGridLayout();
 
 	//Affichage du Score du joueur
@@ -147,7 +193,6 @@ Player* FenetrePointage::getNextBestScore()
 {
 	for (int w = 0; w < historique.size(); w++)
 	{
-		
 		if (player->getScore() >= historique[w]->getScore())
 		{
 			if (w - 1 > -1)
@@ -157,7 +202,6 @@ Player* FenetrePointage::getNextBestScore()
 
 			return player;
 		}
-		
 	}
 	return historique[historique.size() - 1];
 }	
@@ -166,12 +210,14 @@ void FenetrePointage::checkerScore() {
 	bool isPlusGrand = false;
 	int i = 0;
 	nomJoueur->setText(QString::fromStdString(player->getUsername()));
+	scoreJoueur->setText(QString::number(player->getScore()));
+	positionJoueur->setText(QString::number(0));
 
 	while ((!isPlusGrand) && (i < historique.size() - 1))
 	{
 		if (historique[i]->getScore() <= player->getScore())
 		{
-			positionJoueur->setText(QString::number(i));
+			positionJoueur->setText(QString::number(i + 1));
 			for (int w = historique.size() - 1; w >= i + 1; w--) {
 				historique[w]->setScore(historique[w - 1]->getScore());
 				historique[w]->setUsername(historique[w - 1]->getUsername());
@@ -189,23 +235,27 @@ void FenetrePointage::checkerScore() {
 		if (historique.size() > 10) {
 			historique.pop_back();
 		}
-		std::ofstream myfile;
-		myfile.open("Score.txt", std::ofstream::out | std::ofstream::trunc);
-
-		for (int j = 0; j < historique.size(); j++)
-		{
-			myfile << historique[j]->getUsername() << " " << historique[j]->getScore() << std::endl;
-		}
-
-		myfile.close();
-
+		
 		for (int i = 0; i < historique.size(); i++) {
 			name[i]->setText(QString::fromStdString(historique[i]->getUsername()));
 			score[i]->setText(QString::number(historique[i]->getScore()));
 			position[i]->setText(QString::number(i + 1));
 		}
+
 		qApp->processEvents();
 	}
+}
+
+void FenetrePointage::writeHighscore() {
+	std::ofstream myfile;
+	myfile.open("Score.txt", std::ofstream::out | std::ofstream::trunc);
+
+	for (int j = 0; j < historique.size(); j++)
+	{
+		myfile << historique[j]->getUsername() << " " << historique[j]->getScore() << std::endl;
+	}
+
+	myfile.close();
 }
 
 void FenetrePointage::loadHighscore() {

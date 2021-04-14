@@ -15,6 +15,7 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	board = new Board(this, playerPrincipal);
 	frameHold = new FramePourPiece((board->getPieceHold()));
 	framePieceSuivante = new FramePourPiece((board->getPieceSuivante()));
+
 	//Partie Gauche
 	m_gauche = new QGroupBox();
 	m_gauche->setStyleSheet("QGroupBox { background : transparent; border: none}");
@@ -188,20 +189,32 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	// Game over widget
 	m_gameOverLayout = new QVBoxLayout();
 	m_gameOverQuitterButton = new QPushButton("Quitter");
+	//m_gameOverQuitterButton->setFixedWidth(200);
+	m_gameOverQuitterButton->setStyleSheet("border-radius: 10px; border: 2px solid white; color: white; font: bold; background-color: yellow;");
 	m_recommencerButton = new QPushButton("Recommencer");
+	//m_recommencerButton->setFixedWidth(200);
+	m_recommencerButton->setStyleSheet("border-radius: 10px; border: 2px solid white; color: white; font: bold; background-color: yellow;");
+	
 	QObject::connect(m_gameOverQuitterButton, SIGNAL(clicked(bool)), qApp, SLOT(quit()));
 	QObject::connect(m_recommencerButton, SIGNAL(clicked(bool)), this, SLOT(recommencerBoard()));
 
 	m_gameOverLayout->addWidget(m_fenetrePointage);
 	m_gameOverLayout->addWidget(m_recommencerButton);
-	m_gameOverLayout->addWidget(m_gameOverQuitterButton);
+	m_gameOverLayout->addWidget(m_gameOverQuitterButton, Qt::AlignCenter);
 
+	QIcon iconeHautPage;
+	iconeHautPage.addPixmap(QPixmap("icon-cercle.png"));
+	
 	m_gameOverWidget = new QWidget();
+	m_gameOverWidget->setWindowIcon(iconeHautPage);
+	m_gameOverWidget->setWindowTitle("Tetris");
+	m_gameOverWidget->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
 	m_gameOverWidget->setLayout(m_gameOverLayout);
 }
 
 void FenetreDeJeu::slotGameOver() {
 	m_fenetrePointage->checkerScore();
+	m_fenetrePointage->writeHighscore();
 	this->setEnabled(false);
 	m_gameOverWidget->show();
 }
