@@ -79,6 +79,7 @@ public:
 	bool verifLigne();
 	void enleverLigne(int i);
 	void restart();
+	void pause();
 
 	//Menu Score
 	void augmenterScore(int nbLigne);

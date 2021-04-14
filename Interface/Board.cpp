@@ -92,10 +92,7 @@ void Board::keyPressEvent(QKeyEvent* event) {
 
 	if (event->key() == Qt::Key_Escape) {
 		if (!isPaused) { // en pause
-			isPaused = true;
-			timer->stop();
-			// menu pause
-			update();
+			pause();
 		}
 		else { // retour au jeu
 			isPaused = false;
@@ -106,7 +103,12 @@ void Board::keyPressEvent(QKeyEvent* event) {
 
 	pieceState(ADD);
 
-	//if (!canGoDown) verifLigne();
+	update();
+}
+
+void Board::pause() {
+	isPaused = true;
+	timer->stop();
 	update();
 }
 
@@ -126,6 +128,11 @@ void Board::paintEvent(QPaintEvent* event)
 				painter.setBrush(QBrush(cases[i][j].color));
 				painter.drawRect(QRect(j * largeurCarre + rect.topLeft().x(), i * hauteurCarre + rect.topLeft().y(), largeurCarre, hauteurCarre));
 
+			}
+			else {
+				//QBrush(QColor(170, 170, 170, 180)
+				painter.setBrush(QColor(170, 170, 170, 0));
+				painter.drawRect(QRect(j * largeurCarre + rect.topLeft().x(), i * hauteurCarre + rect.topLeft().y(), largeurCarre, hauteurCarre));
 			}
 		}
 	}
@@ -320,6 +327,7 @@ void Board::resetBoard() {
 	emit declencherHold();
 	game_over = false;
 	player->setLevel(0);
+	player->setScore(0);
 	difficulte = 500;
 	nouvellePiece = true;
 }

@@ -50,7 +50,6 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_layoutCentre = new QVBoxLayout();
 	m_bar = new QProgressBar();
 	// Prendre la bar par defaut ou celle avec le degrade?
-	//m_bar->setStyleSheet("QProgressBar::chunck { background-color: #05B8CC; width: 20px; } QProgressBar { border: 2px solid white; border-radius: 5px; background: transparent; text-align: center; color: white }");
 	m_bar->setStyleSheet("QProgressBar::chunk {background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0,stop: 0 #05B8CC,stop: 0.4999 #05a4cc,stop: 0.5 #05a4cc,stop: 1 #0551cc );border-radius: 5px; border: 2px solid black;} QProgressBar { border: 2px solid white; border-radius: 5px; background: transparent; text-align: center; color: white }");
 	m_bar->setMinimum(0);
 	m_bar->setMaximum(100);
@@ -105,8 +104,12 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 
 	//Prochain meilleur
 	m_userIconLabel = new QLabel();
-	m_userIcon = new QPixmap("user-solid.png");
+	m_userIcon = new QPixmap("user-icon-white.png");
+	//m_userIcon->setStyleSheet(" { background : transparent;}");
 	m_userIconLabel->setPixmap(*m_userIcon);
+	m_userIconLabel->setAlignment(Qt::AlignCenter);
+	m_userIconLabel->setStyleSheet("background : transparent;");
+
 
 	m_pnext = new QGridLayout;
 	m_layoutDroite = new QVBoxLayout();
@@ -226,6 +229,7 @@ void FenetreDeJeu::updateLevel() {
 
 void FenetreDeJeu::slotPourFenetrePrincipale()
 {
+	board->pause();
 	emit signalRetourPrincipale();
 }
 
@@ -233,7 +237,6 @@ void FenetreDeJeu::slotPourFenetreAide()
 {
 	emit signalAllerAide();
 }
-
 
 void FenetreDeJeu::boardInit() {
 	board = new Board(this, player);
