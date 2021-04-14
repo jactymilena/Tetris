@@ -320,6 +320,7 @@ void Board::resetBoard() {
 	emit declencherHold();
 	game_over = false;
 	player->setLevel(0);
+	player->setScore(0);
 	difficulte = 500;
 	nouvellePiece = true;
 }

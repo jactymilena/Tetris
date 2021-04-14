@@ -36,7 +36,24 @@ index(nullptr)
 	
 	//Pointage + Dialogue(Entrer votre nom)
 	fenetrePointage = new FenetrePointage(this, player);
-	demandeUsername = new QInputDialog;
+	
+	//Setter Un font pour le dialog
+	font = QFont();
+	font.setBold(true);
+	font.setPointSize(20);
+
+	QIcon iconeHautPage;
+	iconeHautPage.addPixmap(QPixmap("tetrisIcon.jpeg"));
+
+	demandeUsername = new QInputDialog();
+	demandeUsername->setInputMode(QInputDialog::TextInput);
+	demandeUsername->setFixedSize(200, 200);
+	//demandeUsername->setOption(QInputDialog::);
+	demandeUsername->setWindowTitle("Votre nom");
+	demandeUsername->setWindowIcon(iconeHautPage);
+	demandeUsername->setLabelText("Entrez votre nom:");
+	demandeUsername->setFont(font);
+	
 
 	//Creation layout 
 	layoutVertical1 = new QVBoxLayout();
@@ -82,11 +99,8 @@ void FenetrePrincipale::slotPourFenetreDeJeu()
 		bool ok;
 		QString text;
 	
-		demandeUsername->setMinimumSize(1000, 1000);
-		text = demandeUsername->getText(this, tr("Entrez votre nom"),
-			tr("Username:"), QLineEdit::Normal,
-			"Enter username", &ok, Qt::MSWindowsFixedSizeDialogHint);
-		
+		ok = demandeUsername->exec();
+		text = demandeUsername->textValue();
 		if (ok && !text.isEmpty())
 		{
 			player->setNameSetted(true);
@@ -120,12 +134,11 @@ void FenetrePrincipale::slotPourEnableFenetre()
 void FenetrePrincipale::slotPourFenetrePointage()
 {
 	bool ok;
+	QString text;
+
 	if (!player->getNameSetted()) {
-		
-		demandeUsername->setMinimumSize(1000, 1000);
-		QString text = demandeUsername->getText(this, tr("Entrez votre nom"),
-			tr("Username:"), QLineEdit::Normal,
-			"Enter username", &ok, Qt::MSWindowsFixedSizeDialogHint);
+		ok = demandeUsername->exec();
+		text = demandeUsername->textValue();
 
 		if (!text.isEmpty() && ok )
 		{
