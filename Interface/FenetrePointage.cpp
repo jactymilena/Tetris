@@ -145,19 +145,13 @@ void FenetrePointage::fenetreInit(Player* player) {
 
 Player* FenetrePointage::getNextBestScore()
 {
-	
-	int i = 0;
 	for (int w = 0; w < historique.size(); w++)
 	{
 		
-		if (player->getScore() > historique[w]->getScore())
+		if (player->getScore() >= historique[w]->getScore())
 		{
-
-
-			qDebug() << "Historique  " << historique[w - 1]->getScore();
-			if (w - 1 != -1)
+			if (w - 1 > -1)
 			{
-				
 				return historique[w - 1];
 			}
 
