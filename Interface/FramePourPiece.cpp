@@ -6,8 +6,9 @@ FramePourPiece::FramePourPiece(Piece laPiece)
 	setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	setLineWidth(2);
 	setMidLineWidth(3);
-	setStyleSheet("background-color: rgb(0, 0, 0);");
-	setMinimumSize(180, 180);
+	//setStyleSheet("background-color: rgb(0, 0, 0);");
+	setStyleSheet("background: transparent;");
+	setFixedSize(250, 250);
 	activateWindow();
 }
 
