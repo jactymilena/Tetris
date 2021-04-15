@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     
     fenetre.setWindowIcon(*icon);
     fenetre.show();
-    mciSendString(L"open Tetris.mp3 type mpegvideo alias maintheme", nullptr, 0, nullptr);
+    mciSendString(L"open Banana.mp3 type mpegvideo alias maintheme", nullptr, 0, nullptr);
     mciSendString(L"play maintheme repeat", NULL, 0, NULL);
    // MCIERROR error = mciSendString(L"setaudio maintheme volume to 25", nullptr, 0, nullptr);
     
