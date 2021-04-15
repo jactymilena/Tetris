@@ -29,6 +29,3 @@ private:
 	std::string username;
 	bool nameSetted;
 };
-
-
-
