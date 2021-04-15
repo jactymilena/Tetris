@@ -3,7 +3,7 @@
 
 FenetreDeJeu::FenetreDeJeu(QMainWindow* fenetrePrincipale, Player* playerPrincipal) : 
 m_menuMenu(nullptr), m_menuBar(nullptr), m_menuOptionAccueil(nullptr), m_menuOptionQuitter(nullptr), player(playerPrincipal),
-m_widget(nullptr), m_layout(nullptr), m_Garder(nullptr), m_hold(nullptr), m_gauche(nullptr), m_layoutGauche(nullptr),
+m_widget(nullptr), m_layout(nullptr), m_usernameLabel(nullptr), m_hold(nullptr), m_gauche(nullptr), m_layoutGauche(nullptr),
 m_centre(nullptr), m_droite(nullptr), m_gaucheHold(nullptr), m_holdLabel(nullptr), m_bar(nullptr), m_layoutCentre(nullptr), m_tetris(nullptr),
 m_layoutScore(nullptr), m_scoreBox(nullptr), m_score(nullptr), m_bestscore(nullptr), m_joueur(nullptr), m_level(nullptr), m_layoutDroite(nullptr), 
 m_elevel(nullptr), m_pnext(nullptr), m_holdnext(nullptr), m_fenetrePointage(nullptr), m_gameOverLayout(nullptr), m_gameOverWidget(nullptr),
@@ -15,23 +15,37 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	board = new Board(this, playerPrincipal);
 	frameHold = new FramePourPiece((board->getPieceHold()));
 	framePieceSuivante = new FramePourPiece((board->getPieceSuivante()));
+
 	//Partie Gauche
+	
+	//Username
+	m_layoutUsername = new QVBoxLayout();
+	m_layoutUsername->setSpacing(0);
+	m_usernameTitle = new QLabel("Username");
+	m_usernameTitle->setStyleSheet("background : transparent; color: white; font: bold; font-size: 35px;");
+	m_usernameLabel = new QLabel();
+	m_usernameLabel->setStyleSheet("background : transparent; color: white; font: italic; font-size: 20px;");
+	m_layoutUsername->addWidget(m_usernameTitle, 0, Qt::AlignBottom);
+	m_layoutUsername->addWidget(m_usernameLabel, 0, Qt::AlignTop);
+	m_usernameBox = new QGroupBox();
+	m_usernameBox->setStyleSheet("QGroupBox { background : transparent; border: none}");
+	m_usernameBox->setLayout(m_layoutUsername);
+
+	//Hold
 	m_gauche = new QGroupBox();
 	m_gauche->setStyleSheet("QGroupBox { background : transparent; border: none}");
 	m_gaucheHold = new QGroupBox();
 	m_gaucheHold->setStyleSheet("QGroupBox { background : transparent;}");
 	m_layoutGauche = new QVBoxLayout();
-	m_Garder = new QLabel();
-	m_Garder->setStyleSheet("background : transparent;");
 	m_hold = new QGridLayout;
 	m_holdLabel = new QLabel("Hold");
 	m_holdLabel->setStyleSheet("background : transparent; color: white; font-size: 36px; font: bold;");
-	m_Garder->setAlignment(Qt::AlignLeft);
+	m_usernameLabel->setAlignment(Qt::AlignLeft);
 	m_hold->setAlignment(Qt::AlignLeft);
 	m_hold->addWidget(m_holdLabel, 0, 0);
 	m_hold->addWidget(frameHold, 1, 0);
 	m_gaucheHold->setLayout(m_hold);
-	m_layoutGauche->addWidget(m_Garder);
+	m_layoutGauche->addWidget(m_usernameBox);
 	m_layoutGauche->addWidget(m_gaucheHold);
 	m_gauche->setLayout(m_layoutGauche);
 	m_layout->addWidget(m_gauche);
@@ -82,11 +96,11 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_nextLabel->setFixedHeight(40);
 
 	m_score = new QLabel("SCORE");
-	m_score->setMaximumHeight(40);
+	m_score->setMinimumHeight(30);
 	m_score->setStyleSheet("background : transparent; font-size: 20px; font: bold; color: black;");
 
 	m_lcdScore = new QLCDNumber(this);
-	m_lcdScore->setMaximumHeight(90);
+	m_lcdScore->setMinimumHeight(40);
 	m_lcdScore->setStyleSheet("background : transparent;");
 	m_lcdScore->setSegmentStyle(QLCDNumber::Filled);
 	m_lcdScore->display(player->getScore());
@@ -113,7 +127,7 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 
 	m_pnext = new QGridLayout;
 	m_layoutDroite = new QVBoxLayout();
-	m_layoutScore = new QVBoxLayout();
+	m_layoutScore = new QHBoxLayout();
 	m_elevel = new QProgressBar();
 	m_elevel->setStyleSheet("QProgressBar::chunk {background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0,stop: 0 #05B8CC,stop: 0.4999 #05a4cc,stop: 0.5 #05a4cc,stop: 1 #0551cc );border-radius: 5px; border: 2px solid black;} QProgressBar { border: 2px solid white; border-radius: 5px; background: transparent; text-align: center; color: white }");
 	m_elevel->setMinimum(0);
@@ -166,14 +180,17 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 
 	//Onglet Menu + Aide
 	m_menuBar = new QMenuBar;
+	m_menuBar->setStyleSheet("QMenuBar { background : transparent; color: white;} QMenuBar::item:selected { border: 1px solid white; } QMenuBar::item:pressed { background : black; color: white; }");
 	m_menuMenu = new QMenu("Menu");
+	m_menuMenu->setStyleSheet("background : transparent; color: white;");
+
 	m_menuBar->addMenu(m_menuMenu);
 	m_menuOptionAccueil = new QAction("Accueil");
 	m_menuOptionQuitter = new QAction("Quitter");
 	m_menuOptionAide = new QAction("Aide");
 	m_menuMenu->addAction(m_menuOptionAccueil);
-	m_menuMenu->addAction(m_menuOptionQuitter);
 	m_menuMenu->addAction(m_menuOptionAide);
+	m_menuMenu->addAction(m_menuOptionQuitter);
 	m_layout->setMenuBar(m_menuBar);
 
 	//Action 
@@ -188,20 +205,38 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	// Game over widget
 	m_gameOverLayout = new QVBoxLayout();
 	m_gameOverQuitterButton = new QPushButton("Quitter");
+	//m_gameOverQuitterButton->setFixedWidth(200);
+	m_gameOverQuitterButton->setStyleSheet("border-radius: 10px; border: 2px solid black; color: black; font: bold; background-color: #ffc72b;");
 	m_recommencerButton = new QPushButton("Recommencer");
+	//m_recommencerButton->setFixedWidth(200);
+	m_recommencerButton->setStyleSheet("border-radius: 10px; border: 2px solid black; color: black; font: bold; background-color: #ffc72b;");
+	
 	QObject::connect(m_gameOverQuitterButton, SIGNAL(clicked(bool)), qApp, SLOT(quit()));
 	QObject::connect(m_recommencerButton, SIGNAL(clicked(bool)), this, SLOT(recommencerBoard()));
 
 	m_gameOverLayout->addWidget(m_fenetrePointage);
 	m_gameOverLayout->addWidget(m_recommencerButton);
-	m_gameOverLayout->addWidget(m_gameOverQuitterButton);
+	m_gameOverLayout->addWidget(m_gameOverQuitterButton, Qt::AlignCenter);
 
+	QIcon iconeHautPage;
+	iconeHautPage.addPixmap(QPixmap("icon-cercle.png"));
+	
 	m_gameOverWidget = new QWidget();
+	m_gameOverWidget->setWindowIcon(iconeHautPage);
+	m_gameOverWidget->setWindowTitle("Tetris");
+	m_gameOverWidget->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
 	m_gameOverWidget->setLayout(m_gameOverLayout);
 }
 
+void FenetreDeJeu::setUsernameLabel() {
+	m_usernameLabel->setText(QString::fromStdString(player->getUsername()));
+	qApp->processEvents();
+}
+ 
+
 void FenetreDeJeu::slotGameOver() {
 	m_fenetrePointage->checkerScore();
+	m_fenetrePointage->writeHighscore();
 	this->setEnabled(false);
 	m_gameOverWidget->show();
 }
