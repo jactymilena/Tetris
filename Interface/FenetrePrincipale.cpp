@@ -1,3 +1,9 @@
+/*===================================
+Auteur: fona1101 elka0602 saej3101
+Nom du fichier: FenetrePrincipale.cpp
+Date: 15 avril 2021
+But: Fenêtre d'accueil de l'application
+====================================*/
 #include "FenetrePrincipale.h"
 
 FenetrePrincipale::FenetrePrincipale() :

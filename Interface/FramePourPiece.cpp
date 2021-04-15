@@ -1,3 +1,9 @@
+/*===================================
+Auteur:         fona1101 elka0602 saej3101
+Nom du fichier: FramePourPiece.cpp
+Date:           15 avril 2021
+But:            Montre la pièce dans une boîte notamment pour les pièces en Hold 
+====================================*/
 #include "FramePourPiece.h"
 
 FramePourPiece::FramePourPiece(Piece laPiece)

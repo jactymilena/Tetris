@@ -1,4 +1,10 @@
-﻿#include "Board.h"
+﻿/*===================================
+Auteur: fona1101 elka0602 saej3101
+Nom du fichier: Board.cpp
+Date: 15 avril 2021
+But: Contient les intéractions avec les pièces de l'aire de jeu 
+====================================*/
+#include "Board.h"
 
 //#include "CommunicationFPGA.h"
 

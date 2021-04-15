@@ -1,3 +1,9 @@
+/*===================================
+Auteur:         fona1101 elka0602 saej3101
+Nom du fichier: Player.cpp
+Date:           15 avril 2021
+But:            Contient les informations pour un joueur
+====================================*/
 #include "Player.h"
 
 

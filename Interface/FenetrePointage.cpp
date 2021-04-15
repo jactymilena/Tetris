@@ -1,3 +1,9 @@
+/*===================================
+Auteur:         fona1101 elka0602 saej3101
+Nom du fichier: FenetreDePointage.cpp
+Date:           15 avril 2021
+But:            Montre le pointage de l'utilisateur et sa position
+====================================*/
 #include "FenetrePointage.h"
 #include "FenetrePrincipale.h"
 

@@ -1,3 +1,9 @@
+/*===================================
+Auteur: fona1101 elka0602 saej3101
+Nom du fichier: main.cpp
+Date: 15 avril 2021
+But: Fichier principal
+====================================*/
 #include "FenetrePrincipale.h"
 #include <QApplication>
 #include <mciapi.h>

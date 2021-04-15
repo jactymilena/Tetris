@@ -1,3 +1,9 @@
+/*===================================
+Auteur: fona1101 elka0602 saej3101
+Nom du fichier: FenetrePrincipale.h
+Date: 15 avril 2021
+But: Déclaration de FenetrePrincipale.h
+====================================*/
 #pragma once
 
 #ifndef FENETREPRINCIPALE_H

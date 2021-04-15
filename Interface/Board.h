@@ -1,4 +1,10 @@
-﻿#pragma once
+﻿/*===================================
+Auteur: fona1101 elka0602 saej3101
+Nom du fichier: Board.h
+Date: 15 avril 2021
+But: Déclaration de Board.h
+====================================*/
+#pragma once
 #include <iostream>
 #include <thread>
 #include <chrono>

@@ -1,4 +1,10 @@
-﻿#include "Piece.h"
+﻿/*===================================
+Auteur:         fona1101 elka0602 saej3101
+Nom du fichier: Piece.cpp
+Date:           15 avril 2021
+But:            Contient les données de la pièce
+====================================*/
+#include "Piece.h"
 
 Piece::Piece() {
 	numPiece = 7;

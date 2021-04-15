@@ -1,3 +1,9 @@
+/*===================================
+Auteur: fona1101 elka0602 saej3101
+Nom du fichier: FenetreAide.cpp
+Date: 15 avril 2021
+But: Fenetre avec tous les paramètres:sons et commandes
+====================================*/
 #pragma once
 #include "FenetreAide.h"
 

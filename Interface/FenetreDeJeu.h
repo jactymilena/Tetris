@@ -1,3 +1,9 @@
+/*===================================
+Auteur:         fona1101 elka0602 saej3101
+Nom du fichier: FenetreDeJeu.h
+Date:           15 avril 2021
+But:            Déclarer FenetreDeJeu.h
+====================================*/
 #pragma once
 
 #ifndef FENETREDEJEU_H

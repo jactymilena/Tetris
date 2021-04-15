@@ -1,3 +1,9 @@
+/*===================================
+Auteur:         fona1101 elka0602 saej3101
+Nom du fichier: Piece.h
+Date:           15 avril 2021
+But:            Déclarer Piece.h
+====================================*/
 #pragma once
 #include <iostream>
 #include <QRgb>

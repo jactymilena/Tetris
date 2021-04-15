@@ -1,8 +1,12 @@
+/*===================================
+Auteur: fona1101 elka0602 saej3101
+Nom du fichier: FenetreAide.h
+Date: 15 avril 2021
+But: Déclarer FenetreAide.h 
+====================================*/
 #pragma once
 #ifndef FENETREAIDE_H
 #define FENETREAIDE_H
-
-
 
 #include <QMainWindow>
 #include <QMenu>

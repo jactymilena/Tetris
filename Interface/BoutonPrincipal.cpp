@@ -1,3 +1,9 @@
+/*===================================
+Auteur: fona1101 elka0602 saej3101
+Nom du fichier: BoutonPrincipal.cpp
+Date: 15 avril 2021
+But: Bouton qui change lorsqu'on passe le curseur sur celui-ci
+====================================*/
 #include "BoutonPrincipal.h"
 
 BoutonPrincipal::BoutonPrincipal()
