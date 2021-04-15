@@ -12,7 +12,6 @@ public:
 protected:
 	void hoverEnter(QHoverEvent* event);
 	void hoverLeave(QHoverEvent* event);
-	void hoverMove(QHoverEvent* event);
 	bool event(QEvent* event);
 };
 
