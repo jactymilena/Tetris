@@ -4,6 +4,7 @@ Nom du fichier: Piece.cpp
 Date:           15 avril 2021
 But:            Contient les données de la pièce
 ====================================*/
+
 #include "Piece.h"
 
 Piece::Piece() {

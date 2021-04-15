@@ -1,10 +1,11 @@
+#pragma once
 /*===================================
 Auteur:         fona1101 elka0602 saej3101
 Nom du fichier: FramePourPiece.h
 Date:           15 avril 2021
 But:            Déclarer FramePourPiece.h
 ====================================*/
-#pragma once
+
 #include <QFrame>
 #include <QPainter>
 #include "Piece.h"

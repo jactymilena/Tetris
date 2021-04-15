@@ -2,8 +2,9 @@
 Auteur:         fona1101 elka0602 saej3101
 Nom du fichier: FramePourPiece.cpp
 Date:           15 avril 2021
-But:            Montre la pièce dans une boîte notamment pour les pièces en Hold 
+But:            Montre la pièce dans une boîte notamment pour les pièces en Hold
 ====================================*/
+
 #include "FramePourPiece.h"
 
 FramePourPiece::FramePourPiece(Piece laPiece)
@@ -12,7 +13,6 @@ FramePourPiece::FramePourPiece(Piece laPiece)
 	setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	setLineWidth(2);
 	setMidLineWidth(3);
-	//setStyleSheet("background-color: rgb(0, 0, 0);");
 	setStyleSheet("background : transparent; border: 2px solid white");
 	setFixedSize(250, 250);
 	activateWindow();

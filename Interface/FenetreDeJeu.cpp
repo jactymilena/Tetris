@@ -4,8 +4,8 @@ Nom du fichier: FenetreDeJeu.h
 Date:           15 avril 2021
 But:            Affiche le board ainsi que ces intéractions
 ====================================*/
-#include "FenetreDeJeu.h"
 
+#include "FenetreDeJeu.h"
 
 FenetreDeJeu::FenetreDeJeu(QMainWindow* fenetrePrincipale, Player* playerPrincipal) : 
 m_menuMenu(nullptr), m_menuBar(nullptr), m_menuOptionAccueil(nullptr), m_menuOptionQuitter(nullptr), player(playerPrincipal),
@@ -191,9 +191,9 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_menuMenu->setStyleSheet("background : transparent; color: white;");
 
 	m_menuBar->addMenu(m_menuMenu);
-	m_menuOptionAccueil = new QAction("Accueil");
-	m_menuOptionQuitter = new QAction("Quitter");
-	m_menuOptionAide = new QAction("Aide");
+	m_menuOptionAccueil = new QAction("Home");
+	m_menuOptionQuitter = new QAction("Exit");
+	m_menuOptionAide = new QAction("Parameters");
 	m_menuMenu->addAction(m_menuOptionAccueil);
 	m_menuMenu->addAction(m_menuOptionAide);
 	m_menuMenu->addAction(m_menuOptionQuitter);
@@ -239,7 +239,6 @@ void FenetreDeJeu::setUsernameLabel() {
 	qApp->processEvents();
 }
  
-
 void FenetreDeJeu::slotGameOver() {
 	m_fenetrePointage->checkerScore();
 	m_fenetrePointage->writeHighscore();
@@ -270,12 +269,17 @@ void FenetreDeJeu::updateLevel() {
 
 void FenetreDeJeu::slotPourFenetrePrincipale()
 {
-	board->pause();
+	if (board->getIsStarted()) {
+		board->pause();
+	}
 	emit signalRetourPrincipale();
 }
 
 void FenetreDeJeu::slotPourFenetreAide()
 {
+	if (board->getIsStarted()) {
+		board->pause();
+	}
 	emit signalAllerAide();
 }
 

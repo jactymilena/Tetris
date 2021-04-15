@@ -2,8 +2,9 @@
 Auteur: fona1101 elka0602 saej3101
 Nom du fichier: Board.cpp
 Date: 15 avril 2021
-But: Contient les intéractions avec les pièces de l'aire de jeu 
+But: Contient les intéractions avec les pièces de l'aire de jeu
 ====================================*/
+
 #include "Board.h"
 
 //#include "CommunicationFPGA.h"
@@ -323,6 +324,10 @@ void Board::moveDownPiece() {
 
 	return 0;
 }*/
+
+bool Board::getIsStarted() {
+	return isStarted;
+}
 
 void Board::resetBoard() {
 	for (int i = 0; i < LIGNES; i++) {

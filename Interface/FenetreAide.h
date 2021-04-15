@@ -1,10 +1,11 @@
+#pragma once
 /*===================================
 Auteur: fona1101 elka0602 saej3101
 Nom du fichier: FenetreAide.h
 Date: 15 avril 2021
-But: Déclarer FenetreAide.h 
+But: Déclarer FenetreAide.h
 ====================================*/
-#pragma once
+
 #ifndef FENETREAIDE_H
 #define FENETREAIDE_H
 
@@ -33,7 +34,6 @@ But: Déclarer FenetreAide.h
 
 class FenetreAide : public QWidget
 {
-
     Q_OBJECT
 
 public:

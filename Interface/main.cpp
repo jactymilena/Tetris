@@ -4,6 +4,7 @@ Nom du fichier: main.cpp
 Date: 15 avril 2021
 But: Fichier principal
 ====================================*/
+
 #include "FenetrePrincipale.h"
 #include <QApplication>
 #include <mciapi.h>
@@ -23,7 +24,7 @@ int main(int argc, char* argv[])
     
     fenetre.setWindowIcon(*icon);
     fenetre.show();
-    mciSendString(L"open Banana.mp3 type mpegvideo alias maintheme", nullptr, 0, nullptr);
+    mciSendString(L"open Tetris.mp3 type mpegvideo alias maintheme", nullptr, 0, nullptr);
     mciSendString(L"play maintheme repeat", NULL, 0, NULL);
    // MCIERROR error = mciSendString(L"setaudio maintheme volume to 25", nullptr, 0, nullptr);
     

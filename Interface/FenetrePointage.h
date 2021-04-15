@@ -1,10 +1,10 @@
+#pragma once
 /*===================================
 Auteur:         fona1101 elka0602 saej3101
 Nom du fichier: FenetreDePointage.h
 Date:           15 avril 2021
 But:            Déclarer FenetrePointage.h
 ====================================*/
-#pragma once
 
 #ifndef FENETREPOINTAGE_H
 #define FENETREPOINTAGE_H

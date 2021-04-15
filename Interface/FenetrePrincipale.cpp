@@ -4,6 +4,7 @@ Nom du fichier: FenetrePrincipale.cpp
 Date: 15 avril 2021
 But: Fenêtre d'accueil de l'application
 ====================================*/
+
 #include "FenetrePrincipale.h"
 
 FenetrePrincipale::FenetrePrincipale() :
@@ -40,7 +41,6 @@ FenetrePrincipale::FenetrePrincipale() :
 	boutonPourScore = new BoutonPrincipal();
 	boutonPourScore->setText("SCORE");
 	
-	
 	//Pointage + Dialogue(Entrer votre nom)
 	fenetrePointage = new FenetrePointage(this, player);
 
@@ -55,10 +55,9 @@ FenetrePrincipale::FenetrePrincipale() :
 	demandeUsername = new QInputDialog();
 	demandeUsername->setInputMode(QInputDialog::TextInput);
 	demandeUsername->setFixedSize(200, 200);
-	//demandeUsername->setOption(QInputDialog::);
-	demandeUsername->setWindowTitle("Votre nom");
+	demandeUsername->setWindowTitle("Register");
 	demandeUsername->setWindowIcon(iconeHautPage);
-	demandeUsername->setLabelText("Entrez votre nom:");
+	demandeUsername->setLabelText("Please enter username :");
 	demandeUsername->setFont(font);
 
 	//Creation layout 
