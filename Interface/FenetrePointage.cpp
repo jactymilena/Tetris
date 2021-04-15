@@ -259,6 +259,10 @@ void FenetrePointage::writeHighscore() {
 }
 
 void FenetrePointage::loadHighscore() {
+	if (historique.size() > 0) {
+		historique.clear();
+	}
+	
 	//Ouvrir document 
 	std::fstream myfile;
 	myfile.open("Score.txt");

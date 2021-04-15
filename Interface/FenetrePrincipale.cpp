@@ -34,10 +34,8 @@ FenetrePrincipale::FenetrePrincipale() :
 	boutonPourScore = new BoutonPrincipal();
 	boutonPourScore->setText("Pointage");
 
-
 	//Pointage + Dialogue(Entrer votre nom)
 	fenetrePointage = new FenetrePointage(this, player);
-
 
 	//Setter Un font pour le dialog
 	font = QFont();
@@ -106,6 +104,7 @@ void FenetrePrincipale::slotPourFenetreDeJeu()
 		{
 			player->setNameSetted(true);
 			player->setUsername((text.simplified().remove(' ')).toStdString());
+			fenetreDeJeu->setUsernameLabel();
 			fenetrePointage->setJoueurUsername();
 			fenetrePointage->loadHighscore();
 			index->setCurrentIndex(1);

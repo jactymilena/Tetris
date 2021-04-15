@@ -35,6 +35,7 @@ public:
     FenetreDeJeu(QMainWindow* fenetrePrincipale, Player* playerPrincipal);
     ~FenetreDeJeu();
     void boardInit();
+    void setUsernameLabel();
 
 private:
     // layout
@@ -58,12 +59,15 @@ private:
    QGroupBox* m_scoreBox;
    QGroupBox* m_progressBarBox;
    QGroupBox* m_nextBestPlayerBox;
+   QGroupBox* m_usernameBox;
 
    QVBoxLayout* m_layoutGauche;
+   QVBoxLayout* m_layoutUsername;
    QGridLayout* m_layoutProgressBar;
-   QVBoxLayout* m_layoutScore;
+   QHBoxLayout* m_layoutScore;
    QVBoxLayout* m_layoutBestPlayer;
-   QLabel* m_Garder;
+   QLabel* m_usernameTitle;
+   QLabel* m_usernameLabel;
    QLabel* m_holdLabel;
    QLabel* m_nextLabel;
    QLabel* m_score;
