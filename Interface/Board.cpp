@@ -97,6 +97,7 @@ void Board::keyPressEvent(QKeyEvent* event) {
 		else { // retour au jeu
 			isPaused = false;
 			timer->start(difficulte);
+			mciSendString(L"resume maintheme", NULL, 0, NULL);
 			update();
 		}
 	}
@@ -108,6 +109,7 @@ void Board::keyPressEvent(QKeyEvent* event) {
 
 void Board::pause() {
 	isPaused = true;
+	mciSendString(L"pause maintheme", NULL, 0, NULL);
 	timer->stop();
 	update();
 }
@@ -323,6 +325,7 @@ void Board::resetBoard() {
 			cases[i][j].color = Qt::white;
 		}
 	}
+	mciSendString(L"set maintheme speed 1000", nullptr, 0, 0);
 	pieceHold.setNumPiece(7);
 	emit declencherHold();
 	game_over = false;
@@ -353,13 +356,19 @@ void Board::augmenterScore(int nbLigne) {
 }
 
 void Board::augmenterLevel() {
+	int speed = 0;
 	if (player->getScore() != 0)
 	{
 		if (player->getScore() % SCORE == 0)
 		{
 			difficulte -= 50;
 			player->setLevel(player->getLevel() + 1);
-
+			speed = player->getLevel() * 20 + 1000;
+			std::string string1 = "set maintheme speed " + std::to_string(speed);
+			std::wstring wstring1 = std::wstring(string1.begin(), string1.end());
+			const wchar_t* wchar1 = wstring1.c_str();
+			
+			mciSendString(wchar1, nullptr, 0, 0);
 			if (difficulte < 100)
 			{
 				difficulte = 100;

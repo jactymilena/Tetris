@@ -11,8 +11,10 @@ BoutonPrincipal::~BoutonPrincipal()
 {
 
 }
+
 bool BoutonPrincipal::event(QEvent* event)
 {
+
 	switch (event->type())
 	{
 	case QEvent::HoverEnter:
