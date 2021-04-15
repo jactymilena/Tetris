@@ -144,6 +144,7 @@ void FenetrePrincipale::slotPourFenetrePointage()
 		{
 			player->setNameSetted(true);
 			player->setUsername((text.simplified().remove(' ')).toStdString());
+			fenetreDeJeu->setUsernameLabel();
 			fenetrePointage->setJoueurUsername();
 			fenetrePointage->loadHighscore();
 			fenetrePointage->checkerScore();
