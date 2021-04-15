@@ -84,8 +84,6 @@ public:
 	//Menu Score
 	void augmenterScore(int nbLigne);
 	void augmenterLevel();
-	//void loadHighscore();
-	void checkerScore();
 
 	//Menu hold
 	void changerPiece();
@@ -100,10 +98,8 @@ protected:
 	void keyPressEvent(QKeyEvent* event);
 	void mousePressEvent(QMouseEvent* event);
 
-
 public slots:
 	void moveDownPiece();
-	//void unpauseGame();
 
 signals:
 	void declencherHold();
@@ -117,9 +113,7 @@ private:
 	Piece pieceHold;
 	Piece piece;
 	Piece pieceApres;
-	int compteur;
 	int difficulte;
-	std::vector<Player> historique;
 	Player* player;
 
 	// Qt

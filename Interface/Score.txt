@@ -1,3 +1,4 @@
+dewfw 750
 dsc 400
 htr 400
 fewf 400
@@ -7,4 +8,3 @@ Smokey 100
 Kojima 95
 Dio 90
 Santa 70
-Allo 50
