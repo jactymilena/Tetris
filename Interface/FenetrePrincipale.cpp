@@ -27,11 +27,11 @@ index(nullptr)
 	
 	//Creation des boutons
 	boutonPourFenetreJeu = new BoutonPrincipal();
-	boutonPourFenetreJeu->setText("Nouvelle Partie");
+	boutonPourFenetreJeu->setText("NEW GAME");
 	boutonPourFenetreReglage = new BoutonPrincipal();
-	boutonPourFenetreReglage->setText("Reglages");
+	boutonPourFenetreReglage->setText("PARAMETERS");
 	boutonPourScore = new BoutonPrincipal();
-	boutonPourScore->setText("Pointage");
+	boutonPourScore->setText("SCORE");
 	
 	
 	//Pointage + Dialogue(Entrer votre nom)

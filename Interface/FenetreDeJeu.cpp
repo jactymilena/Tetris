@@ -16,6 +16,7 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	frameHold = new FramePourPiece((board->getPieceHold()));
 	framePieceSuivante = new FramePourPiece((board->getPieceSuivante()));
 	//Partie Gauche
+
 	m_gauche = new QGroupBox();
 	m_gauche->setStyleSheet("QGroupBox { background : transparent; border: none}");
 	m_gaucheHold = new QGroupBox();
