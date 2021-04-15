@@ -33,7 +33,6 @@ But: Déclarer FenetreAide.h
 
 class FenetreAide : public QWidget
 {
-
     Q_OBJECT
 
 public:
