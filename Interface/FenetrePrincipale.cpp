@@ -54,7 +54,6 @@ FenetrePrincipale::FenetrePrincipale() :
 	demandeUsername->setLabelText("Entrez votre nom:");
 	demandeUsername->setFont(font);
 
-
 	//Creation layout 
 	layoutVertical1 = new QVBoxLayout();
 

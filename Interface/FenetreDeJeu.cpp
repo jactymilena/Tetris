@@ -180,7 +180,7 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 
 	//Onglet Menu + Aide
 	m_menuBar = new QMenuBar;
-	m_menuBar->setStyleSheet("background : transparent; color: white;");
+	m_menuBar->setStyleSheet("QMenuBar { background : transparent; color: white;} QMenuBar::item:selected { border: 1px solid white; } QMenuBar::item:pressed { background : black; color: white; }");
 	m_menuMenu = new QMenu("Menu");
 	m_menuMenu->setStyleSheet("background : transparent; color: white;");
 
