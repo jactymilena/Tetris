@@ -40,7 +40,6 @@ public:
 	void turn(int direction);
 	void unturned();
 	void loadPiece(int num_piece);
-	void print();
 
 	Carre getCarre(int index) const;
 	int getNumColor() const;

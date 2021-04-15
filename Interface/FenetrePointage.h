@@ -30,10 +30,11 @@ public:
     FenetrePointage(Player* playerPrincipal);
     ~FenetrePointage();
 
-    void fenetreInit(Player* player);
+    void fenetreInit();
 
     void setJoueurUsername();
     void loadHighscore();
+    void writeHighscore();
     void checkerScore();
     void closeEvent(QCloseEvent* event);
     Player* getNextBestScore();

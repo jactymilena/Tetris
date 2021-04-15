@@ -176,12 +176,6 @@ void Piece::unturned() {
 	}
 }
 
-void Piece::print() {
-	for (int i = 0; i < 4; i++) {
-		std::cout << "( " << carres[i].ligne << ", " << carres[i].colonne << " )\n";
-	}
-}
-
 void Piece::turn(int direction) { //https://www.youtube.com/watch?v=Atlr5vvdchY&ab_channel=GoranMilovanovic essentiel pour faire la rotation
 
 	for (int i = 0; i < 4; i++) {

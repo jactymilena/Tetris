@@ -21,6 +21,8 @@
 #include <QMouseEvent>
 #include <QFontDataBase>
 #include <QLabel>
+#include <string>
+#include <string.h>
 #include "Piece.h"
 #include "Player.h"
 
@@ -52,7 +54,7 @@
 //unsigned const int nreg_lect_stat_btn = 0;  // fpga -> PC  Statut et BTN lus FPGA -> PC
 //unsigned const int nreg_lect_swt = 1;       // fpga -> PC  SWT lus FPGA -> PC
 //unsigned const int nreg_lect_cmpt_t = 2;    // fpga -> PC  compteur temps FPGA -> PC 
-//unsigned const int nreg_lect_can0 = 3;      // fpga -> PC  canal 0 lus FPGA -> PC
+//unsigned const int nreg_lect_can0 = 3;      fpga -> PC  canal 0 lus FPGA -> PC
 //unsigned const int nreg_lect_can1 = 4;      // fpga -> PC  canal 1 lus FPGA -> PC
 //unsigned const int nreg_lect_can2 = 5;      // fpga -> PC  canal 2 lus FPGA -> PC
 //unsigned const int nreg_lect_can3 = 6;      // fpga -> PC  canal 3 lus FPGA -> PC
@@ -84,8 +86,6 @@ public:
 	//Menu Score
 	void augmenterScore(int nbLigne);
 	void augmenterLevel();
-	//void loadHighscore();
-	void checkerScore();
 
 	//Menu hold
 	void changerPiece();
@@ -100,10 +100,8 @@ protected:
 	void keyPressEvent(QKeyEvent* event);
 	void mousePressEvent(QMouseEvent* event);
 
-
 public slots:
 	void moveDownPiece();
-	//void unpauseGame();
 
 signals:
 	void declencherHold();
@@ -117,9 +115,7 @@ private:
 	Piece pieceHold;
 	Piece piece;
 	Piece pieceApres;
-	int compteur;
 	int difficulte;
-	std::vector<Player> historique;
 	Player* player;
 
 	// Qt
