@@ -93,6 +93,8 @@ FenetrePrincipale::~FenetrePrincipale()
 
 void FenetrePrincipale::slotPourFenetreDeJeu()
 {
+	//MCIERROR error = mciSendString(L"setaudio maintheme volume to 600", nullptr, 0, nullptr);
+	//MCIERROR error = mciSendStringA("set maintheme speed 1100", nullptr, 0, 0);
 	if (!player->getNameSetted()) {
 		bool ok;
 		QString text;
@@ -163,5 +165,6 @@ void FenetrePrincipale::closeEvent(QCloseEvent* event)
 	{
 		fenetrePointage->hide();
 	}
+	mciSendStringA("close Tetris.mp3" , nullptr, 0, nullptr);
 }
 

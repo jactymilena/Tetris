@@ -20,11 +20,20 @@
 #include <QString>
 #include <QStackedWidget>
 #include <QInputDialog>
+#include <mmsystem.h>
 #include "BoutonPrincipal.h"
+#include <strmif.h>
+#include <control.h>
 #include "Player.h"
+#include <iostream>
+#include <conio.h>
+#include <windows.h>
+#include <uuids.h>
 
+#pragma comment(lib, "strmiids.lib")
 class FenetrePrincipale : public QMainWindow
 {
+    
     Q_OBJECT
 public:
     FenetrePrincipale();
