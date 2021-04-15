@@ -66,7 +66,10 @@ FenetrePointage::FenetrePointage(QObject* fenetreArrivante, Player* playerPrinci
 
 FenetrePointage::~FenetrePointage()
 {
-
+	/*for (auto player : historique) {
+		delete player;
+	}
+	historique.clear();*/
 }
 
 void FenetrePointage::fenetreInit() {
@@ -79,17 +82,17 @@ void FenetrePointage::fenetreInit() {
 	//Pour les info du joueur
 	//Pour Username
 	nomJoueur = new QLabel(QString::fromStdString(player->getUsername()));
-	nomJoueur->setStyleSheet("background : transparent; color:white;");
+	nomJoueur->setStyleSheet("background : transparent; color:white");
 	nomJoueur->setAlignment(Qt::AlignCenter);
 
 	//Pour score du joueur
 	scoreJoueur = new QLabel(QString::number(player->getScore()));
-	scoreJoueur->setStyleSheet("background : transparent; color:white; border-left : 1px solid yellow;");
+	scoreJoueur->setStyleSheet("background : transparent; color:white");
 	scoreJoueur->setAlignment(Qt::AlignCenter);
 
 	//Pour Position du joueur
 	positionJoueur = new QLabel("0");
-	positionJoueur->setStyleSheet("background : transparent; color:white; border-right : 1px solid yellow;");
+	positionJoueur->setStyleSheet("background : transparent; color:white");
 	positionJoueur->setAlignment(Qt::AlignCenter);
 
 	//Pour la table des scores
@@ -101,20 +104,20 @@ void FenetrePointage::fenetreInit() {
 
 	for (int i = 0; i < historique.size(); i++) {
 		name[i] = new QLabel(QString::fromStdString(historique[i]->getUsername()));
-		name[i]->setStyleSheet("background : transparent; color: white;");
+		name[i]->setStyleSheet("background : transparent; color:white");
 		name[i]->setAlignment(Qt::AlignCenter);
 
 		score[i] = new QLabel(QString::number(historique[i]->getScore()));
-		score[i]->setStyleSheet("background : transparent; color: white; border-left : 1px solid yellow;");
+		score[i]->setStyleSheet("background : transparent; color:white");
 		score[i]->setAlignment(Qt::AlignCenter);
 
 		position[i] = new QLabel(QString::number(i + 1));
-		position[i]->setStyleSheet("background : transparent; color: white; border-right : 1px solid yellow;");
+		position[i]->setStyleSheet("background : transparent; color:white");
 		position[i]->setAlignment(Qt::AlignCenter);
 	}
 
 	//Déclaration Score+Username
-	usernameTitre = new QLabel("Username");
+	usernameTitre = new QLabel("Nom");
 	usernameTitre->setStyleSheet("background : transparent; color: white; font: bold; font-size: 15px; border-bottom: 1px solid yellow;");
 	usernameTitre->setAlignment(Qt::AlignCenter);
 
@@ -126,12 +129,12 @@ void FenetrePointage::fenetreInit() {
 	highscoreTitre->setStyleSheet("background : transparent; color: white; font: bold; font-size: 15px; border-bottom: 1px solid yellow;");
 	highscoreTitre->setAlignment(Qt::AlignCenter);
 
-	votreScore = new QLabel("Your Score");
+	votreScore = new QLabel("Votre Score");
 	votreScore->setStyleSheet("background : transparent; color: white; font-size: 25px; font: bold;");
 	votreScore->setAlignment(Qt::AlignCenter);
 
 	//Déclaration Highscore
-	nomTitre = new QLabel("Username");
+	nomTitre = new QLabel("Nom");
 	nomTitre->setStyleSheet("background : transparent; font: bold; font-size: 15px; border-bottom: 1px solid yellow;");
 	nomTitre->setAlignment(Qt::AlignCenter);
 
@@ -164,25 +167,24 @@ void FenetrePointage::fenetreInit() {
 	//Affichage du Score du joueur
 	gridScoreUser->addWidget(votreScore, 0, 0, 1, 3, Qt::AlignCenter);
 	gridScoreUser->addWidget(positionTitreJoueur, 1, 0);
-	gridScoreUser->addWidget(highscoreTitre, 1, 2);
-	gridScoreUser->addWidget(usernameTitre, 1, 1);
+	gridScoreUser->addWidget(highscoreTitre, 1, 1);
+	gridScoreUser->addWidget(usernameTitre, 1, 2);
 	gridScoreUser->addWidget(positionJoueur, 2, 0);
-	gridScoreUser->addWidget(scoreJoueur, 2, 2);
-	gridScoreUser->addWidget(nomJoueur, 2, 1);
+	gridScoreUser->addWidget(scoreJoueur, 2, 1);
+	gridScoreUser->addWidget(nomJoueur, 2, 2);
 	groupBoxUser->setLayout(gridScoreUser);
 
 	//Affichade de la Table des Scores
 	gridScore->addWidget(highscore, 0, 0, 1, 3, Qt::AlignCenter);
 	gridScore->addWidget(positionTitre, 1, 0);
-	gridScore->addWidget(scoreTitre, 1, 2);
-	gridScore->addWidget(nomTitre, 1, 1);
+	gridScore->addWidget(scoreTitre, 1, 1);
+	gridScore->addWidget(nomTitre, 1, 2);
 
 	for (int i = 0; i < historique.size(); i++)
 	{
 		gridScore->addWidget(position[i], i + 2, 0);
-		gridScore->addWidget(name[i], i + 2, 1);
-		gridScore->addWidget(score[i], i + 2, 2);
-
+		gridScore->addWidget(score[i], i + 2, 1);
+		gridScore->addWidget(name[i], i + 2, 2);
 	}
 
 	groupBoxScore->setLayout(gridScore);

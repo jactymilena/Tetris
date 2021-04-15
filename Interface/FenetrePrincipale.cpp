@@ -40,6 +40,7 @@ FenetrePrincipale::FenetrePrincipale() :
 	boutonPourScore = new BoutonPrincipal();
 	boutonPourScore->setText("SCORE");
 	
+	
 	//Pointage + Dialogue(Entrer votre nom)
 	fenetrePointage = new FenetrePointage(this, player);
 
@@ -54,9 +55,10 @@ FenetrePrincipale::FenetrePrincipale() :
 	demandeUsername = new QInputDialog();
 	demandeUsername->setInputMode(QInputDialog::TextInput);
 	demandeUsername->setFixedSize(200, 200);
-	demandeUsername->setWindowTitle("Register");
+	//demandeUsername->setOption(QInputDialog::);
+	demandeUsername->setWindowTitle("Votre nom");
 	demandeUsername->setWindowIcon(iconeHautPage);
-	demandeUsername->setLabelText("Please enter username :");
+	demandeUsername->setLabelText("Entrez votre nom:");
 	demandeUsername->setFont(font);
 
 	//Creation layout 
