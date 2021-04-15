@@ -318,10 +318,6 @@ void Board::moveDownPiece() {
 	return 0;
 }*/
 
-bool Board::getIsStarted() {
-	return isStarted;
-}
-
 void Board::resetBoard() {
 	for (int i = 0; i < LIGNES; i++) {
 		for (int j = 0; j < COLONNES; j++) {

@@ -93,7 +93,6 @@ public:
 	//Lecture FPGA
 	//int lireFPGA();
 	//Getter Pieces
-	bool getIsStarted();
 	Piece getPieceHold();
 	Piece getPieceSuivante();
 protected:

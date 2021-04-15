@@ -29,6 +29,7 @@
 
 class FenetreAide : public QWidget
 {
+
     Q_OBJECT
 
 public:
