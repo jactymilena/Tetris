@@ -1,18 +1,19 @@
 #include "FenetrePrincipale.h"
 
-FenetrePrincipale::FenetrePrincipale():
-boutonPourFenetreJeu(nullptr),
-boutonPourFenetreReglage(nullptr),
-boutonPourScore(nullptr),
-labelTetris(nullptr),
-layoutVertical1(nullptr),
-widget(nullptr),
-fenetreDeJeu(nullptr),
-fenetreAide(nullptr),
-index(nullptr)
+FenetrePrincipale::FenetrePrincipale() :
+	boutonPourFenetreJeu(nullptr),
+	boutonPourFenetreReglage(nullptr),
+	boutonPourScore(nullptr),
+	labelTetris(nullptr),
+	layoutVertical1(nullptr),
+	widget(nullptr),
+	fenetreDeJeu(nullptr),
+	fenetreAide(nullptr),
+	index(nullptr)
 {
 	index = new QStackedWidget;
 	setMouseTracking(true);
+	setWindowTitle("Tetris");
 	//Player
 	player = new Player();
 
@@ -24,7 +25,7 @@ index(nullptr)
 	QFont font = labelTetris->font();
 	font.setPointSize(40);
 	labelTetris->setFont(font);
-	
+
 	//Creation des boutons
 	boutonPourFenetreJeu = new BoutonPrincipal();
 	boutonPourFenetreJeu->setText("Nouvelle Partie");
@@ -32,18 +33,17 @@ index(nullptr)
 	boutonPourFenetreReglage->setText("Reglages");
 	boutonPourScore = new BoutonPrincipal();
 	boutonPourScore->setText("Pointage");
-	
-	
+
 	//Pointage + Dialogue(Entrer votre nom)
 	fenetrePointage = new FenetrePointage(this, player);
-	
+
 	//Setter Un font pour le dialog
 	font = QFont();
 	font.setBold(true);
 	font.setPointSize(20);
 
 	QIcon iconeHautPage;
-	iconeHautPage.addPixmap(QPixmap("tetrisIcon.jpeg"));
+	iconeHautPage.addPixmap(QPixmap("icon-cercle.png"));
 
 	demandeUsername = new QInputDialog();
 	demandeUsername->setInputMode(QInputDialog::TextInput);
@@ -53,7 +53,6 @@ index(nullptr)
 	demandeUsername->setWindowIcon(iconeHautPage);
 	demandeUsername->setLabelText("Entrez votre nom:");
 	demandeUsername->setFont(font);
-	
 
 	//Creation layout 
 	layoutVertical1 = new QVBoxLayout();
@@ -73,7 +72,7 @@ index(nullptr)
 
 	//Ajout widget au layout
 	widget->setLayout(layoutVertical1);
-	setFixedSize(900,750);
+	setFixedSize(900, 750);
 	setCentralWidget(widget);
 	QObject::connect(boutonPourScore, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetrePointage()));
 	fenetreDeJeu = new FenetreDeJeu(this, player);
@@ -99,17 +98,17 @@ void FenetrePrincipale::slotPourFenetreDeJeu()
 	if (!player->getNameSetted()) {
 		bool ok;
 		QString text;
-	
+
 		ok = demandeUsername->exec();
 		text = demandeUsername->textValue();
 		if (ok && !text.isEmpty())
 		{
 			player->setNameSetted(true);
 			player->setUsername((text.simplified().remove(' ')).toStdString());
+			fenetreDeJeu->setUsernameLabel();
 			fenetrePointage->setJoueurUsername();
 			fenetrePointage->loadHighscore();
 			index->setCurrentIndex(1);
-
 		}
 	}
 	else {
@@ -141,14 +140,22 @@ void FenetrePrincipale::slotPourFenetrePointage()
 		ok = demandeUsername->exec();
 		text = demandeUsername->textValue();
 
-		if (!text.isEmpty() && ok )
+		if (!text.isEmpty() && ok)
 		{
 			player->setNameSetted(true);
 			player->setUsername((text.simplified().remove(' ')).toStdString());
 			fenetrePointage->setJoueurUsername();
+			fenetrePointage->loadHighscore();
+			fenetrePointage->checkerScore();
 			fenetrePointage->show();
 			this->setEnabled(false);
 		}
+	}
+	else {
+		fenetrePointage->loadHighscore();
+		fenetrePointage->checkerScore();
+		fenetrePointage->show();
+		this->setEnabled(false);
 	}
 }
 
