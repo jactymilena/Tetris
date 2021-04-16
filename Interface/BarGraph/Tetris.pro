@@ -1,0 +1,9 @@
+TEMPLATE = vcapp
+TARGET   = Tetris
+HEADERS += FenetreBarGraph.h 
+SOURCES += main.cpp FenetreBarGraph.cpp
+CONFIG  += warn_on qt debug windows console
+INCLUDEPATH += ../Librairies
+LIBS	+= ../Librairies/CommunicationFPGA.lib
+LIBS	+= Winmm.lib
+QT      += widgets core gui

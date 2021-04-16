@@ -74,12 +74,12 @@ void Board::keyPressEvent(QKeyEvent* event) {
 			if (canGoDown) {
 				moveDownPiece();
 			}
-			else {
+			/*else {
 				pieceState(ADD);
 				verifLigne();
 				loadPiece(pieceApres.getNumPiece());
 				nouvellePiece = true;
-			}
+			}*/
 		}
 		else if ((event->key() == Qt::Key_W) &&	nouvellePiece) {
 			nouvellePiece = false;
@@ -182,7 +182,7 @@ void Board::startGame() {
 	timer->start(difficulte);
 	isStarted = true;
 	srand((int)time(0));
-	pieceApres.loadPiece(rand() % 6);
+	pieceApres.loadPiece(rand() % 7);
 	loadPiece(pieceApres.getNumPiece());
 }
 
@@ -199,7 +199,7 @@ bool Board::loadPiece(int num_piece) {
 			return false; // pas possible de loader la piece 
 		}
 	}
-	pieceApres.loadPiece(rand() % 6);
+	pieceApres.loadPiece(rand() % 7);
 	emit declencherSuivante();
 	return true;
 }

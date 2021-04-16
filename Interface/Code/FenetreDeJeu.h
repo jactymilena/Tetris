@@ -9,6 +9,7 @@ But:            Déclarer FenetreDeJeu.h
 #ifndef FENETREDEJEU_H
 #define FENETREDEJEU_H
 
+#include <QStyleOptionProgressBar>
 #include <QMainWindow>
 #include <QMenu>
 #include <QApplication>

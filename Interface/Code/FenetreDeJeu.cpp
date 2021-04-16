@@ -74,9 +74,11 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_bar = new QProgressBar();
 	///Attribution de Style ProgressBar
 	m_bar->setStyleSheet("QProgressBar::chunk {background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0,stop: 0 #05B8CC,stop: 0.4999 #05a4cc,stop: 0.5 #05a4cc,stop: 1 #0551cc );border-radius: 5px; border: 2px solid black;} QProgressBar { border: 2px solid white; border-radius: 5px; background: transparent; text-align: center; color: white }");
+	//m_bar->setStyleSheet("QProgressBar::chunk { background-color: #2196F3; width: 10px; margin: 0.5px } QProgressBar { border: 2px solid white; border-radius: 5px; background: transparent; text-align: center; color: white }");
 	m_bar->setMinimum(0);
 	m_bar->setMaximum(100);
 	m_bar->setMinimumWidth(200);
+	
 	///Création Label
 	m_level = new QLabel(QString::number(player->getLevel()));
 	m_nextLevel = new QLabel(QString::number(player->getLevel() + 1));
