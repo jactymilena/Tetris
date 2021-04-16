@@ -15,7 +15,6 @@ Case::Case() {
 
 Board::Board(QWidget* fenetreJeu, Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
 	fenetre = fenetreJeu;
-	//qDebug() << QFontDatabase::families(); // pour voir la liste des font family
 	// set Frame
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
@@ -71,11 +70,20 @@ void Board::keyPressEvent(QKeyEvent* event) {
 		}
 		else if ((event->key() == Qt::Key_Down)) {
 			canGoDown = verifMove(DOWN);
-			if (canGoDown) moveDownPiece(); 
+			if (canGoDown) {
+				moveDownPiece();
+			}
+			else {
+				pieceState(ADD);
+				verifLigne();
+				loadPiece(pieceApres.getNumPiece());
+				nouvellePiece = true;
+			}
 		}
 		else if ((event->key() == Qt::Key_W) &&	nouvellePiece) {
 			nouvellePiece = false;
 			changerPiece();
+			pieceState(ADD);
 			emit declencherHold();
 		}
 		else if (event->key() == Qt::Key_Q) {
