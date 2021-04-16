@@ -57,37 +57,42 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_layout->addWidget(m_gauche);
 
 	//Partie Centre 
+	///Création GroupBox
 	m_centre = new QGroupBox();
-	m_centre->setStyleSheet("QGroupBox { background : transparent; border: none;}");
 	m_console = new QGroupBox(tr("Tetris"));
-	m_console->setStyleSheet("QGroupBox { background : transparent;}");
 	m_progressBarBox = new QGroupBox();
+	///Attribution de Style au GroupBox
+	m_centre->setStyleSheet("QGroupBox { background : transparent; border: none;}");
+	m_console->setStyleSheet("QGroupBox { background : transparent;}");
 	m_progressBarBox->setFixedHeight(50);
 	m_progressBarBox->setStyleSheet("QGroupBox { background : transparent; border: 2px solid white;}");
-
-
+	///Création de Layout
 	m_layoutProgressBar = new QGridLayout();
 	m_layoutCentre = new QVBoxLayout();
+	m_tetris = new QVBoxLayout;
+	///Création ProgessBar
 	m_bar = new QProgressBar();
-	// Prendre la bar par defaut ou celle avec le degrade?
+	///Attribution de Style ProgressBar
 	m_bar->setStyleSheet("QProgressBar::chunk {background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0,stop: 0 #05B8CC,stop: 0.4999 #05a4cc,stop: 0.5 #05a4cc,stop: 1 #0551cc );border-radius: 5px; border: 2px solid black;} QProgressBar { border: 2px solid white; border-radius: 5px; background: transparent; text-align: center; color: white }");
 	m_bar->setMinimum(0);
 	m_bar->setMaximum(100);
 	m_bar->setMinimumWidth(200);
-	m_tetris = new QVBoxLayout;
+	///Création Label
 	m_level = new QLabel(QString::number(player->getLevel()));
-	m_level->setStyleSheet("QLabel{background : transparent; color: white; font-size: 20px;}");
 	m_nextLevel = new QLabel(QString::number(player->getLevel() + 1));
+	///Attribution de Style Label
+	m_level->setStyleSheet("QLabel{background : transparent; color: white; font-size: 20px;}");
 	m_nextLevel->setStyleSheet("background : transparent; color: white; font-size: 20px;");
-
+	///Actions
 	QObject::connect(player, SIGNAL(levelChanged()), this, SLOT(updateLevel()));
-
+	///Ajout au Layout Central
 	m_layoutProgressBar->addWidget(m_level, 0, 0, Qt::AlignLeft);
 	m_layoutProgressBar->addWidget(m_nextLevel,0, 2, Qt::AlignLeft);
 	m_layoutProgressBar->addWidget(m_bar, 0, 1);
 
-	boardInit(); // mettre au centre
+	boardInit(); // Mettre au centre
 
+	///Attribution au Layout
 	m_console->setLayout(m_tetris);
 	m_progressBarBox->setLayout(m_layoutProgressBar);
 	m_layoutCentre->addWidget(m_progressBarBox, Qt::AlignTop);
@@ -96,7 +101,7 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_layout->addWidget(m_centre);
 
 	//Partie Droite
-
+	///Création de Label + Style
 	m_nextLabel = new QLabel("Next");
 	m_nextLabel->setStyleSheet("background : transparent; color: white; font-size: 36px; font: bold;");
 	m_nextLabel->setFixedHeight(40);
@@ -104,14 +109,16 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_score = new QLabel("SCORE");
 	m_score->setMinimumHeight(30);
 	m_score->setStyleSheet("background : transparent; font-size: 20px; font: bold; color: black;");
-
+	//Création de LCDnumber + Style
 	m_lcdScore = new QLCDNumber(this);
 	m_lcdScore->setMinimumHeight(40);
 	m_lcdScore->setStyleSheet("background : transparent;");
 	m_lcdScore->setSegmentStyle(QLCDNumber::Filled);
 	m_lcdScore->display(player->getScore());
+	///Action
 	QObject::connect(player, SIGNAL(scoreChanged()),this ,SLOT(updateScore()));
 
+	///Création de GroupBox + Style
 	m_droite = new QGroupBox();
 	m_droite->setStyleSheet("QGroupBox { background : transparent; border: none;}");
 
@@ -122,7 +129,7 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_scoreBox->setMaximumHeight(60);
 	m_scoreBox->setStyleSheet("QGroupBox { background : rgba(170, 170, 170, 128);}");
 
-	//Prochain meilleur
+	///Prochain meilleur
 	m_userIconLabel = new QLabel();
 	m_userIcon = new QPixmap("user-icon-white.png");
 	//m_userIcon->setStyleSheet(" { background : transparent;}");
@@ -130,10 +137,11 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_userIconLabel->setAlignment(Qt::AlignCenter);
 	m_userIconLabel->setStyleSheet("background : transparent;");
 
-
+	///Création de Layout
 	m_pnext = new QGridLayout;
 	m_layoutDroite = new QVBoxLayout();
 	m_layoutScore = new QHBoxLayout();
+	///Création de ProgressBar
 	m_elevel = new QProgressBar();
 	m_elevel->setStyleSheet("QProgressBar::chunk {background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0,stop: 0 #05B8CC,stop: 0.4999 #05a4cc,stop: 0.5 #05a4cc,stop: 1 #0551cc );border-radius: 5px; border: 2px solid black;} QProgressBar { border: 2px solid white; border-radius: 5px; background: transparent; text-align: center; color: white }");
 	m_elevel->setMinimum(0);
@@ -184,7 +192,7 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_droite->setLayout(m_layoutDroite);
 	m_layout->addWidget(m_droite);
 
-	//Onglet Menu + Aide
+	//Onglet Menu + Options
 	m_menuBar = new QMenuBar;
 	m_menuBar->setStyleSheet("QMenuBar { background : transparent; color: white;} QMenuBar::item:selected { border: 1px solid white; } QMenuBar::item:pressed { background : black; color: white; }");
 	m_menuMenu = new QMenu("Menu");

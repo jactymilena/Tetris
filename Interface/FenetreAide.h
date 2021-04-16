@@ -9,6 +9,7 @@ But: Déclarer FenetreAide.h
 #ifndef FENETREAIDE_H
 #define FENETREAIDE_H
 
+#include "BoutonPrincipal.h"
 #include <QMainWindow>
 #include <QMenu>
 #include <QApplication>
@@ -26,7 +27,6 @@ But: Déclarer FenetreAide.h
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QProgressBar>
-#include "BoutonPrincipal.h"
 #include <QPixMap>
 #include <QInputDialog>
 #include <QLineEdit>
