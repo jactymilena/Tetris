@@ -1,7 +1,7 @@
 ﻿/*===================================
 Auteur:         fona1101 elka0602 saej3101
 Nom du fichier: Piece.cpp
-Date:           15 avril 2021
+Date:           1 avril 2021
 But:            Contient les données de la pièce
 ====================================*/
 
@@ -17,6 +17,7 @@ Carre::Carre() {
 	colonne = 0;
 }
 
+//Fonction pour charger une piece selon le numéro de pièce rentré en paramètre.
 void Piece::loadPiece(int num_piece) {
 	// 7 types de pi�ces
 	if (num_piece >= 0 && numPiece <= 7)
@@ -152,30 +153,37 @@ void Piece::loadPiece(int num_piece) {
 	}
 }
 
+
+// Fontion qui fait descendre la pièce.
 void Piece::goDown() {
 	for (int i = 0; i < 4; i++) {
 		carres[i].ligne += 1;
 	}
 }
 
+// Fonction qui fait bouger la pièce selon la direction rentrée en paramètre
 void Piece::move(int direction) { // gauche -1, droite 1
 	for (int i = 0; i < 4; i++) {
 		carres[i].colonne += direction;
 	}
 }
 
+// Getter : retourne le numréro de la couleur 
 int Piece::getNumColor() const {
 	return numColor;
 }
 
+// Getter : retourne un carré de la pièce selon l'index rentré en paramètre
 Carre Piece::getCarre(int index) const {
 	return carres[index];
 }
 
+// Fontion qui retourne un carré de la pièce gardée en mémoire selon l'index rentré en paramètre
 Carre Piece::getMemoire(int index) const {
 	return memoireVecteur[index];
 }
 
+// Fonction qui remet les coordonnées de la pièce égales à celle gardée en mémoire pour défaire l'action tourner
 void Piece::unturned() {
 	for (int i = 0; i < 4; i++) {
 		carres[i].ligne = memoireVecteur[i].ligne;
@@ -183,7 +191,8 @@ void Piece::unturned() {
 	}
 }
 
-void Piece::turn(int direction) { //https://www.youtube.com/watch?v=Atlr5vvdchY&ab_channel=GoranMilovanovic essentiel pour faire la rotation
+// Fonction qui fait tourner la pièce selon la direction rentrée en paramètre
+void Piece::turn(int direction) { 
 
 	for (int i = 0; i < 4; i++) {
 		//Enregistre la premiere position
@@ -215,11 +224,13 @@ void Piece::turn(int direction) { //https://www.youtube.com/watch?v=Atlr5vvdchY&
 	}
 }
 
+// Getter : retourne le numréro de la pièce
 int Piece::getNumPiece() const
 {
 	return numPiece;
 }
 
+// Setter : change la valeur du numéro de la pièce selon le numéro rentré en paramètre
 void Piece::setNumPiece(int numPiece)
 {
 	this->numPiece = numPiece;

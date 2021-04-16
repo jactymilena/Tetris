@@ -23,6 +23,7 @@ FramePourPiece::~FramePourPiece()
 
 }
 
+// Redéfinition de la fonction paintEvent qui dessine une pièce dans un QFrame
 void FramePourPiece::paintEvent(QPaintEvent* event)
 {
 	Q_UNUSED(event);
@@ -51,6 +52,7 @@ void FramePourPiece::paintEvent(QPaintEvent* event)
 	}
 }
 
+// Setter : Attribue une nouvelle valeur à la pièce à montrer
 void FramePourPiece::setPiece(Piece pieceRefresh)
 {
 	pieceAMontrer = pieceRefresh;
