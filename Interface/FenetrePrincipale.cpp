@@ -97,10 +97,10 @@ FenetrePrincipale::~FenetrePrincipale()
 {
 }
 
+//Montre la boîte de dialogue et met la fenêtre de jeu comme centralWidget
 void FenetrePrincipale::slotPourFenetreDeJeu()
 {
-	//MCIERROR error = mciSendString(L"setaudio maintheme volume to 600", nullptr, 0, nullptr);
-	//MCIERROR error = mciSendStringA("set maintheme speed 1100", nullptr, 0, 0);
+	
 	if (!player->getNameSetted()) {
 		bool ok;
 		QString text;
@@ -122,21 +122,25 @@ void FenetrePrincipale::slotPourFenetreDeJeu()
 	}
 }
 
+//Aller à la fenêtre de paramètres
 void FenetrePrincipale::slotChangerFenetreAide()
 {
 	index->setCurrentIndex(2);
 }
 
+//Revenir avec la fenêtre principale
 void FenetrePrincipale::slotChangerFenetrePrincipale()
 {
 	index->setCurrentIndex(0);
 }
 
+//Active la fenêtre
 void FenetrePrincipale::slotPourEnableFenetre()
 {
 	this->setEnabled(true);
 }
 
+//Va à la fenêtre de pointage et montre le dialogue
 void FenetrePrincipale::slotPourFenetrePointage()
 {
 	bool ok;
@@ -166,6 +170,7 @@ void FenetrePrincipale::slotPourFenetrePointage()
 	}
 }
 
+//Ferme la fenetre de pointage et le mp3
 void FenetrePrincipale::closeEvent(QCloseEvent* event)
 {
 	if (fenetrePointage != nullptr)

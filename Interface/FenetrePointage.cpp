@@ -1,7 +1,7 @@
 /*===================================
 Auteur:         fona1101 elka0602 saej3101
 Nom du fichier: FenetreDePointage.cpp
-Date:           15 avril 2021
+Date:           13 avril 2021
 But:            Montre le pointage de l'utilisateur et sa position
 ====================================*/
 
@@ -70,6 +70,7 @@ FenetrePointage::~FenetrePointage()
 
 }
 
+//Initiation de la fenêtre
 void FenetrePointage::fenetreInit() {
 	loadHighscore(); // load histoirique des scores
 	QIcon iconeHautPage;
@@ -100,6 +101,8 @@ void FenetrePointage::fenetreInit() {
 	score = new QLabel * [10];
 	position = new QLabel * [10];
 
+
+	//Initialisation et attribution de tous les labels contenant les noms des joueurs
 	for (int i = 0; i < historique.size(); i++) {
 		name[i] = new QLabel(QString::fromStdString(historique[i]->getUsername()));
 		name[i]->setStyleSheet("background : transparent; color: white;");
@@ -172,7 +175,7 @@ void FenetrePointage::fenetreInit() {
 	gridScoreUser->addWidget(nomJoueur, 2, 1);
 	groupBoxUser->setLayout(gridScoreUser);
 
-	//Affichade de la Table des Scores
+	//Affichage de la Table des Scores
 	gridScore->addWidget(highscore, 0, 0, 1, 3, Qt::AlignCenter);
 	gridScore->addWidget(positionTitre, 1, 0);
 	gridScore->addWidget(scoreTitre, 1, 2);
@@ -194,6 +197,7 @@ void FenetrePointage::fenetreInit() {
 	QObject::connect(player, SIGNAL(scoreChanged()), this, SLOT(updateScore()));
 }
 
+//Cherche le joueur ayant le plus de point d'après le score du joueur
 Player* FenetrePointage::getNextBestScore()
 {
 	for (int w = 0; w < historique.size(); w++)
@@ -211,6 +215,7 @@ Player* FenetrePointage::getNextBestScore()
 	return historique[historique.size() - 1];
 }	
 
+//Regarde s'il faut rafraîchir le label avec les données du prochain joueur
 void FenetrePointage::checkerScore() {
 	bool isPlusGrand = false;
 	int i = 0;
@@ -251,6 +256,7 @@ void FenetrePointage::checkerScore() {
 	}
 }
 
+//Écrit le highscore dans un score.txt pour pouvoir garder les noms dans la prochaine partie
 void FenetrePointage::writeHighscore() {
 	std::ofstream myfile;
 	myfile.open("Score.txt", std::ofstream::out | std::ofstream::trunc);
@@ -263,6 +269,7 @@ void FenetrePointage::writeHighscore() {
 	myfile.close();
 }
 
+//Lit score.txt pour avoir les scores de base
 void FenetrePointage::loadHighscore() {
 	if (historique.size() > 0) {
 		historique.clear();
@@ -291,6 +298,7 @@ void FenetrePointage::updateScore() {
 	qApp->processEvents();
 }
 
+//Pour revenir à la fênetre de jeu ou principale
 void FenetrePointage::closeEvent(QCloseEvent* event)
 {
 	emit signalClosingFenetrePointage();
