@@ -293,6 +293,9 @@ void FenetreDeJeu::boardInit() {
 
 FenetreDeJeu::~FenetreDeJeu()
 {
+	board->resetBoard();
+	delete board;
+	board = nullptr;
 	close();
 }
 

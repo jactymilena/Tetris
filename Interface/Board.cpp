@@ -7,15 +7,12 @@ But: Contient les intéractions avec les pièces de l'aire de jeu
 
 #include "Board.h"
 
-//#include "CommunicationFPGA.h"
-
 Case::Case() {
 	value = 0;
 }
 
 Board::Board(QWidget* fenetreJeu, Player* playerPrincipal) : QFrame(), player(playerPrincipal) {
 	fenetre = fenetreJeu;
-	//qDebug() << QFontDatabase::families(); // pour voir la liste des font family
 	// set Frame
 	setFrameStyle(QFrame::Box | QFrame::Plain);
 	setLineWidth(3);
@@ -74,11 +71,20 @@ void Board::keyPressEvent(QKeyEvent* event) {
 		}
 		else if ((event->key() == Qt::Key_Down)) {
 			canGoDown = verifMove(DOWN);
-			if (canGoDown) moveDownPiece(); 
+			if (canGoDown) {
+				moveDownPiece();
+			}
+			else {
+				pieceState(ADD);
+				verifLigne();
+				loadPiece(pieceApres.getNumPiece());
+				nouvellePiece = true;
+			}
 		}
 		else if ((event->key() == Qt::Key_W) &&	nouvellePiece) {
 			nouvellePiece = false;
 			changerPiece();
+			pieceState(ADD);
 			emit declencherHold();
 		}
 		else if (event->key() == Qt::Key_Q) {
@@ -271,70 +277,6 @@ void Board::moveDownPiece() {
 	update();
 }
 
-/*int Board::lireFPGA()
-{
-	CommunicationFPGA port;
-	static int canal_a_afficher = 0;
-	int indice_canal_a_afficher = 0;
-	int stat_btn = 0;
-	int statut_circuit = 0;
-	statutport = port.lireRegistre(nreg_lect_stat_btn, statut_circuit);
-
-	if (statutport) statutport = port.lireRegistre(nreg_lect_stat_btn, stat_btn);     // lecture statut et BTN
-	else { cout << "Erreur du port nreg_lect_stat_btn" << endl; exit(1); }
-
-	int echconv[4];
-	if (statutport) statutport = port.lireRegistre(nreg_lect_can0, echconv[0]);       // lecture canal 0
-	else { cout << "Erreur du port nreg_lect_can0" << endl; exit(1); }
-	if (statutport) statutport = port.lireRegistre(nreg_lect_can1, echconv[1]);       // lecture canal 1
-	else { cout << "Erreur du port nreg_lect_can1" << endl; exit(1); }
-	if (statutport) statutport = port.lireRegistre(nreg_lect_can2, echconv[2]);       // lecture canal 2
-	else { cout << "Erreur du port nreg_lect_can2" << endl; exit(1); }
-	if (statutport) statutport = port.lireRegistre(nreg_lect_can3, echconv[3]);       // lecture canal 3
-	else { cout << "Erreur du port nreg_lect_can3" << endl; exit(1); }
-	if (!statutport) {
-		cout << "Erreur du port dans la boucle" << endl;
-		exit(1);
-	}
-	statutport = port.ecrireRegistre(nreg_ecri_led, 1);
-	if ((stat_btn & 1) != 0)
-	{
-		//Phon�me A
-		if((echconv[0] > 202 && echconv[0] < 222) && (echconv[1] > 15 && echconv[1] < 35) && (echconv[2] > 0 && echconv[2] < 20) && (echconv[3] > 0 && echconv[3] < 15))
-		{
-			return 1;
-		}
-		//Phon�me U
-		else if((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 0 && echconv[1] < 20) && (echconv[2] > 165 && echconv[2] < 185) && (echconv[3] > 40 && echconv[3] < 60))
-		{
-			return 2;
-		}
-		//Phon�me E
-		else if ((echconv[0] > 183 && echconv[0] < 203) && (echconv[1] > 227 && echconv[1] < 247) && (echconv[2] > 90 && echconv[2] < 110) && (echconv[3] > 15 && echconv[3] < 35))
-		{
-			return 3;
-		}
-		//Phon�me I
-		else if ((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 90 && echconv[1] < 110) && (echconv[2] > 177 && echconv[2] < 197) && (echconv[3] > 15 && echconv[3] < 35))
-		{
-			return 4;
-		}
-	}
-	else if ((stat_btn & 2) != 0)
-	{
-		canal_a_afficher++;
-
-		if (canal_a_afficher  > 3) canal_a_afficher = 0;
-	}
-
-	statutport = port.ecrireRegistre(nreg_ecri_aff7sg0, canal_a_afficher);                    // envoyer numero canal_a_afficher afficheur 7 segments
-	statutport = port.ecrireRegistre(nreg_ecri_aff7sg1, echconv[canal_a_afficher]); // envoyer valeur echconv[] afficheur 7 segments
-
-
-	return 0;
-}*/
-
-//Retourne si le jeu est commencé ou pas
 bool Board::getIsStarted() {
 	return isStarted;
 }
@@ -373,10 +315,20 @@ void Board::pieceState(int state) {
 
 //Augmente le score 
 void Board::augmenterScore(int nbLigne) {
-
-	player->setScore(player->getScore() + 50 * nbLigne);
+	if (nbLigne == 1) {
+		player->setScore(player->getScore() + 50 * nbLigne);
+	}
+	else if (nbLigne == 2) {
+		player->setScore(player->getScore() + 150);
+	}
+	else if (nbLigne == 3) {
+		player->setScore(player->getScore() + 300);
+	}
+	else if (nbLigne == 4) {
+		player->setScore(player->getScore() + 500);
+	}
+	
 	augmenterLevel();
-	return;
 }
 
 //Regarde s'il faut augmenter le niveau
@@ -386,7 +338,7 @@ void Board::augmenterLevel() {
 	{
 		if (player->getScore() % SCORE == 0)
 		{
-			difficulte -= 50;
+			difficulte -= 20;
 			player->setLevel(player->getLevel() + 1);
 			speed = player->getLevel() * 20 + 1000;
 			std::string string1 = "set maintheme speed " + std::to_string(speed);

@@ -45,7 +45,7 @@ public:
 
 private:
     // layout
-    Board* board;
+   Board* board;
 
    QMenuBar* m_menuBar;
    QMenu *m_menuMenu;
