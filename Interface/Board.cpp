@@ -1,7 +1,7 @@
 ﻿/*===================================
 Auteur: fona1101 elka0602 saej3101
 Nom du fichier: Board.cpp
-Date: 15 avril 2021
+Date: 9 avril 2021
 But: Contient les intéractions avec les pièces de l'aire de jeu
 ====================================*/
 
@@ -33,6 +33,7 @@ Board::Board(QWidget* fenetreJeu, Player* playerPrincipal) : QFrame(), player(pl
 	isStarted = false;
 }
 
+//Attrape l'évènement de la souris qui clique sur le board
 void Board::mousePressEvent(QMouseEvent* event) {
 	if (event->button() == Qt::LeftButton) {
 		if (isStarted == false) {
@@ -48,6 +49,7 @@ void Board::mousePressEvent(QMouseEvent* event) {
 	}
 }
 
+//Remet le board dans son état de base
 void Board::restart() {
 	if (game_over == true) {
 		game_over = false;
@@ -56,6 +58,7 @@ void Board::restart() {
 	}
 }
 
+//Attrape les évènements du clavier et effectue les commandes propres
 void Board::keyPressEvent(QKeyEvent* event) {
 	bool canGoDown = true;
 	pieceState(REMOVE);
@@ -120,6 +123,7 @@ void Board::keyPressEvent(QKeyEvent* event) {
 	update();
 }
 
+//Met en pause le jeu et la musique
 void Board::pause() {
 	isPaused = true;
 	mciSendString(L"pause maintheme", NULL, 0, NULL);
@@ -127,6 +131,7 @@ void Board::pause() {
 	update();
 }
 
+//Override la fonction du QFrame pour repeindre le tableau
 void Board::paintEvent(QPaintEvent* event)
 {
 	Q_UNUSED(event);
@@ -172,6 +177,7 @@ void Board::paintEvent(QPaintEvent* event)
 	
 }
 
+//Commence le jeu
 void Board::startGame() {
 	timer->start(difficulte);
 	isStarted = true;
@@ -180,6 +186,7 @@ void Board::startGame() {
 	loadPiece(pieceApres.getNumPiece());
 }
 
+//Met une pièce dans le board
 bool Board::loadPiece(int num_piece) {
 	piece.loadPiece(num_piece);
 	
@@ -197,6 +204,7 @@ bool Board::loadPiece(int num_piece) {
 	return true;
 }
 
+//Vérifie si la pièce peut bouger
 bool Board::verifMove(int direction) {
 
 	switch (direction) {
@@ -253,6 +261,7 @@ bool Board::verifMove(int direction) {
 	return true;
 }
 
+//Bouge la pièce d'une case vers le bas
 void Board::moveDownPiece() {
 	pieceState(REMOVE);
 	if (verifMove(DOWN)) {
@@ -272,6 +281,7 @@ bool Board::getIsStarted() {
 	return isStarted;
 }
 
+//Repeint les valeurs de base du board
 void Board::resetBoard() {
 	for (int i = 0; i < LIGNES; i++) {
 		for (int j = 0; j < COLONNES; j++) {
@@ -289,6 +299,7 @@ void Board::resetBoard() {
 	nouvellePiece = true;
 }
 
+
 void Board::pieceState(int state) {
 	QColor color = Qt::white;
 
@@ -302,6 +313,7 @@ void Board::pieceState(int state) {
 	}
 }
 
+//Augmente le score 
 void Board::augmenterScore(int nbLigne) {
 	if (nbLigne == 1) {
 		player->setScore(player->getScore() + 50 * nbLigne);
@@ -319,6 +331,7 @@ void Board::augmenterScore(int nbLigne) {
 	augmenterLevel();
 }
 
+//Regarde s'il faut augmenter le niveau
 void Board::augmenterLevel() {
 	int speed = 0;
 	if (player->getScore() != 0)
@@ -346,6 +359,7 @@ void Board::augmenterLevel() {
 	}
 }
 
+//Vérifier toutes les cases d'une pièce
 bool Board::verifLigne() {
 	int minLigne = piece.getCarre(0).ligne;
 	int maxLigne = piece.getCarre(0).ligne;
@@ -386,6 +400,7 @@ bool Board::verifLigne() {
 	return true;
 }
 
+//Enlève les lignes
 void Board::enleverLigne(int i)
 {
 	for (int w = i; w > 0; w--) 
@@ -398,6 +413,7 @@ void Board::enleverLigne(int i)
 	update();
 }
 
+//Gère les pièces lorsqu'il y a un hold
 void Board::changerPiece()
 {
 	if (pieceHold.getNumPiece() == 7)
@@ -414,6 +430,7 @@ void Board::changerPiece()
 	}
 }
 
+//Getters
 Piece Board::getPieceHold()
 {
 	return pieceHold;
