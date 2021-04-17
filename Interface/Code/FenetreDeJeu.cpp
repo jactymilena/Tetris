@@ -23,6 +23,12 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	framePieceSuivante = new FramePourPiece((board->getPieceSuivante()));
 
 	//Partie Gauche
+
+	// FPGA
+	m_modeFPGAButton = new BoutonPrincipal(true);
+	m_modeFPGAButton->setText("Mode FPGA");
+	QObject::connect(m_modeFPGAButton, SIGNAL(clicked(bool)), this, SLOT(changeModeFPGA()));
+
 	
 	//Username
 	m_layoutUsername = new QVBoxLayout();
@@ -52,6 +58,7 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_hold->addWidget(frameHold, 1, 0);
 	m_gaucheHold->setLayout(m_hold);
 	m_layoutGauche->addWidget(m_usernameBox);
+	m_layoutGauche->addWidget(m_modeFPGAButton, Qt::AlignCenter);
 	m_layoutGauche->addWidget(m_gaucheHold);
 	m_gauche->setLayout(m_layoutGauche);
 	m_layout->addWidget(m_gauche);
@@ -247,6 +254,15 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_gameOverWidget->setWindowTitle("Tetris");
 	m_gameOverWidget->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
 	m_gameOverWidget->setLayout(m_gameOverLayout);
+}
+
+void FenetreDeJeu::changeModeFPGA() {
+	if (board->getModeFPGA()) {
+		board->setModeFPGA(false);
+	}
+	else {
+		board->setModeFPGA(true);
+	}
 }
 
 void FenetreDeJeu::setUsernameLabel() {

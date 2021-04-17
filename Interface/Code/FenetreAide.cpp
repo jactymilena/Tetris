@@ -47,7 +47,7 @@ FenetreAide::FenetreAide(QMainWindow* fenetrePrincipale) :
 	m_touche7 = new QLineEdit();
 
 	//Création du bouton de retour
-	boutonPourFenetreRetour = new BoutonPrincipal();
+	boutonPourFenetreRetour = new BoutonPrincipal(false);
 
 	//Création des bars de sons
 	m_sons = new QSlider(Qt::Horizontal);

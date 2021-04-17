@@ -12,9 +12,10 @@ But: Déclarer BoutonPrincipal.h
 #include <qdebug.h>
 class BoutonPrincipal : public QPushButton
 {
-	
+private: 
+	bool buttonFPGA;
 public:
-	BoutonPrincipal();
+	BoutonPrincipal(bool button);
 	~BoutonPrincipal();
 protected:
 	void hoverEnter(QHoverEvent* event);

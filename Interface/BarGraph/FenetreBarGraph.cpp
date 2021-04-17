@@ -6,7 +6,6 @@
 
 bool statutport = false;            // statut du port de communication qui sera cree
 
-
 int compteur_temps = 0;
 int swt = 0;                         // donnee recue du FPGA
 int aff7sg_octet0 = 0;               // octet 0 (droite) pour afficheur 7 segments

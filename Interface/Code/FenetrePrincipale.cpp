@@ -34,11 +34,11 @@ FenetrePrincipale::FenetrePrincipale() :
 	labelTetris->setFont(font);
 
 	//Creation des boutons
-	boutonPourFenetreJeu = new BoutonPrincipal();
+	boutonPourFenetreJeu = new BoutonPrincipal(false);
 	boutonPourFenetreJeu->setText("NEW GAME");
-	boutonPourFenetreReglage = new BoutonPrincipal();
+	boutonPourFenetreReglage = new BoutonPrincipal(false);
 	boutonPourFenetreReglage->setText("PARAMETERS");
-	boutonPourScore = new BoutonPrincipal();
+	boutonPourScore = new BoutonPrincipal(false);
 	boutonPourScore->setText("SCORE");
 	
 	//Pointage + Dialogue(Entrer votre nom)

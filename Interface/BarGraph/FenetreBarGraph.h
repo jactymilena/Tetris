@@ -19,7 +19,6 @@ private:
 	QProgressBar* barGraph2;
 	QProgressBar* barGraph3;
 
-	QHBoxLayout* horizontalLayout;
 	QVBoxLayout* verticalLayout;
 	QTimer* timer;
 	QLabel* chanel0Label;

@@ -7,12 +7,22 @@ But: Bouton qui change lorsqu'on passe le curseur sur celui-ci
 
 #include "BoutonPrincipal.h"
 
-BoutonPrincipal::BoutonPrincipal()
+BoutonPrincipal::BoutonPrincipal(bool button)
 {
-	setStyleSheet("QPushButton{ font:bold;background: transparent;color:#0ccaf6;font-size: 36px;}");
-	setFocusPolicy(Qt::NoFocus);
-	setFixedSize(500, 80);
+	buttonFPGA = button;
+	if (button) {
+		setStyleSheet("color: white; background: transparent; font: bold; border: 2px solid white; border-radius: 5px");
+		setFocusPolicy(Qt::NoFocus);
+		setFixedSize(80, 40);
+	}
+	else {
+		setStyleSheet("QPushButton{ font:bold;background: transparent;color:#0ccaf6;font-size: 36px;}");
+		setFocusPolicy(Qt::NoFocus);
+		setFixedSize(500, 80);
+	}
+	
 }
+
 BoutonPrincipal::~BoutonPrincipal()
 {
 
@@ -38,11 +48,22 @@ bool BoutonPrincipal::event(QEvent* event)
 // Change la couleur du bouton lorsque le curseur est mis sur le bouton
 void BoutonPrincipal::hoverEnter(QHoverEvent* event)
 {
-	setStyleSheet("QPushButton{font:bold;background: transparent; color: white; font-size: 36px; border: solid white; border-width: 0px 0px 2px 0px;}");
+	if (buttonFPGA) {
+		setStyleSheet("color: #0ccaf6; background: transparent; font: bold;");
+	}
+	else {
+		setStyleSheet("QPushButton{font: bold; background: transparent; color: white; font-size: 36px; border: solid white; border-width: 0px 0px 2px 0px;}");
+
+	}
 }
 
 // Change la couleur du bouton lorsque le curseur est enlevé du bouton
 void BoutonPrincipal::hoverLeave(QHoverEvent* event)
 {
-	setStyleSheet("QPushButton{font:bold;background: transparent; color: #0ccaf6; font-size: 36px;}");
+	if (buttonFPGA) {
+		setStyleSheet("color: white; background: transparent; font: bold; border: 2px solid white; border-radius: 5px");
+	}
+	else {
+		setStyleSheet("QPushButton{font: bold; background: transparent; color: #0ccaf6; font-size: 36px;}");
+	}
 }

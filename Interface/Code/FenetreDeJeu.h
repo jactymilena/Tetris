@@ -33,6 +33,7 @@ But:            Déclarer FenetreDeJeu.h
 #include "Board.h"
 #include "FramePourPiece.h"
 #include "FenetrePointage.h"
+#include "BoutonPrincipal.h"
 
 class FenetreDeJeu : public QWidget
 {
@@ -104,6 +105,7 @@ private:
    QVBoxLayout* m_gameOverLayout;
    QPushButton* m_gameOverQuitterButton;
    QPushButton* m_recommencerButton;
+   BoutonPrincipal* m_modeFPGAButton;
 
    Player* player;
    Player* nextBestPlayer;
@@ -114,6 +116,7 @@ public slots:
     void updateLevel();
     void slotGameOver();
     void recommencerBoard();
+    void changeModeFPGA();
 
     void slotPourTrigeredHold();
     void slotPourTrigeredSuivante();

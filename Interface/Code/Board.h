@@ -32,6 +32,7 @@ But: Déclaration de Board.h
 #include <string.h>
 #include "Piece.h"
 #include "Player.h"
+#include "CommunicationFPGA.h"
 
 #define LIGNES 18
 #define COLONNES 8
@@ -64,16 +65,19 @@ public:
 	void enleverLigne(int i);
 	void restart();
 	void pause();
+	void setModeFPGA(bool mode);
+	bool getModeFPGA();
 
 	//Menu Score
 	void augmenterScore(int nbLigne);
 	void augmenterLevel();
 
+	// Mouvement piece
+	void movePiece(int direction);
+
 	//Menu hold
 	void changerPiece();
 
-	//Lecture FPGA
-	//int lireFPGA();
 	//Getter Pieces
 	bool getIsStarted();
 	Piece getPieceHold();
@@ -85,6 +89,7 @@ protected:
 
 public slots:
 	void moveDownPiece();
+	void lireFPGA();
 
 signals:
 	void declencherHold();
@@ -100,10 +105,12 @@ private:
 	Piece pieceApres;
 	int difficulte;
 	Player* player;
+	bool modeFPGA;
 
 	// Qt
 	QGridLayout* layout;
 	QTimer* timer;
+	QTimer* timerFPGA;
 	bool isPaused;
 	bool isStarted;
 	QWidget *fenetre;
