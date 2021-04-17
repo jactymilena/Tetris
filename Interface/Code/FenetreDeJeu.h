@@ -53,6 +53,7 @@ private:
    QAction *m_menuOptionAccueil;
    QAction *m_menuOptionQuitter;
    QAction* m_menuOptionAide;
+   QAction* m_menuOptionRecommencer;
 
    QWidget* m_widget;
    QHBoxLayout* m_layout;

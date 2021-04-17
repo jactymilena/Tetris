@@ -204,8 +204,11 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_menuOptionAccueil = new QAction("Home");
 	m_menuOptionQuitter = new QAction("Exit");
 	m_menuOptionAide = new QAction("Parameters");
+	m_menuOptionRecommencer = new QAction("Restart");
+
 	m_menuMenu->addAction(m_menuOptionAccueil);
 	m_menuMenu->addAction(m_menuOptionAide);
+	m_menuMenu->addAction(m_menuOptionRecommencer);
 	m_menuMenu->addAction(m_menuOptionQuitter);
 	m_layout->setMenuBar(m_menuBar);
 
@@ -215,15 +218,17 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	QObject::connect(m_menuOptionAide, SIGNAL(triggered(bool)), this, SLOT(slotPourFenetreAide()));
 	QObject::connect(this, SIGNAL(signalAllerAide()), fenetrePrincipale, SLOT(slotChangerFenetreAide()));
 	QObject::connect(m_menuOptionQuitter, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
+	QObject::connect(m_menuOptionRecommencer, SIGNAL(triggered(bool)), this, SLOT(recommencerBoard()));
+
 
 	setLayout(m_layout);
 
 	// Game over widget
 	m_gameOverLayout = new QVBoxLayout();
-	m_gameOverQuitterButton = new QPushButton("Quitter");
+	m_gameOverQuitterButton = new QPushButton("Exit");
 	//m_gameOverQuitterButton->setFixedWidth(200);
 	m_gameOverQuitterButton->setStyleSheet("border-radius: 10px; border: 2px solid black; color: black; font: bold; background-color: #ffc72b;");
-	m_recommencerButton = new QPushButton("Recommencer");
+	m_recommencerButton = new QPushButton("Restart");
 	//m_recommencerButton->setFixedWidth(200);
 	m_recommencerButton->setStyleSheet("border-radius: 10px; border: 2px solid black; color: black; font: bold; background-color: #ffc72b;");
 	
@@ -259,7 +264,7 @@ void FenetreDeJeu::slotGameOver() {
 void FenetreDeJeu::recommencerBoard() {
 	board->restart();
 	this->setEnabled(true);
-	m_gameOverWidget->hide();
+	if(m_gameOverWidget->isVisible()) m_gameOverWidget->hide();
 }
 
 void FenetreDeJeu::updateScore() {

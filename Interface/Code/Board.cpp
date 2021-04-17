@@ -51,40 +51,50 @@ void Board::mousePressEvent(QMouseEvent* event) {
 
 //Remet le board dans son état de base
 void Board::restart() {
-	if (game_over == true) {
-		game_over = false;
-		resetBoard();
-		startGame();
-	}
+	resetBoard();
+	startGame();
 }
 
 //Attrape les évènements du clavier et effectue les commandes propres
 void Board::keyPressEvent(QKeyEvent* event) {
 	bool canGoDown = true;
-	pieceState(REMOVE);
 	if (!isPaused) {
-		if ((event->key() == Qt::Key_Right) && verifMove(RIGHT)) {
-			piece.move(RIGHT);
+		pieceState(REMOVE);
+
+		if ((event->key() == Qt::Key_Right)) {
+			if (verifMove(RIGHT)) {
+				piece.move(RIGHT);
+			}
+			pieceState(ADD);
+			update();
+
 		}
-		else if ((event->key() == Qt::Key_Left) && verifMove(LEFT)) {
-			piece.move(LEFT);
+		else if ((event->key() == Qt::Key_Left)) {
+			if (verifMove(LEFT)) {
+				piece.move(LEFT);
+			}
+			pieceState(ADD);
+			update();
+
 		}
 		else if ((event->key() == Qt::Key_Down)) {
-			canGoDown = verifMove(DOWN);
-			if (canGoDown) {
-				moveDownPiece();
+			//moveDownPiece();
+			if (verifMove(DOWN)) {
+				piece.goDown();
 			}
-			/*else {
-				pieceState(ADD);
-				verifLigne();
-				loadPiece(pieceApres.getNumPiece());
-				nouvellePiece = true;
-			}*/
-		}
-		else if ((event->key() == Qt::Key_W) &&	nouvellePiece) {
-			nouvellePiece = false;
-			changerPiece();
 			pieceState(ADD);
+			update();
+
+		}
+		else if ((event->key() == Qt::Key_W)) {
+			if (nouvellePiece) {
+				nouvellePiece = false;
+				changerPiece();
+			}
+			
+			pieceState(ADD);
+			update();
+
 			emit declencherHold();
 		}
 		else if (event->key() == Qt::Key_Q) {
@@ -95,6 +105,9 @@ void Board::keyPressEvent(QKeyEvent* event) {
 					piece.unturned();
 				}
 			}
+			pieceState(ADD);
+			update();
+
 		}
 		else if (event->key() == Qt::Key_E) {
 			if (piece.getNumPiece() != O) { 
@@ -103,6 +116,8 @@ void Board::keyPressEvent(QKeyEvent* event) {
 					piece.unturned();
 				}
 			}
+			pieceState(ADD);
+			update();
 		}
 	}
 
@@ -114,13 +129,11 @@ void Board::keyPressEvent(QKeyEvent* event) {
 			isPaused = false;
 			timer->start(difficulte);
 			mciSendString(L"resume maintheme", NULL, 0, NULL);
-			update();
 		}
+		update();
+
 	}
 
-	pieceState(ADD);
-
-	update();
 }
 
 //Met en pause le jeu et la musique
@@ -190,7 +203,6 @@ void Board::startGame() {
 bool Board::loadPiece(int num_piece) {
 	piece.loadPiece(num_piece);
 	
-
 	for (int i = 0; i < 4; i++) { // verif si possible de placer pieces a pos initiale 
 		if (cases[piece.getCarre(i).ligne][piece.getCarre(i).colonne].value == 1) {
 			game_over = true; // jeu termine
