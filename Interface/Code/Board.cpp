@@ -64,6 +64,9 @@ void Board::keyPressEvent(QKeyEvent* event) {
 		if ((event->key() == Qt::Key_Right)) {
 			if (verifMove(RIGHT)) {
 				piece.move(RIGHT);
+				mciSendString(L"close bubble", NULL, 0, NULL);
+				mciSendString(L"open bubble-pop.mp3 type mpegvideo alias bubble", nullptr, 0, nullptr);
+				mciSendString(L"play bubble", NULL, 0, NULL);
 			}
 			pieceState(ADD);
 			update();
@@ -72,6 +75,9 @@ void Board::keyPressEvent(QKeyEvent* event) {
 		else if ((event->key() == Qt::Key_Left)) {
 			if (verifMove(LEFT)) {
 				piece.move(LEFT);
+				mciSendString(L"close bubble", NULL, 0, NULL);
+				mciSendString(L"open bubble-pop.mp3 type mpegvideo alias bubble", nullptr, 0, nullptr);
+				mciSendString(L"play bubble", NULL, 0, NULL);
 			}
 			pieceState(ADD);
 			update();
