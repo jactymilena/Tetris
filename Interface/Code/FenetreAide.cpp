@@ -7,6 +7,7 @@ But: Fenetre avec tous les paramètres:sons et commandes
 ====================================*/
 
 #include "FenetreAide.h"
+#include "FenetreDeJeu.h"
 
 FenetreAide::FenetreAide(QMainWindow* fenetrePrincipale) :
 	m_layoutAide(nullptr), m_layoutGrid(nullptr),m_layoutBob(nullptr),m_layoutGridSon(nullptr), m_label1(nullptr), m_label2(nullptr), 
@@ -15,6 +16,8 @@ FenetreAide::FenetreAide(QMainWindow* fenetrePrincipale) :
 	boutonPourFenetreRetour(nullptr), m_sons(nullptr),m_sfx(nullptr)
 
 {
+	valeur = 5;
+	volume = 500;
 	//Création des layout
 	m_layoutAide = new QVBoxLayout();
 	m_layoutGrid = new QGridLayout();
@@ -51,7 +54,15 @@ FenetreAide::FenetreAide(QMainWindow* fenetrePrincipale) :
 
 	//Création des bars de sons
 	m_sons = new QSlider(Qt::Horizontal);
+	m_sons->setMinimum(0);
+	m_sons->setMaximum(10);
+	m_sons->setValue(5);
+	m_sons->setPageStep(1);
 	m_sfx = new QSlider(Qt::Horizontal);
+	m_sfx->setMinimum(0);
+	m_sfx->setMaximum(10);
+	m_sfx->setValue(5);
+	m_sfx->setPageStep(1);
 	
 	
 	//Attribution d'un style et de texte 
@@ -146,9 +157,38 @@ FenetreAide::FenetreAide(QMainWindow* fenetrePrincipale) :
 	//Actions possibles
 	QObject::connect(boutonPourFenetreRetour, SIGNAL(clicked(bool)), this, SLOT(slotPourFenetreRetour()));
 	QObject::connect(this, SIGNAL(retourFenetreAvant()), fenetrePrincipale, SLOT(slotChangerFenetrePrincipale()));
+	QObject::connect(m_sons, SIGNAL(valueChanged(int)), this, SLOT(slotSon()));
+
 	
 }
 
+
+void FenetreAide::slotSon()
+{
+	if(m_sons->value() > valeur)
+	{
+		volume += 100;
+		valeur = m_sons->value();
+		std::string string1 = "setaudio maintheme volume to " + std::to_string(volume);
+		std::wstring wstring1 = std::wstring(string1.begin(), string1.end());
+		const wchar_t* wchar1 = wstring1.c_str();
+		mciSendString(wchar1,0,0,0);
+	}
+	if (m_sons->value() < valeur)
+	{
+		volume -= 100;
+		valeur = m_sons->value();
+		std::string string1 = "setaudio maintheme volume to " + std::to_string(volume);
+		std::wstring wstring1 = std::wstring(string1.begin(), string1.end());
+		const wchar_t* wchar1 = wstring1.c_str();
+		mciSendString(wchar1, 0, 0, 0);
+	}
+}
+
+void FenetreAide::slotSFX()
+{
+
+}
 
 FenetreAide::~FenetreAide()
 {
