@@ -287,7 +287,7 @@ void Board::lireFPGA() {
 			qDebug() << echconv[0];
 			qDebug() << echconv[2];
 			//Phonème A
-			if ((echconv[0] >100) )
+			if ((echconv[0] >100))
 			{
 				pieceState(REMOVE);
 				if (verifMove(RIGHT)) {
@@ -298,7 +298,7 @@ void Board::lireFPGA() {
 
 			}
 			//Phonème U
-			else if ((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 0 && echconv[1] < 20) && (echconv[2] > 165 && echconv[2] < 185) && (echconv[3] > 40 && echconv[3] < 60))
+			else if (echconv[2] > 100)
 			{
 				pieceState(REMOVE);
 				if (verifMove(LEFT)) {
