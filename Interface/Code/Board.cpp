@@ -211,7 +211,7 @@ void Board::paintEvent(QPaintEvent* event)
 //Commence le jeu
 void Board::startGame() {
 	timer->start(difficulte);
-	timerFPGA->start(10);
+	timerFPGA->start(50);
 	isStarted = true;
 	srand((int)time(0));
 	pieceApres.loadPiece(rand() % 7);
@@ -281,31 +281,61 @@ void Board::lireFPGA() {
 			exit(1);
 		}
 		statutport = port.ecrireRegistre(nreg_ecri_led, 1);
-		if ((stat_btn & 1) != 0)
-		{
-			pieceState(REMOVE);
+		//if ((stat_btn & 1) != 0)
+		
+			
+			qDebug() << echconv[0];
+			qDebug() << echconv[2];
 			//Phonème A
-			if ((echconv[0] > 202 && echconv[0] < 222) && (echconv[1] > 15 && echconv[1] < 35) && (echconv[2] > 0 && echconv[2] < 20) && (echconv[3] > 0 && echconv[3] < 15))
+			if ((echconv[0] >100) )
 			{
-				qDebug() << "Tourner à droite";
+				pieceState(REMOVE);
+				if (verifMove(RIGHT)) {
+					
+					piece.move(RIGHT);
+				}
+				pieceState(ADD);
+
 			}
 			//Phonème U
 			else if ((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 0 && echconv[1] < 20) && (echconv[2] > 165 && echconv[2] < 185) && (echconv[3] > 40 && echconv[3] < 60))
 			{
-				qDebug() << "Tourner à gauche";
+				pieceState(REMOVE);
+				if (verifMove(LEFT)) {
+					piece.move(LEFT);
+				}
+				pieceState(ADD);
+
 			}
 			//Phonème E
 			else if ((echconv[0] > 183 && echconv[0] < 203) && (echconv[1] > 227 && echconv[1] < 247) && (echconv[2] > 90 && echconv[2] < 110) && (echconv[3] > 15 && echconv[3] < 35))
 			{
-				qDebug() << "Se tasser à gauche";
+				pieceState(REMOVE);
+				if (piece.getNumPiece() != O) {
+					piece.turn(RIGHT);
+					if (!verifMove(TURN_RIGHT)) {
+						piece.unturned();
+					}
+				}
+				pieceState(ADD);
+
 
 			}
 			//Phonème I
 			else if ((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 90 && echconv[1] < 110) && (echconv[2] > 177 && echconv[2] < 197) && (echconv[3] > 15 && echconv[3] < 35))
 			{
-				qDebug() << "Descendre";
+				pieceState(REMOVE);
+				if (piece.getNumPiece() != O) {
+					piece.turn(LEFT);
+
+					if (!verifMove(TURN_LEFT)) {
+						piece.unturned();
+					}
+				}
+				pieceState(ADD);
+
 			}
-		}
+		
 		else if ((stat_btn & 2) != 0)
 		{
 			canal_a_afficher++;
