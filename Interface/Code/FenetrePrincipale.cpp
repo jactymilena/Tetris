@@ -40,6 +40,10 @@ FenetrePrincipale::FenetrePrincipale() :
 	boutonPourFenetreReglage->setText("PARAMETERS");
 	boutonPourScore = new BoutonPrincipal(false);
 	boutonPourScore->setText("SCORE");
+	boutonPourQuitter = new BoutonPrincipal(false);
+	boutonPourQuitter->setText("EXIT");
+	boutonPourContinuer = new BoutonPrincipal(false);
+	boutonPourContinuer->setText("CONTINUE");
 	
 	//Pointage + Dialogue(Entrer votre nom)
 	fenetrePointage = new FenetrePointage(this, player);
@@ -71,10 +75,14 @@ FenetrePrincipale::FenetrePrincipale() :
 	layoutVertical1->setAlignment(labelTetris, Qt::AlignCenter);
 	layoutVertical1->addWidget(boutonPourFenetreJeu);
 	layoutVertical1->setAlignment(boutonPourFenetreJeu, Qt::AlignHCenter);
+	layoutVertical1->addWidget(boutonPourContinuer);
+	layoutVertical1->setAlignment(boutonPourContinuer, Qt::AlignHCenter);
 	layoutVertical1->addWidget(boutonPourFenetreReglage);
 	layoutVertical1->setAlignment(boutonPourFenetreReglage, Qt::AlignHCenter);
 	layoutVertical1->addWidget(boutonPourScore);
 	layoutVertical1->setAlignment(boutonPourScore, Qt::AlignHCenter);
+	layoutVertical1->addWidget(boutonPourQuitter);
+	layoutVertical1->setAlignment(boutonPourQuitter, Qt::AlignHCenter);
 
 	//Ajout widget au layout
 	widget->setLayout(layoutVertical1);
@@ -85,6 +93,10 @@ FenetrePrincipale::FenetrePrincipale() :
 	fenetreAide = new FenetreAide(this);
 	QObject::connect(boutonPourFenetreJeu, SIGNAL(clicked(bool)), SLOT(slotPourFenetreDeJeu()));
 	QObject::connect(boutonPourFenetreReglage, SIGNAL(clicked(bool)), SLOT(slotChangerFenetreAide()));
+	QObject::connect(boutonPourQuitter, SIGNAL(clicked(bool)), qApp, SLOT(quit()));
+	QObject::connect(boutonPourContinuer, SIGNAL(clicked(bool)), this, SLOT(slotPourContinuer()));
+	boutonPourContinuer->setVisible(false);
+	
 	//Action
 	index->addWidget(widget);
 	index->addWidget(fenetreDeJeu);
@@ -97,29 +109,39 @@ FenetrePrincipale::~FenetrePrincipale()
 {
 }
 
+void FenetrePrincipale::slotPourContinuer() {
+	index->setCurrentIndex(1);
+}
+
 //Montre la boîte de dialogue et met la fenêtre de jeu comme centralWidget
 void FenetrePrincipale::slotPourFenetreDeJeu()
 {
-	
-	if (!player->getNameSetted()) {
-		bool ok;
-		QString text;
+	if (fenetreDeJeu->getGameStarted()) {
+		fenetreDeJeu->recommencerBoard();
+		index->setCurrentIndex(1);
+	}
+	else {
+		if (!player->getNameSetted()) {
+			bool ok;
+			QString text;
 
-		ok = demandeUsername->exec();
-		text = demandeUsername->textValue();
-		if (ok && !text.isEmpty())
-		{
-			player->setNameSetted(true);
-			player->setUsername((text.simplified().remove(' ')).toStdString());
-			fenetreDeJeu->setUsernameLabel();
-			fenetrePointage->setJoueurUsername();
-			fenetrePointage->loadHighscore();
+			ok = demandeUsername->exec();
+			text = demandeUsername->textValue();
+			if (ok && !text.isEmpty())
+			{
+				player->setNameSetted(true);
+				player->setUsername((text.simplified().remove(' ')).toStdString());
+				fenetreDeJeu->setUsernameLabel();
+				fenetrePointage->setJoueurUsername();
+				fenetrePointage->loadHighscore();
+				index->setCurrentIndex(1);
+			}
+		}
+		else {
 			index->setCurrentIndex(1);
 		}
 	}
-	else {
-		index->setCurrentIndex(1);
-	}
+	
 }
 
 //Aller à la fenêtre de paramètres
@@ -131,6 +153,7 @@ void FenetrePrincipale::slotChangerFenetreAide()
 //Revenir avec la fenêtre principale
 void FenetrePrincipale::slotChangerFenetrePrincipale()
 {
+	boutonPourContinuer->setVisible(true);
 	index->setCurrentIndex(0);
 }
 

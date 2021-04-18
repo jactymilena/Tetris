@@ -44,6 +44,9 @@ public:
     ~FenetreDeJeu();
     void boardInit();
     void setUsernameLabel();
+    bool getGameStarted();
+    void recommencerBoard();
+
 
 private:
     // layout
@@ -115,7 +118,7 @@ public slots:
     void updateScore();
     void updateLevel();
     void slotGameOver();
-    void recommencerBoard();
+    void recommencer();
     void changeModeFPGA();
 
     void slotPourTrigeredHold();

@@ -64,7 +64,7 @@ public:
 	bool verifLigne();
 	void enleverLigne(int i);
 	void restart();
-	void pause();
+	void pause(bool cond); // si cond true, reste dans la fenetre, sinon retourne a l'accueil
 	void setModeFPGA(bool mode);
 	bool getModeFPGA();
 

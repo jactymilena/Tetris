@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QLabel>;
 #include <QApplication>
+#include <QPushButton>
 
 class FenetreBarGraph : public QWidget {
 	Q_OBJECT
@@ -13,6 +14,7 @@ public:
 public slots:
 	//Lecture FPGA
 	int lireFPGA();
+	void recommencer();
 private:
 	QProgressBar* barGraph0;
 	QProgressBar* barGraph1;
@@ -32,5 +34,10 @@ private:
 	QLabel* chanel3LabelValue;
 
 	QLabel* sortieTitre;
+
+	QPushButton* buttonRestart;
+
+	int echconvMax[4];
+
 
 };

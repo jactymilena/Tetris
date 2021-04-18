@@ -52,6 +52,7 @@ public slots:
     void slotPourEnableFenetre();
     void slotChangerFenetreAide();
     void closeEvent(QCloseEvent* event);
+    void slotPourContinuer();
 
 private:
 
@@ -59,6 +60,8 @@ private:
     BoutonPrincipal* boutonPourFenetreJeu;
     BoutonPrincipal* boutonPourFenetreReglage;
     BoutonPrincipal* boutonPourScore;
+    BoutonPrincipal* boutonPourQuitter;
+    BoutonPrincipal* boutonPourContinuer;
 
     //Le titre Tetris Mania 
     QLabel* labelTetris;

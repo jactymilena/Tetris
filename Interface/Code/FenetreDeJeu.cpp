@@ -225,7 +225,7 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	QObject::connect(m_menuOptionAide, SIGNAL(triggered(bool)), this, SLOT(slotPourFenetreAide()));
 	QObject::connect(this, SIGNAL(signalAllerAide()), fenetrePrincipale, SLOT(slotChangerFenetreAide()));
 	QObject::connect(m_menuOptionQuitter, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
-	QObject::connect(m_menuOptionRecommencer, SIGNAL(triggered(bool)), this, SLOT(recommencerBoard()));
+	QObject::connect(m_menuOptionRecommencer, SIGNAL(triggered(bool)), this, SLOT(recommencer()));
 
 
 	setLayout(m_layout);
@@ -240,7 +240,7 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_recommencerButton->setStyleSheet("border-radius: 10px; border: 2px solid black; color: black; font: bold; background-color: #ffc72b;");
 	
 	QObject::connect(m_gameOverQuitterButton, SIGNAL(clicked(bool)), qApp, SLOT(quit()));
-	QObject::connect(m_recommencerButton, SIGNAL(clicked(bool)), this, SLOT(recommencerBoard()));
+	QObject::connect(m_recommencerButton, SIGNAL(clicked(bool)), this, SLOT(recommencer()));
 
 	m_gameOverLayout->addWidget(m_fenetrePointage);
 	m_gameOverLayout->addWidget(m_recommencerButton);
@@ -254,6 +254,10 @@ m_prochainScore(nullptr), m_prochainIndividu(nullptr)
 	m_gameOverWidget->setWindowTitle("Tetris");
 	m_gameOverWidget->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
 	m_gameOverWidget->setLayout(m_gameOverLayout);
+}
+
+bool FenetreDeJeu::getGameStarted() {
+	return board->getIsStarted();
 }
 
 void FenetreDeJeu::changeModeFPGA() {
@@ -277,10 +281,14 @@ void FenetreDeJeu::slotGameOver() {
 	m_gameOverWidget->show();
 }
 
+void FenetreDeJeu::recommencer() {
+	recommencerBoard();
+}
+
 void FenetreDeJeu::recommencerBoard() {
 	board->restart();
 	this->setEnabled(true);
-	if(m_gameOverWidget->isVisible()) m_gameOverWidget->hide();
+	if (m_gameOverWidget->isVisible()) m_gameOverWidget->hide();
 }
 
 void FenetreDeJeu::updateScore() {
@@ -301,7 +309,7 @@ void FenetreDeJeu::updateLevel() {
 void FenetreDeJeu::slotPourFenetrePrincipale()
 {
 	if (board->getIsStarted()) {
-		board->pause();
+		board->pause(false);
 	}
 	emit signalRetourPrincipale();
 }
@@ -309,7 +317,7 @@ void FenetreDeJeu::slotPourFenetrePrincipale()
 void FenetreDeJeu::slotPourFenetreAide()
 {
 	if (board->getIsStarted()) {
-		board->pause();
+		board->pause(false);
 	}
 	emit signalAllerAide();
 }

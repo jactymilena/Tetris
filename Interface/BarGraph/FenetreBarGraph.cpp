@@ -30,6 +30,10 @@ unsigned const int nreg_ecri_led = 10;
 
 FenetreBarGraph::FenetreBarGraph()
 {
+
+	for (int i = 0; i < 4; i++) {
+		echconvMax[i] = 0;
+	}
 	barGraph0 = new QProgressBar();
 	barGraph0->setStyleSheet("QProgressBar::chunk { background-color: #2196F3; width: 10px; margin: 0.5px } QProgressBar { border: 2px solid white; border-radius: 5px; background: white; text-align: center; color: black }");
 	barGraph0->setMinimum(0);
@@ -61,6 +65,8 @@ FenetreBarGraph::FenetreBarGraph()
 	chanel2LabelValue = new QLabel();
 	chanel3LabelValue = new QLabel();
 
+	buttonRestart = new QPushButton("Recommencer");
+
 	verticalLayout = new QVBoxLayout();
 	verticalLayout->addWidget(sortieTitre);
 	verticalLayout->addWidget(chanel0Label);
@@ -75,12 +81,33 @@ FenetreBarGraph::FenetreBarGraph()
 	verticalLayout->addWidget(chanel3Label);
 	verticalLayout->addWidget(chanel3LabelValue);
 	verticalLayout->addWidget(barGraph3);
+	verticalLayout->addWidget(buttonRestart);
+
 
 	timer = new QTimer();
 	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(lireFPGA()));
-	timer->start(10);
+	QObject::connect(buttonRestart, SIGNAL(clicked(bool)), this, SLOT(recommencer()));
+
+	timer->start(50);
 
 	setLayout(verticalLayout);
+}
+
+void FenetreBarGraph::recommencer() {
+	for (int i = 0; i < 4; i++) {
+		echconvMax[i] = 0;
+	}
+
+	barGraph0->setValue(0);
+	barGraph1->setValue(0);
+	barGraph2->setValue(0);
+	barGraph3->setValue(0);
+
+	chanel0LabelValue->setText(QString::number(0));
+	chanel1LabelValue->setText(QString::number(0));
+	chanel2LabelValue->setText(QString::number(0));
+	chanel3LabelValue->setText(QString::number(0));
+
 }
 
 int FenetreBarGraph::lireFPGA() {
@@ -139,15 +166,21 @@ int FenetreBarGraph::lireFPGA() {
 		if (canal_a_afficher  > 3) canal_a_afficher = 0;
 	}
 
-	barGraph0->setValue(echconv[0]);
-	barGraph1->setValue(echconv[1]);
-	barGraph2->setValue(echconv[2]);
-	barGraph3->setValue(echconv[3]);
+	for (int i = 0; i < 4; i++) {
+		if (echconv[i] > echconvMax[i])
+			echconvMax[i] = echconv[i];
+		qDebug() << echconv[i];
+	}
 
-	chanel0LabelValue->setText(QString::number(echconv[0]));
-	chanel1LabelValue->setText(QString::number(echconv[1]));
-	chanel2LabelValue->setText(QString::number(echconv[2]));
-	chanel3LabelValue->setText(QString::number(echconv[3]));
+	barGraph0->setValue(echconvMax[0]);
+	barGraph1->setValue(echconvMax[1]);
+	barGraph2->setValue(echconvMax[2]);
+	barGraph3->setValue(echconvMax[3]);
+
+	chanel0LabelValue->setText(QString::number(echconvMax[0]));
+	chanel1LabelValue->setText(QString::number(echconvMax[1]));
+	chanel2LabelValue->setText(QString::number(echconvMax[2]));
+	chanel3LabelValue->setText(QString::number(echconvMax[3]));
 
 	qApp->processEvents();
 

@@ -136,7 +136,7 @@ void Board::keyPressEvent(QKeyEvent* event) {
 
 	if (event->key() == Qt::Key_Escape) {
 		if (!isPaused) { // en pause
-			pause();
+			pause(true);
 		}
 		else { // retour au jeu
 			isPaused = false;
@@ -151,12 +151,15 @@ void Board::keyPressEvent(QKeyEvent* event) {
 }
 
 //Met en pause le jeu et la musique
-void Board::pause() {
+void Board::pause(bool cond) {
+	if (cond) {
+		mciSendString(L"pause maintheme", NULL, 0, NULL);
+	}
 	isPaused = true;
-	mciSendString(L"pause maintheme", NULL, 0, NULL);
 	timer->stop();
 	timerFPGA->stop();
 	update();
+
 }
 
 //Override la fonction du QFrame pour repeindre le tableau
@@ -421,10 +424,13 @@ void Board::resetBoard() {
 			cases[i][j].color = Qt::white;
 		}
 	}
+	mciSendString(L"resume maintheme", NULL, 0, NULL);
 	mciSendString(L"set maintheme speed 1000", nullptr, 0, 0);
 	pieceHold.setNumPiece(7);
 	emit declencherHold();
 	game_over = false;
+	isPaused = false;
+	isStarted = false;
 	player->setLevel(0);
 	player->setScore(0);
 	difficulte = 500;
