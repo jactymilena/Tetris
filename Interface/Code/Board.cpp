@@ -101,9 +101,27 @@ void Board::keyPressEvent(QKeyEvent* event) {
 		pieceState(REMOVE);
 
 		if ((event->key() == Qt::Key_Right)) {
-			movePiece(RIGHT);
+			if (verifMove(RIGHT)) {
+				piece.move(RIGHT);
+				mciSendString(L"close bubble", NULL, 0, NULL);
+				mciSendString(L"open bubble-pop.mp3 type mpegvideo alias bubble", nullptr, 0, nullptr);
+				mciSendString(L"play bubble", NULL, 0, NULL);
+			}
+			pieceState(ADD);
+			update();
+
 		}
 		else if ((event->key() == Qt::Key_Left)) {
+			if (verifMove(LEFT)) {
+				piece.move(LEFT);
+				mciSendString(L"close bubble", NULL, 0, NULL);
+				mciSendString(L"open bubble-pop.mp3 type mpegvideo alias bubble", nullptr, 0, nullptr);
+				mciSendString(L"play bubble", NULL, 0, NULL);
+			}
+			pieceState(ADD);
+			update();
+
+		}
 			movePiece(LEFT);
 		}
 		else if ((event->key() == Qt::Key_Down)) {
@@ -149,6 +167,7 @@ void Board::keyPressEvent(QKeyEvent* event) {
 	}
 
 }
+
 
 //Met en pause le jeu et la musique
 void Board::pause(bool cond) {

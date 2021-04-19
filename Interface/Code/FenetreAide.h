@@ -81,8 +81,13 @@ private:
     QPixmap* m_pixmap6;
     QPixmap* m_pixmap7;
 
+    int volume;
+    int valeur;
+
 public slots:
     void slotPourFenetreRetour();
+    void slotSon();
+    void slotSFX();
 signals:
     void retourFenetreAvant();
 
