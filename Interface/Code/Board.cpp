@@ -142,10 +142,7 @@ void Board::keyPressEvent(QKeyEvent* event) {
 
 }
 
-void Board::keyReleaseEvent(QKeyEvent* event)
-{
-	//qDebug("a");
-}
+
 //Met en pause le jeu et la musique
 void Board::pause() {
 	isPaused = true;
