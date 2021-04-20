@@ -98,9 +98,10 @@ void Board::restart() {
 void Board::keyPressEvent(QKeyEvent* event) {
 	bool canGoDown = true;
 	if (!isPaused) {
-		pieceState(REMOVE);
 
 		if ((event->key() == Qt::Key_Right)) {
+			pieceState(REMOVE);
+
 			if (verifMove(RIGHT)) {
 				piece.move(RIGHT);
 				mciSendString(L"close bubble", NULL, 0, NULL);
@@ -108,10 +109,11 @@ void Board::keyPressEvent(QKeyEvent* event) {
 				mciSendString(L"play bubble", NULL, 0, NULL);
 			}
 			pieceState(ADD);
-			update();
 
 		}
 		else if ((event->key() == Qt::Key_Left)) {
+			pieceState(REMOVE);
+
 			if (verifMove(LEFT)) {
 				piece.move(LEFT);
 				mciSendString(L"close bubble", NULL, 0, NULL);
@@ -119,37 +121,40 @@ void Board::keyPressEvent(QKeyEvent* event) {
 				mciSendString(L"play bubble", NULL, 0, NULL);
 			}
 			pieceState(ADD);
-			update();
 
 		}
-			movePiece(LEFT);
-		}
 		else if ((event->key() == Qt::Key_Down)) {
-			//moveDownPiece();
+			pieceState(REMOVE);
 			if (verifMove(DOWN)) {
 				piece.goDown();
 			}
 			pieceState(ADD);
-			update();
 
 		}
 		else if ((event->key() == Qt::Key_W)) {
+
 			if (nouvellePiece) {
+				pieceState(REMOVE);
 				nouvellePiece = false;
 				changerPiece();
 			}
 			
-			pieceState(ADD);
-			update();
 
 			emit declencherHold();
 		}
 		else if (event->key() == Qt::Key_Q) {
+			pieceState(REMOVE);
 			movePiece(TURN_LEFT);
+			pieceState(ADD);
+
 		}
 		else if (event->key() == Qt::Key_E) {
+			pieceState(REMOVE);
 			movePiece(TURN_RIGHT);
+			pieceState(ADD);
+
 		}
+
 	}
 
 	if (event->key() == Qt::Key_Escape) {
@@ -162,9 +167,9 @@ void Board::keyPressEvent(QKeyEvent* event) {
 			timerFPGA->start(10);
 			mciSendString(L"resume maintheme", NULL, 0, NULL);
 		}
-		update();
 
 	}
+	update();
 
 }
 

@@ -153,7 +153,9 @@ void FenetrePrincipale::slotChangerFenetreAide()
 //Revenir avec la fenêtre principale
 void FenetrePrincipale::slotChangerFenetrePrincipale()
 {
-	boutonPourContinuer->setVisible(true);
+	if (fenetreDeJeu->getGameStarted()) {
+		boutonPourContinuer->setVisible(true);
+	}
 	index->setCurrentIndex(0);
 }
 
