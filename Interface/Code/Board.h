@@ -106,6 +106,9 @@ private:
 	int difficulte;
 	Player* player;
 	bool modeFPGA;
+	int moinsViteA = 0;
+	int moinsViteU = 0;
+	int moinsViteI = 0;
 
 	// Qt
 	QGridLayout* layout;
@@ -114,5 +117,6 @@ private:
 	bool isPaused;
 	bool isStarted;
 	QWidget *fenetre;
+	
 
 };

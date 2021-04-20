@@ -88,7 +88,7 @@ FenetreBarGraph::FenetreBarGraph()
 	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(lireFPGA()));
 	QObject::connect(buttonRestart, SIGNAL(clicked(bool)), this, SLOT(recommencer()));
 
-	timer->start(50);
+	timer->start(100);
 
 	setLayout(verticalLayout);
 }

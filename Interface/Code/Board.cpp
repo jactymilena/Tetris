@@ -286,43 +286,67 @@ void Board::lireFPGA() {
 			
 			qDebug() << echconv[0];
 			qDebug() << echconv[2];
+
 			//Phonème A
-			if ((echconv[0] >100))
+			if ((echconv[0] > 50)&& (echconv[1] < 180) && (echconv[3]  < 180) && (echconv[2] < 180))
 			{
-				pieceState(REMOVE);
-				if (verifMove(RIGHT)) {
+				moinsViteA++;
+				moinsViteI = 0;
+				moinsViteU = 0;
+				if(moinsViteA % 5 == 0)
+				{
+					pieceState(REMOVE);
+					if (verifMove(RIGHT)) {
 					
-					piece.move(RIGHT);
-				}
-				pieceState(ADD);
-
-			}
-			//Phonème U
-			else if (echconv[2] > 100)
-			{
-				pieceState(REMOVE);
-				if (verifMove(LEFT)) {
-					piece.move(LEFT);
-				}
-				pieceState(ADD);
-
-			}
-			//Phonème E
-			else if ((echconv[0] > 183 && echconv[0] < 203) && (echconv[1] > 227 && echconv[1] < 247) && (echconv[2] > 90 && echconv[2] < 110) && (echconv[3] > 15 && echconv[3] < 35))
-			{
-				pieceState(REMOVE);
-				if (piece.getNumPiece() != O) {
-					piece.turn(RIGHT);
-					if (!verifMove(TURN_RIGHT)) {
-						piece.unturned();
+						piece.move(RIGHT);
 					}
+					pieceState(ADD);
 				}
-				pieceState(ADD);
-
 
 			}
 			//Phonème I
-			else if ((echconv[0] > 0 && echconv[0] < 20) && (echconv[1] > 90 && echconv[1] < 110) && (echconv[2] > 177 && echconv[2] < 197) && (echconv[3] > 15 && echconv[3] < 35))
+			else if ((echconv[0] < 80) && (echconv[1] < 20) && (echconv[2] < 90) && (echconv[3] > 180))
+			{
+				moinsViteA = 0;
+				moinsViteI++;
+				moinsViteU = 0;
+				if (moinsViteI % 5 == 0)
+				{
+					pieceState(REMOVE);
+					if (verifMove(LEFT)) {
+						piece.move(LEFT);
+					}
+					pieceState(ADD);
+				}
+
+			}
+			//Phonème U
+			else if ((echconv[0] < 80) && (echconv[1] < 20) && (echconv[2] < 90) && (echconv[3] > 180))
+			{
+				moinsViteA = 0;
+				moinsViteI = 0;
+				moinsViteU ++;
+				if (moinsViteU % 5 == 0)
+				{
+					pieceState(REMOVE);
+					if (piece.getNumPiece() != O) {
+						piece.turn(RIGHT);
+						if (!verifMove(TURN_RIGHT)) {
+							piece.unturned();
+						}
+					}
+					pieceState(ADD);
+				}
+
+			}
+			else
+			{
+				moinsViteA = 0;
+				moinsViteI = 0;
+				moinsViteU = 0;
+			}
+			//Phonème I
+			/*else if ((echconv[0] > 90) && (echconv[2] > 180) && (echconv[1] > 50))
 			{
 				pieceState(REMOVE);
 				if (piece.getNumPiece() != O) {
@@ -334,15 +358,17 @@ void Board::lireFPGA() {
 				}
 				pieceState(ADD);
 
-			}
+			}*/
 		
-		else if ((stat_btn & 2) != 0)
+		if ((stat_btn & 2) != 0)
 		{
 			canal_a_afficher++;
 
 			if (canal_a_afficher > 3) canal_a_afficher = 0;
 		}
-
+		qDebug() << "A:" << moinsViteA;
+		qDebug() << "I:" << moinsViteI;
+		qDebug() << "U:" << moinsViteU;
 		statutport = port.ecrireRegistre(nreg_ecri_aff7sg0, canal_a_afficher);                    // envoyer numero canal_a_afficher afficheur 7 segments
 		statutport = port.ecrireRegistre(nreg_ecri_aff7sg1, echconv[canal_a_afficher]); // envoyer valeur echconv[] afficheur 7 segments
 	}
