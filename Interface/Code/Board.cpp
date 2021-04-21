@@ -498,6 +498,7 @@ bool Board::getIsStarted() {
 
 //Repeint les valeurs de base du board
 void Board::resetBoard() {
+	pieceState(REMOVE);
 	for (int i = 0; i < LIGNES; i++) {
 		for (int j = 0; j < COLONNES; j++) {
 			cases[i][j].value = 0;
